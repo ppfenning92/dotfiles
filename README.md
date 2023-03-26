@@ -10,7 +10,6 @@ dotfiles remote add origin https://github.com/ppfenning92/dotfiles.git
 dotfiles fetch --all
 dotfiles checkout main
 dotfiles reset --hard
-./.scripts/init.sh
 
 
 
