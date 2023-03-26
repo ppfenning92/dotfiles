@@ -18,12 +18,5 @@
 #    - include: tasks/secrets.yml
     - include_tasks: tasks/core.yml
     - include_tasks: tasks/core-alternatives.yml
-#    - include: tasks/node-setup.yml
-#    - include: tasks/npm-packages.yml
     - include_tasks: tasks/zsh.yml
-
-#    - include_tasks: tasks/neovim.yml
-#    - include: tasks/debugger.yml
-#    - include: tasks/dotfiles.yml
-#    - include: tasks/productivity-tools.yml
-#    - include: tasks/lsp.yml
+    - include_tasks: tasks/neovim.yml
