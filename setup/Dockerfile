@@ -4,7 +4,7 @@ ENV USER=p
 ARG PASS=p
 # update
 RUN apt update -qqq && apt upgrade -y && apt dist-upgrade -y
-RUN apt install sudo
+RUN apt install sudo -y
 
 # add user
 RUN useradd -ms /bin/bash $USER
