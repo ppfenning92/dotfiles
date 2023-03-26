@@ -1,1 +1,1 @@
-source "$HOME/.config/.env"
+source $HOME/.config/.env

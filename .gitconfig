@@ -1,0 +1,6 @@
+[user]
+	email = patrick.pfenning.92@gmail.com
+	name = Patrick Pfenning
+
+[core]
+    autocrlf = true
