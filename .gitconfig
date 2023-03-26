@@ -3,4 +3,4 @@
 	name = Patrick Pfenning
 
 [core]
-    autocrlf = true
+    autocrlf = false
