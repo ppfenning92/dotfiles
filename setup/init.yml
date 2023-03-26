@@ -17,6 +17,6 @@
   tasks:
 #    - include: tasks/secrets.yml
     - include_tasks: tasks/core.yml
-    - include_tasks: tasks/core-alternatives.yml
+#    - include_tasks: tasks/core-alternatives.yml
     - include_tasks: tasks/zsh.yml
     - include_tasks: tasks/neovim.yml
