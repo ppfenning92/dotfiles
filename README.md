@@ -4,6 +4,7 @@
 ### checkout repository
 ```shell
 sudo apt install git -y
+git config --global core.autocrlf false
 mkdir -vp ~/.dotfiles
 alias dotfiles="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 dotfiles init -b main
