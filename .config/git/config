@@ -7,4 +7,3 @@
 
 [core]
     excludesfile = ~/.config/git/gitignore
-%     autocrlf = false
