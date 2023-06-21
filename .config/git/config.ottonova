@@ -1,0 +1,13 @@
+[user]
+email = patrick.pfenning@ottonova.de
+name = Patrick Pfenning
+signingkey = B2672BA7CE17AC1B
+
+[commit]
+gpgsign = true
+
+[tag]
+gpgsign = true
+
+[pull]
+ff = only

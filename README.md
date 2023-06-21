@@ -20,7 +20,7 @@ git config --global core.autocrlf false
 mkdir -vp ~/.cfg
 alias cfg="git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
 cfg init -b main
-cfg remote add origin git@github.com/ppfenning92/dotfiles.git
+cfg remote add origin git@github.com:ppfenning92/dotfiles.git
 cfg fetch --all
 cfg checkout -f main
 cfg reset --hard

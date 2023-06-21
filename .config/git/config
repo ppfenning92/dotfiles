@@ -1,0 +1,10 @@
+[user]
+    email = patrick.pfenning.92@gmail.com
+    name = Patrick Pfenning
+
+[includeIf "gitdir:~/projects/ottonova/**"]
+    path = config.ottonova
+
+[core]
+    excludesfile = ~/.config/git/gitignore
+%     autocrlf = false
