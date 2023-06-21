@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+echo 'Running pre-commit hook'
+PROJECT_PATH=$(git rev-parse --show-toplevel)
+docker run -v "$PROJECT_PATH:/opt" --rm aquasec/trivy -q fs --exit-code 1 --no-progress --severity HIGH,CRITICAL opt
