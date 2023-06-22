@@ -4,6 +4,6 @@
 !.cache/*
 !.local/*
 !.bashrc
-!.zshenv
+!.config/zsh/zshenv
 !README.md
 !.gitignore
