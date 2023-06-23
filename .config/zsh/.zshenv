@@ -5,6 +5,10 @@ source $XDG_CONFIG_HOME/work.env
 
 
 export HISTFILE="$XDG_STATE_HOME"/zsh/history
+if [ ! -f "$HISTFILE" ]; then
+  mkdir -p $XDG_STATE_HOME/state/zsh/
+  touch $XDG_STATE_HOME/state/zsh/history
+fi
 
 export WAKATIME_HOME='$XDG_CONFIG_HOME/wakatime'
 if [ ! -d "$WAKATIME_HOME" ]; then

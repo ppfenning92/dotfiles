@@ -73,6 +73,11 @@ fi
 if [ -d "/usr/local/go/bin" ] ; then
      export PATH=$PATH:/usr/local/go/bin
 fi
+
+if [ -d "$XDG_DATA_HOME/go/bin" ] ; then
+     export PATH=$PATH:$XDG_DATA_HOME/go/bin
+fi
+
 if [ -f "/opt/homebrew/bin/brew" ] ; then
     eval $(/opt/homebrew/bin/brew shellenv)
 fi
