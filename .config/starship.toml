@@ -28,7 +28,7 @@ $character\
 
 right_format = """
 $line_break\
-$status$cmd_duration\
+$status[ ]$cmd_duration\
 """
 command_timeout = 700
 
