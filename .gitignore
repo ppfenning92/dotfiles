@@ -1,9 +1,1 @@
-*
-.*
-!.config/*
-!.cache/*
-!.local/*
-!.bashrc
-!.config/zsh/.zshenv
-!README.md
-!.gitignore
+
