@@ -3,7 +3,7 @@
 
 ## Repo setup
 ```shell
-git config --local include.path ../.gitconfig 
+git config --local include.path ../dotfiles-config 
 ```
 ## Encrypt/decrypt *.env files
 ```shell
