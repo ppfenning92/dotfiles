@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-echo 'Running post-merge hook'
-eval $(op signin)
-find $HOME/.config -type f -iname "*.env" -exec sh -c "ansible-vault decrypt {} " \;
