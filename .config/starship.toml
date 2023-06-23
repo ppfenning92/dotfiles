@@ -21,7 +21,7 @@ $aws\
 $docker_context\
 []
 $line_break\
-[](fg:#06969A bg:#33658A)\
+[](#06969A)\
 $time\
 [ ](fg:#33658A)\
 """
