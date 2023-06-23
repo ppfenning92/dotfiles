@@ -120,6 +120,7 @@ style = "bg:#33658A"
 format = '[ ♥ $time ]($style)'
 
 [status]
+format = '[$symbol$status]($style)'
 disabled = false
 pipestatus = true
 map_symbol = true
