@@ -1,8 +1,8 @@
-README.org
+README.md
 docs
 .gitignore
 .git
 .gitmodules
-dotfils-gitconfig
-.gothooks
+dotfiles-gitconfig
+.githooks
 .github
