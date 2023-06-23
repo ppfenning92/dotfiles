@@ -26,10 +26,7 @@ $line_break\
 $character\
 """
 
-right_format = """
-$line_break\
-$status[ ]$cmd_duration\
-"""
+right_format = """$status $cmd_duration"""
 command_timeout = 700
 
 [username]
@@ -126,6 +123,9 @@ format = '[ ♥ $time ]($style)'
 disabled = false
 pipestatus = true
 map_symbol = true
+
+[cmd_duration]
+format = '[$duration]($style)'
 
 [line_break]
 disabled = false
