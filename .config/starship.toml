@@ -26,11 +26,14 @@ $line_break\
 $character\
 """
 
-# Disable the blank line at the start of the prompt
-# add_newline = false
+right_format = """
+$line_break\
+[󱎕](bg:#DA627D fg:#9A348E)\
+$status$cmd_duration\
+[](#9A348E)\
+"""
+command_timeout = 700
 
-# You can also replace your username with a neat symbol like   or disable this
-# and use the os module below
 [username]
 show_always = true
 style_user = "bg:#9A348E"
@@ -120,3 +123,11 @@ disabled = false
 time_format = "%R" # Hour:Minute Format
 style = "bg:#33658A"
 format = '[ ♥ $time ]($style)'
+
+[status]
+disabled = false
+pipestatus = true
+map_symbol = true
+
+[line_break]
+disabled = false
