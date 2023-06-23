@@ -37,6 +37,8 @@ HIST_STAMPS="yyyy-mm-dd"
 
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+
 plugins=(
     git
     zsh-autosuggestions
@@ -61,19 +63,20 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
+    export PATH="$HOME/bin:$PATH"
 fi
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
+    export PATH="$HOME/.local/bin:$PATH"
 fi
 
-if [ -d "$HOME/go/bin" ] ; then
-     PATH="$HOME/go/bin:$PATH"
+if [ -d "/usr/local/go/bin" ] ; then
+     export PATH=$PATH:/usr/local/go/bin
 fi
 if [ -f "/opt/homebrew/bin/brew" ] ; then
     eval $(/opt/homebrew/bin/brew shellenv)
 fi
+
 
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
