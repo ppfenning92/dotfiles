@@ -1,0 +1,189 @@
+add_newline = true
+
+format = """
+$sudo$username$hostname\
+$directory$package\
+$git_branch$git_commit$git_metrics$git_state$git_status\
+\\[\
+$nodejs\
+$php\
+$python\
+$ruby\
+$rust\
+\\]\
+$kubernetes\
+$terraform\
+$aws\
+$env_var\
+$fill\
+${custom.dotfiles_branch}${custom.dotfiles_status}\
+$fill\
+$time\
+$jobs\
+$line_break\
+$character\
+"""
+
+right_format = """$status$cmd_duration"""
+command_timeout = 700
+
+continuation_prompt = "▶▶ "
+
+[character]
+success_symbol = "[➜](bold green) "
+error_symbol = "[✗](bold red) "
+
+[cmd_duration]
+min_time = 225
+format = "$duration "
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+format = "📂 [$path]($style)[$read_only]($read_only_style) "
+style = "bold cyan"
+disabled = false
+home_symbol = ""
+
+# [env_var]
+# variable = "SHELL"
+# default = "Zsh"
+# prefix = "<"
+# suffix = ">"
+
+[git_metrics]
+disabled = false
+
+[git_branch]
+symbol = "🌱 "
+truncation_length = 20
+truncation_symbol = "..."
+style = "bold purple"
+disabled = false
+
+
+
+[git_state]
+#format = '[\($state( $progress_current of $progress_total)\)]($style) '
+cherry_pick = "[🍒 PICKING](bold red)"
+rebase = "REBASING"
+merge = "MERGING"
+revert = "REVERTING"
+bisect = "BISECTING"
+am = "AM"
+am_or_rebase = "AM/REBASE"
+style = "bold yellow"
+disabled = false
+
+
+[git_status]
+conflicted = "🏳"
+ahead = "🏎💨 ⇡${count}"
+behind = "😰 ⇣${count}"
+diverged = "😵 ⇕⇡${ahead_count}⇣${behind_count}"
+up_to_date = "✓"
+untracked = "🤷"
+stashed = "📦"
+modified = "📝"
+staged = '[++\($count\)](green)'
+renamed = "👅"
+deleted = "🗑"
+
+
+
+[hostname]
+ssh_only = true
+format = " [$hostname]($style) "
+# suffix = "⟫"
+trim_at = "."
+disabled = false
+
+[jobs]
+disabled = false
+symbol = " "
+threshold = 1
+
+[line_break]
+disabled = false
+
+# [memory_usage]
+# disabled = false
+# show_percentage = true
+# show_swap = false
+# threshold = -1
+# symbol = " "
+# separator = "/"
+# style = "bold dimmed white"
+
+
+[package]
+# symbol = "📦"
+# style = "bold red"
+format = "\\([$symbol$version]($style)\\) "
+disabled = false
+
+[python]
+symbol = " "
+pyenv_version_name = false
+pyenv_prefix = "pyenv"
+format = "[$symbol($version)<$virtualenv>]($style)"
+style = "bold yellow"
+disabled = false
+
+[php]
+symbol = " "
+format = "[$symbol($version )]($style)"
+
+[nodejs]
+format = "[$symbol($version )]($style)"
+
+[time]
+disabled = false
+format = '🕙 $time($style) '
+time_format = "%T"
+style = 'bold white'
+#utc_time_offset = "-5"
+#time_range = "08:00:00-18:00:00"
+
+[username]
+style_root = "bold red"
+style_user = "bold yellow"
+show_always = false
+format = "[$user]($style) "
+disabled = false
+
+[sudo]
+disabled = false
+format = "[$symbol]($style)"
+
+[status]
+disabled = false
+pipestatus = true
+map_symbol = true
+
+
+
+[custom.myip]
+command = "dig @ns1.google.com TXT o-o.myaddr.l.google.com +short | tr -d '\"'"
+when = "true"
+symbol = " "
+description = "print external wan ip"
+format = "[$symbol($output)]($style)"
+style = "white"
+
+
+[custom.dotfiles_branch]
+command = "git --git-dir=$HOME/.dotfiles/ branch --show-current"
+when = """ [[ "$HOME" == "$PWD" ]] """
+symbol = "🔧"
+format = "[$symbol($output)]($style)"
+style = "bold white"
+
+
+
+[custom.dotfiles_status]
+command = "git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME status --porcelain | wc -l"
+symbol = "🔃"
+when = """ [[ "$HOME" == "$PWD" ]] """
+format = "[$symbol($output)]($style)"
+style = "bold white"
