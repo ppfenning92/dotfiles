@@ -28,7 +28,7 @@ $character\
 
 right_format = """
 $line_break\
-[󱎕](bg:#DA627D fg:#9A348E)\
+[](bg:#DA627D fg:#9A348E)\
 $status$cmd_duration\
 [](#9A348E)\
 """
@@ -42,7 +42,7 @@ format = '[$user ]($style)'
 disabled = false
 
 [character]
-success_symbol = "[➜](bold green) "
+success_symbol = "[](bold green) "
 error_symbol = "[✗](bold red) "
 # An alternative to the username module which displays a symbol that
 # represents the current operating system
