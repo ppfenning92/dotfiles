@@ -37,7 +37,13 @@ HIST_STAMPS="yyyy-mm-dd"
 
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-plugins=(git)
+plugins=(
+    git
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    zsh-completions
+    zsh-history-substring-search
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -53,3 +59,24 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [ -d "$HOME/go/bin" ] ; then
+     PATH="$HOME/go/bin:$PATH"
+fi
+if [ -f "/opt/homebrew/bin/brew" ] ; then
+    eval $(/opt/homebrew/bin/brew shellenv)
+fi
+
+
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+eval "$(starship init zsh)"
