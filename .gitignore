@@ -2,3 +2,4 @@
 .idea
 .config/zsh/ohmyzsh/
 .config/zsh/.zshrc.pre-oh-my-zsh
+.config/zsh/.zcompdump*
