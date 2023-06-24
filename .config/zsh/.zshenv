@@ -4,13 +4,13 @@ source $XDG_CONFIG_HOME/private.env
 source $XDG_CONFIG_HOME/work.env
 
 
-export HISTFILE="$XDG_STATE_HOME"/zsh/history
+export HISTFILE="$XDG_STATE_HOME/zsh/history"
 if [ ! -f "$HISTFILE" ]; then
   mkdir -p $XDG_STATE_HOME/state/zsh/
-  touch $XDG_STATE_HOME/state/zsh/history
+  touch $HISTFILE
 fi
 
-export WAKATIME_HOME='$XDG_CONFIG_HOME/wakatime'
+export WAKATIME_HOME="$XDG_CONFIG_HOME/wakatime"
 if [ ! -d "$WAKATIME_HOME" ]; then
   mkdir -p $WAKATIME_HOME
 fi
