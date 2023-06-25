@@ -6,7 +6,7 @@ source $XDG_CONFIG_HOME/work.env
 
 export HISTFILE="$XDG_STATE_HOME/zsh/history"
 if [ ! -f "$HISTFILE" ]; then
-  mkdir -p $XDG_STATE_HOME/state/zsh/
+  mkdir -p $XDG_STATE_HOME/zsh/
   touch $HISTFILE
 fi
 
