@@ -49,7 +49,7 @@ style = "bg:#DA627D"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
-home_symbol = ""
+home_symbol = " "
 
 # Here is how you can shorten some long paths by text replacement
 # similar to mapped_locations in Oh My Posh:
@@ -59,9 +59,9 @@ home_symbol = ""
 "Music" = "🎵"
 "Pictures" = "🖼️"
 ".config" = "⚙️"
-"projects" = ""
-"work" = " "
-"private" = " "
+".dotfiles" = " "
+"projects" = " "
+"setup" = "󱂚 "
 # Keep in mind that the order matters. For example:
 # "Important Documents" = " 󰈙 "
 # will not be replaced, because "Documents" was already substituted before.
@@ -119,7 +119,7 @@ disabled = false
 disabled = false
 time_format = "%R" # Hour:Minute Format
 style = "bg:#33658A"
-format = '[ ♥ $time ]($style)'
+format = '[ 󱑆 $time ]($style)'
 
 [line_break]
 disabled = false
