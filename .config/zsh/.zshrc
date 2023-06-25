@@ -51,7 +51,7 @@ source $ZSH/oh-my-zsh.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
-source "$XDG_CONFIG_HOME/rust.alias"
+source "$XDG_CONFIG_HOME/rust.alias.sh"
 source $XDG_CONFIG_HOME/path.sh
 
 
