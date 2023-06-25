@@ -51,40 +51,10 @@ source $ZSH/oh-my-zsh.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-if [ -d "$HOME/bin" ] ; then
-    export PATH="$HOME/bin:$PATH"
-fi
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-    export PATH="$HOME/.local/bin:$PATH"
-fi
-
-if [ -d "/usr/local/go/bin" ] ; then
-     export PATH=$PATH:/usr/local/go/bin
-fi
-
-if [ -d "$XDG_DATA_HOME/go/bin" ] ; then
-     export PATH=$PATH:$XDG_DATA_HOME/go/bin
-fi
-
-if [ -f "/opt/homebrew/bin/brew" ] ; then
-    eval $(/opt/homebrew/bin/brew shellenv)
-fi
+source "$XDG_CONFIG_HOME/rust.alias"
+source $XDG_CONFIG_HOME/path.sh
 
 
-
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+eval "$(op completion zsh)"; compdef _op op
 
 eval "$(starship init zsh)"

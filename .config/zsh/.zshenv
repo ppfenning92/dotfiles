@@ -37,5 +37,5 @@ export AZURE_CONFIG_DIR="$XDG_DATA_HOME"/azure
 export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
 
-. "/home/p/.local/share/cargo/env"
+
 
