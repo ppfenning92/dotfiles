@@ -6,4 +6,4 @@ source "$XDG_CONFIG_HOME/path.sh"
 
 source <(op completion bash)
 
-eval "$(starship init zsh)"
+eval "$(starship init bash)"
