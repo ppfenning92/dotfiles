@@ -36,6 +36,7 @@ COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="yyyy-mm-dd"
 
 # ZSH_CUSTOM=/path/to/new-custom-folder
+autoload -Uz compinit
 
 compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 
