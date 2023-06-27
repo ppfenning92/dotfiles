@@ -40,5 +40,5 @@ export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
 
 export WORKON_HOME="$XDG_DATA_HOME/virtualenvs"
 export KERAS_HOME="$XDG_STATE_HOME/keras"
-
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 
