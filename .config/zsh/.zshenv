@@ -38,4 +38,7 @@ export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
 
 
+export WORKON_HOME="$XDG_DATA_HOME/virtualenvs"
+export KERAS_HOME="$XDG_STATE_HOME/keras"
+
 
