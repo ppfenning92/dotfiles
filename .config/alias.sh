@@ -5,3 +5,5 @@ if [ -x "$(command -v nvim)" ]; then
     alias vim="nvim"
     export GIT_PAGER="nvim"
 fi
+
+alias s="source ~/.config/zsh/.zshrc"

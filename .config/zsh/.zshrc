@@ -59,4 +59,8 @@ source "$XDG_CONFIG_HOME/path.sh"
 
 eval "$(op completion zsh)"; compdef _op op
 
+# bun completions
+[ -s "$XDG_DATA_HOME/bun/_bun" ] && source "$XDG_DATA_HOME/bun/_bun"
+
+
 eval "$(starship init zsh)"
