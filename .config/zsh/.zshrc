@@ -64,6 +64,12 @@ eval "$(op completion zsh)"; compdef _op op
 
 [ -f "$XDG_CONFIG_HOME"/fzf/fzf.zsh ] && source "$XDG_CONFIG_HOME"/fzf/fzf.zsh
 
+_fix_cursor() {
+   echo -ne '\e[5 q'
+}
+
+precmd_functions+=(_fix_cursor)
+
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
