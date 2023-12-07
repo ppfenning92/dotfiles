@@ -62,5 +62,8 @@ eval "$(op completion zsh)"; compdef _op op
 # bun completions
 [ -s "$XDG_DATA_HOME"/bun/_bun ] && source "$XDG_DATA_HOME"/bun/_bun
 
+[ -f "$XDG_DATA_HOME"/zsh/.fzf.zsh ] && source "$XDG_DATA_HOME"/zsh/.fzf.zsh
 
+eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+

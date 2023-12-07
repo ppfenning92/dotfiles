@@ -5,5 +5,9 @@ source "$XDG_CONFIG_HOME/rust.alias.sh"
 source "$XDG_CONFIG_HOME/path.sh"
 
 source <(op completion bash)
+[ -f "$XDG_DATA_HOME"/zsh/.fzf.bash ] && source "$XDG_DATA_HOME"/zsh/.fzf.bash
+eval "$(zoxide init bash)"
 
 eval "$(starship init bash)"
+
+
