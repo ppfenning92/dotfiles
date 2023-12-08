@@ -1,6 +1,6 @@
 [user]
     email = patrick.pfenning.92@gmail.com
-    name = Patrick Pfenning
+    name = Patrick Pfenning 2
 
 [includeIf "gitdir:~/projects/work/**"]
     path = config.work

@@ -62,5 +62,14 @@ eval "$(op completion zsh)"; compdef _op op
 # bun completions
 [ -s "$XDG_DATA_HOME"/bun/_bun ] && source "$XDG_DATA_HOME"/bun/_bun
 
+[ -f "$XDG_CONFIG_HOME"/fzf/fzf.zsh ] && source "$XDG_CONFIG_HOME"/fzf/fzf.zsh
 
+_fix_cursor() {
+   echo -ne '\e[5 q'
+}
+
+precmd_functions+=(_fix_cursor)
+
+eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+
