@@ -5,6 +5,9 @@
 [includeIf "gitdir:~/projects/work/**"]
     path = config.work
 
+[includeIf "gitdir:~/projects/ottonova/**"]
+    path = config.work
+
 [core]
     excludesfile = ~/.config/git/gitignore
     autocrlf = false
