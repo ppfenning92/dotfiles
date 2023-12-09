@@ -52,9 +52,9 @@ source $ZSH/oh-my-zsh.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
+source "$XDG_CONFIG_HOME/path.sh"
 source "$XDG_CONFIG_HOME/alias.sh"
 source "$XDG_CONFIG_HOME/rust.alias.sh"
-source "$XDG_CONFIG_HOME/path.sh"
 
 
 eval "$(op completion zsh)"; compdef _op op
