@@ -1,16 +1,16 @@
 [user]
     email = patrick.pfenning.92@gmail.com
-    name = Patrick Pfenning 2
+    name = Patrick Pfenning 
 
-[includeIf "gitdir:~/projects/work/**"]
-    path = config.work
+[includeIf "gitdir:~/projects/work/"]
+    path = ~/.config/git/config.work
 
 [includeIf "gitdir:~/projects/ottonova/**"]
-    path = config.work
+    path = ~/.config/git/config.work
 
 [core]
     excludesfile = ~/.config/git/gitignore
     autocrlf = false
 
 [init]
-        defaultBranch = main
+    defaultBranch = main

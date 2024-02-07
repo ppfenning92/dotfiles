@@ -1,13 +1,12 @@
 [user]
-email = patrick.pfenning@ottonova.de
-name = Patrick Pfenning
-signingkey = B2672BA7CE17AC1B
+  email = patrick.pfenning@memberspot.de
+  name = Patrick Pfenning
 
 [commit]
-gpgsign = true
+  gpgsign = false
 
 [tag]
-gpgsign = true
+  gpgsign = false 
 
 [pull]
-ff = only
+  ff = only
