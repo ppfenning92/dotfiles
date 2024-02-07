@@ -1,4 +1,4 @@
-source "$XDG_CONFIG_HOME/zsh/.zshenv"
+ source "$XDG_CONFIG_HOME/zsh/.zshenv"
 
 source "$XDG_CONFIG_HOME/path.sh"
 source "$XDG_CONFIG_HOME/alias.sh"
