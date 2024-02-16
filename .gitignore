@@ -4,4 +4,6 @@
 .config/zsh/.zshrc.pre-oh-my-zsh
 .config/zsh/.zcompdump*
 .config/tmux/plugins
+.local/bin/*
 !.config/tmux/plugins/tpm
+

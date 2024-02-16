@@ -7,3 +7,6 @@
 [submodule ".config/bat/themes"]
 	path = .config/bat/themes
 	url = git@github.com:catppuccin/bat.git
+[submodule ".config/btop"]
+	path = .config/btop
+	url = git@github.com:catppuccin/btop.git
