@@ -16,6 +16,7 @@ if [ -x "$(command -v bat)" ]; then
     alias cat="bat --paging=never"
     alias less="bat --paging=always"
     export GIT_PAGER="bat --plain"
+    export PAGER="bat --paging=always"
 fi
 
 if [ -x "$(command -v dust)" ]; then

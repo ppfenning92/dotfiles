@@ -70,6 +70,6 @@ _fix_cursor() {
 
 precmd_functions+=(_fix_cursor)
 
-eval "$(zoxide init zsh)"
+eval "$(zoxide init --cmd cd zsh)"
 eval "$(starship init zsh)"
 
