@@ -46,6 +46,7 @@ plugins=(
     zsh-syntax-highlighting
     zsh-completions
     zsh-history-substring-search
+    tmux
 )
 
 source $ZSH/oh-my-zsh.sh
