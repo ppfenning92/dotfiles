@@ -12,11 +12,13 @@ else
   alias ll="ls -lAF"
 fi
 
+alias show="cat"
 if [ -x "$(command -v bat)" ]; then
     alias cat="bat --paging=never"
     alias less="bat --paging=always"
     export GIT_PAGER="bat --plain"
     export PAGER="bat --paging=always"
+    alias show="bat --plain"
 fi
 
 if [ -x "$(command -v dust)" ]; then
