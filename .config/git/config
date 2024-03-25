@@ -1,8 +1,9 @@
+# vim: set ft=toml syntax=toml:  
 [user]
     email = patrick.pfenning.92@gmail.com
     name = Patrick Pfenning 
 
-[includeIf "gitdir:~/projects/work/**"]
+[includeIf "gitdir:~/code/work/"]
     path = ~/.config/git/config.work
 
 
