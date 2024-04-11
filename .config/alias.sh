@@ -23,3 +23,5 @@ objectid ()
   local random16Hex="$(head -c 1000 /dev/urandom | tr -dc 'a-f0-9' | head -c16)"
   echo "$dateHex$random16Hex"
 }
+
+alias up="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && sudo apt autoclean"
