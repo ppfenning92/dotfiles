@@ -32,6 +32,8 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
+export KUBECONFIG="$HOME/.kube/config/rke2.yaml"
+
 export AZURE_CONFIG_DIR="$XDG_DATA_HOME"/azure
 
 export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials

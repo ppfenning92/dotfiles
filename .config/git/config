@@ -13,3 +13,6 @@
 
 [init]
     defaultBranch = main
+
+[advice]
+    forceDeleteBranch = false

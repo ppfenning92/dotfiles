@@ -2,10 +2,11 @@ alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 
 if [ -x "$(command -v nvim)" ]; then 
     alias vim="nvim"
+    alias v="nvim"
     export GIT_EDITOR="nvim"
 fi
 
-alias s="source ~/.config/zsh/.zshrc"
+alias s=". ~/.config/zsh/.zshrc && . ~/.config/zsh/.zshenv"
 
 alias json="jq | cat -l json"
 
@@ -24,4 +25,4 @@ objectid ()
   echo "$dateHex$random16Hex"
 }
 
-alias up="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && sudo apt autoclean"
+alias update="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade && sudo apt autoremove -y && sudo apt autoclean"

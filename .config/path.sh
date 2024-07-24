@@ -23,6 +23,9 @@ if [ -f "/home/p/.local/share/cargo/env" ] ; then
   source "/home/p/.local/share/cargo/env"
 fi
 
+if [ -f "/home/p/.local/share/npm/bin" ] ; then
+  export PATH=$PATH:/home/p/.local/share/npm/lib/bin
+fi
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

@@ -42,11 +42,17 @@ compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 
 plugins=(
     git
+    gh
     zsh-autosuggestions
     zsh-syntax-highlighting
     zsh-completions
     zsh-history-substring-search
     tmux
+    helm
+    kubectl
+    ansible
+    docker
+    nvm
 )
 
 source $ZSH/oh-my-zsh.sh
