@@ -8,30 +8,51 @@ $kubernetes\
 ${custom.sep}\
 $gcloud\
 ${custom.sep}\
-  $bun$golang$helm$nodejs$python$rust$gleam\
-${custom.sep}\
+(${custom.firebase} [|](dimmed) )\
+([ ](subtext0)$bun$golang$helm$nodejs$python$rust$gleam [|](dimmed) )\
+${custom.git_provider}\
 $git_branch\
 $git_status\
-$git_metrics
+$git_metrics\
+$fill \
+($status [|](dimmed) )($cmd_duration [|](dimmed) )$time
 $character
 """
-right_format = "$status $cmd_duration $time"
+# right_format = "$status $cmd_duration $time"
 add_newline = true
 
 [custom.sep]
-command = 'echo .'
-format = '  '
+format = '[ | ]($style)'
 when = true
+style = "dimmed"
 
 [git_branch]
-format = "[$symbol$branch(:$remote_branch)]($style) "
+format = "[$branch(:$remote_branch)]($style) "
+symbol = "󰊢 "
+style = "peach" 
+
+[custom.git_provider]
+command = """
+if git remote -v | grep -q github; then
+  echo " "
+elif git remote -v | grep -q gitlab; then
+  echo " "
+else
+  echo "󰊢 "
+fi
+"""
+format = '[$output]($style) '
+when = true
+style = "peach"
+require_repo = true
+disabled = false
 
 [git_status]
 format = '([$all_status$ahead_behind]($style)) '
+style = "peach"
 
 [git_metrics]
 disabled = false
-
 
 [bun]
 format = "[$symbol]($style)"
@@ -57,6 +78,7 @@ format = '[$symbol]($style)'
 
 [status]
 disabled = false
+format = '[$symbol$status]($style)'
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
@@ -93,36 +115,45 @@ error_symbol = "[✗](bold red) "
 
 [cmd_duration]
 min_time = 225
-format = "$duration "
+format = "$duration"
 
 [directory]
 truncation_length = 3
 truncate_to_repo = true
-format = "󱏒 [$path]($style)[$read_only]($read_only_style)"
-style = "bold cyan"
+format = "[󱏒 $path]($style)[$read_only]($read_only_style)"
+style = "lavender"
 disabled = false
 home_symbol = "󰜥"
 
 [gcloud]
-format = "[$symbol$project(@$domain)]($style)"
+format = "[$symbol($domain) [$project](blue underline bold italic)]($style)"
+style = "sky"
 disabled = false
-symbol = " "
+symbol = "󱇶 "
 
 [gcloud.project_aliases]
 memberhub-staging = 'QA'
 coursehub-e5d21 = 'DEV'
 memberhub-34cbd = ' PROD'
 
+[custom.firebase]
+format = "[$symbol([$output](bold underline red italic))]($style)"
+command = 'echo -n $(jq -r ".activeProjects[\"$(pwd)\"]" ~/.config/configstore/firebase-tools.json)'
+symbol = "󰥧 "
+style = "maroon"
+detect_files = ['firebase.json']
+ignore_timeout = true
 
 [kubernetes]
 format = "[$symbol$context]($style)"
 disabled = false
 symbol = "󱃾 "
+style = "teal"
 [sudo]
 disabled = false
 
 [time]
 disabled = false
-format = "[$time]($style) "
+format = "[$time]($style)"
 
 

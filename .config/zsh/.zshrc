@@ -40,6 +40,7 @@ HIST_STAMPS="yyyy-mm-dd"
 zstyle ':omz:plugins:nvm' lazy yes
 zstyle ':omz:plugins:nvm' autoload yes
 
+
 plugins=(
     git
     gh
