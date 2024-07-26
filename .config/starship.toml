@@ -19,7 +19,12 @@ $fill \
 $character
 """
 # right_format = "$status $cmd_duration $time"
-add_newline = true
+# add_newline = true
+
+[profiles]
+short = """
+$character $status($status [|](dimmed) )($cmd_duration [|](dimmed) )$time
+"""
 
 [custom.sep]
 format = '[ | ]($style)'
@@ -78,7 +83,7 @@ format = '[$symbol]($style)'
 
 [status]
 disabled = false
-format = '[$symbol$status]($style)'
+format = '[$status]($style)'
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"

@@ -31,7 +31,7 @@ zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 COMPLETION_WAITING_DOTS="true"
 
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
-
+ 
 # see 'man strftime' for details.
 HIST_STAMPS="yyyy-mm-dd"
 
