@@ -36,9 +36,9 @@ COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="yyyy-mm-dd"
 
 # ZSH_CUSTOM=/path/to/new-custom-folder
-autoload -Uz compinit
 
-compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+zstyle ':omz:plugins:nvm' lazy yes
+zstyle ':omz:plugins:nvm' autoload yes
 
 plugins=(
     git
@@ -53,6 +53,7 @@ plugins=(
     ansible
     docker
     nvm
+    gcloud
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -78,5 +79,5 @@ _fix_cursor() {
 precmd_functions+=(_fix_cursor)
 
 eval "$(zoxide init --cmd cd zsh)"
-eval "$(starship init zsh)"
 
+eval "$(starship init zsh)"

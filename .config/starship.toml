@@ -1,127 +1,62 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
 palette = "catppuccin_mocha"
+format = """
+$directory\
+${custom.sep}\
+$kubernetes\
+${custom.sep}\
+$gcloud\
+${custom.sep}\
+  $bun$golang$helm$nodejs$python$rust$gleam\
+${custom.sep}\
+$git_branch\
+$git_status\
+$git_metrics
+$character
+"""
+right_format = "$status $cmd_duration $time"
+add_newline = true
+
+[custom.sep]
+command = 'echo .'
+format = '  '
+when = true
+
+[git_branch]
+format = "[$symbol$branch(:$remote_branch)]($style) "
+
+[git_status]
+format = '([$all_status$ahead_behind]($style)) '
+
+[git_metrics]
+disabled = false
+
+
 [bun]
-format = "via [$symbol]($style)"
-
-[buf]
-format = "via [$symbol]($style)"
-
-[cmake]
-format = "via [$symbol]($style)"
-
-[cobol]
-format = "via [$symbol]($style)"
-
-[crystal]
-format = "via [$symbol]($style)"
-
-[daml]
-format = "via [$symbol]($style)"
-
-[dart]
-format = "via [$symbol]($style)"
-
-[deno]
-format = "via [$symbol]($style)"
-
-[dotnet]
-format = "[$symbol(🎯 $tfm )]($style)"
-
-[elixir]
-format = 'via [$symbol]($style)'
-
-[elm]
-format = 'via [$symbol]($style)'
-
-[erlang]
-format = 'via [$symbol]($style)'
-
-[fennel]
-format = 'via [$symbol]($style)'
+format = "[$symbol]($style)"
 
 [golang]
-format = 'via [$symbol]($style)'
-
-[gradle]
-format = 'via [$symbol]($style)'
-
-[haxe]
-format = 'via [$symbol]($style)'
+format = '[$symbol]($style)'
+symbol = " "
 
 [helm]
-format = 'via [$symbol]($style)'
-
-[java]
-format = 'via [$symbol]($style)'
-
-[julia]
-format = 'via [$symbol]($style)'
-
-[kotlin]
-format = 'via [$symbol]($style)'
-
-[lua]
-format = 'via [$symbol]($style)'
-
-[meson]
-format = 'via [$symbol]($style)'
-
-[nim]
-format = 'via [$symbol]($style)'
-
+format = '[$symbol]($style)'
+symbol = "󰻈 "
 [nodejs]
-format = 'via [$symbol]($style)'
-
-[ocaml]
-format = 'via [$symbol(\($switch_indicator$switch_name\) )]($style)'
-
-[opa]
-format = 'via [$symbol]($style)'
-
-[perl]
-format = 'via [$symbol]($style)'
-
-[php]
-format = 'via [$symbol]($style)'
-
-[pulumi]
-format = 'via [$symbol$stack]($style)'
-
-[purescript]
-format = 'via [$symbol]($style)'
-
+format = '[$symbol]($style)'
+symbol = "󰎙 "
 [python]
-format = 'via [$symbol]($style)'
-
-[raku]
-format = 'via [$symbol]($style)'
-
-[red]
-format = 'via [$symbol]($style)'
-
-[rlang]
-format = 'via [$symbol]($style)'
-
-[ruby]
-format = 'via [$symbol]($style)'
+format = '[$symbol]($style)'
 
 [rust]
-format = 'via [$symbol]($style)'
+format = '[$symbol]($style)'
 
-[solidity]
-format = 'via [$symbol]($style)'
+[gleam]
+format = '[$symbol]($style)'
 
-[swift]
-format = 'via [$symbol]($style)'
-
-[vagrant]
-format = 'via [$symbol]($style)'
-
-[vlang]
-format = 'via [$symbol]($style)'
-
-[zig]
-format = 'via [$symbol]($style)'
-
+[status]
+disabled = false
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
@@ -150,3 +85,44 @@ surface0 = "#313244"
 base = "#1e1e2e"
 mantle = "#181825"
 crust = "#11111b"
+
+
+[character]
+success_symbol = "[➜](bold green) "
+error_symbol = "[✗](bold red) "
+
+[cmd_duration]
+min_time = 225
+format = "$duration "
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+format = "󱏒 [$path]($style)[$read_only]($read_only_style)"
+style = "bold cyan"
+disabled = false
+home_symbol = "󰜥"
+
+[gcloud]
+format = "[$symbol$project(@$domain)]($style)"
+disabled = false
+symbol = " "
+
+[gcloud.project_aliases]
+memberhub-staging = 'QA'
+coursehub-e5d21 = 'DEV'
+memberhub-34cbd = ' PROD'
+
+
+[kubernetes]
+format = "[$symbol$context]($style)"
+disabled = false
+symbol = "󱃾 "
+[sudo]
+disabled = false
+
+[time]
+disabled = false
+format = "[$time]($style) "
+
+
