@@ -1,5 +1,5 @@
-if [ -x "$(command -v exa)" ]; then
-  alias ls="exa"
+if [ -x "$(command -v eza)" ]; then
+  alias ls="eza"
   alias la="ls -laFhHumG"
   alias ll="ls -laF"
   alias tree="ls -laHT -I '.git'"
@@ -9,7 +9,7 @@ if [ -x "$(command -v exa)" ]; then
   alias tree4="ls -laHTL 4 -I '.git'"
 
 else
-  echo "exa is not installed"
+  echo "eza is not installed"
   alias ll="ls -lAF"
 fi
 
