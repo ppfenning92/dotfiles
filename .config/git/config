@@ -16,3 +16,5 @@
 
 [advice]
     forceDeleteBranch = false
+[rerere]
+	enabled = true

@@ -67,6 +67,9 @@ source "$XDG_CONFIG_HOME/rust.alias.sh"
 
 
 eval "$(op completion zsh)"; compdef _op op
+if command -v flux 1>/dev/null; then
+  . <(flux completion zsh)
+fi
 
 # bun completions
 [ -s "$XDG_DATA_HOME"/bun/_bun ] && source "$XDG_DATA_HOME"/bun/_bun
