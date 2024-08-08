@@ -9,14 +9,14 @@ ${custom.sep}\
 $gcloud\
 ${custom.sep}\
 (${custom.firebase} [|](dimmed) )\
-([ ](subtext0)$bun$golang$helm$nodejs$python$rust$gleam [|](dimmed) )\
+([ ](subtext0)$bun$golang$helm$nodejs$python$rust$gleam[|](dimmed) )\
 ${custom.git_provider}\
 $git_branch\
 $git_status\
 $git_metrics\
 $fill \
 ($status [|](dimmed) )($cmd_duration [|](dimmed) )$time
-$character
+$nix_shell$character
 """
 # right_format = "$status $cmd_duration $time"
 # add_newline = true
@@ -113,6 +113,15 @@ base = "#1e1e2e"
 mantle = "#181825"
 crust = "#11111b"
 
+[nix_shell]
+disabled = false
+symbol = ""
+impure_msg = '[ ](bold sapphire)'
+pure_msg = '[ ](bold maroon)'
+unknown_msg = '[](bold yellow)'
+format = '[$state( \($name\))]($style) '
+style = "sky"
+heuristic = true
 
 [character]
 success_symbol = "[➜](bold green) "
@@ -131,8 +140,8 @@ disabled = false
 home_symbol = "󰜥"
 
 [gcloud]
-format = "[$symbol($domain) [$project](blue underline bold italic)]($style)"
-style = "sky"
+format = "[$symbol($domain) [$project](flamingo underline bold italic)]($style)"
+style = "rosewater"
 disabled = false
 symbol = "󱇶 "
 
