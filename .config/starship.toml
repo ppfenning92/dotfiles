@@ -1,0 +1,173 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+palette = "catppuccin_mocha"
+format = """
+$directory\
+${custom.sep}\
+$kubernetes\
+${custom.sep}\
+$gcloud\
+${custom.sep}\
+(${custom.firebase} [|](dimmed) )\
+([ ](subtext0)$bun$golang$helm$nodejs$python$rust$gleam[|](dimmed) )\
+${custom.git_provider}\
+$git_branch\
+$git_status\
+$git_metrics\
+$fill \
+($status [|](dimmed) )($cmd_duration [|](dimmed) )$time
+$nix_shell$character
+"""
+# right_format = "$status $cmd_duration $time"
+# add_newline = true
+
+[profiles]
+short = """
+$character $status($status [|](dimmed) )($cmd_duration [|](dimmed) )$time
+"""
+
+[custom.sep]
+format = '[ | ]($style)'
+when = true
+style = "dimmed"
+
+[git_branch]
+format = "[$branch(:$remote_branch)]($style) "
+symbol = "󰊢 "
+style = "peach" 
+
+[custom.git_provider]
+command = """
+if git remote -v | grep -q github; then
+  echo " "
+elif git remote -v | grep -q gitlab; then
+  echo " "
+else
+  echo "󰊢 "
+fi
+"""
+format = '[$output]($style) '
+when = true
+style = "peach"
+require_repo = true
+disabled = false
+
+[git_status]
+format = '([$all_status$ahead_behind]($style)) '
+style = "peach"
+
+[git_metrics]
+disabled = false
+
+[bun]
+format = "[$symbol]($style)"
+
+[golang]
+format = '[$symbol]($style)'
+symbol = " "
+
+[helm]
+format = '[$symbol]($style)'
+symbol = "󰻈 "
+[nodejs]
+format = '[$symbol]($style)'
+symbol = "󰎙 "
+[python]
+format = '[$symbol]($style)'
+
+[rust]
+format = '[$symbol]($style)'
+
+[gleam]
+format = '[$symbol]($style)'
+
+[status]
+disabled = false
+format = '[$status]($style)'
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
+[nix_shell]
+disabled = false
+symbol = ""
+impure_msg = '[ ](bold sapphire)'
+pure_msg = '[ ](bold maroon)'
+unknown_msg = '[](bold yellow)'
+format = '[$state( \($name\))]($style) '
+style = "sky"
+heuristic = true
+
+[character]
+success_symbol = "[➜](bold green) "
+error_symbol = "[✗](bold red) "
+
+[cmd_duration]
+min_time = 225
+format = "$duration"
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+format = "[󱏒 $path]($style)[$read_only]($read_only_style)"
+style = "lavender"
+disabled = false
+home_symbol = "󰜥"
+
+[gcloud]
+format = "[$symbol($domain) [$project](flamingo underline bold italic)]($style)"
+style = "rosewater"
+disabled = false
+symbol = "󱇶 "
+
+[gcloud.project_aliases]
+memberhub-staging = 'QA'
+coursehub-e5d21 = 'DEV'
+memberhub-34cbd = ' PROD'
+
+[custom.firebase]
+format = "[$symbol([$output](bold underline red italic))]($style)"
+command = 'echo -n $(jq -r ".activeProjects[\"$(pwd)\"]" ~/.config/configstore/firebase-tools.json)'
+symbol = "󰥧 "
+style = "maroon"
+detect_files = ['firebase.json']
+ignore_timeout = true
+
+[kubernetes]
+format = "[$symbol$context]($style)"
+disabled = false
+symbol = "󱃾 "
+style = "teal"
+[sudo]
+disabled = false
+
+[time]
+disabled = false
+format = "[$time]($style)"
+
+

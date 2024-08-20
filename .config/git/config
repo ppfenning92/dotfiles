@@ -1,0 +1,25 @@
+# vim: set ft=toml syntax=toml:  
+[user]
+    email = patrick.pfenning.92@gmail.com
+    name = Patrick Pfenning 
+
+[includeIf "gitdir:~/code/work/"]
+    path = ~/.config/git/config.work
+
+
+[core]
+    excludesfile = ~/.config/git/gitignore
+    autocrlf = false
+
+[init]
+    defaultBranch = main
+
+[advice]
+    forceDeleteBranch = false
+[rerere]
+	enabled = true
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
