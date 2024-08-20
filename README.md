@@ -1,12 +1,8 @@
 # Dotfiles
 
-
-## Repo setup
 ```shell
-git config --local include.path ../dotfiles-gitconfig 
-```
+#!/usr/bin/env sh
 
-### install ansible
-```shell
-./.local/bin/ansible-playbook setup/init.yml --ask-become-pass
+PROJECT_PATH=$(git rev-parse --show-toplevel)
+bash -c $PROJECT_PATH/.githooks/pre-commit
 ```
