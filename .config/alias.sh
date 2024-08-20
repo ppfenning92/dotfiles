@@ -26,6 +26,7 @@ objectid ()
 }
 
 alias update="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade && sudo apt autoremove -y && sudo apt autoclean"
+
 git-new-init ()
 {
   b="$(git branch --no-color | cut -c3-)";
