@@ -173,9 +173,9 @@ format = "[$time]($style)"
 
 [hostname]
 ssh_only = true
-ssh_symbol = "  "
+ssh_symbol = "  "
 trim_at = ''
-format = '[$hostname $ssh_symbol]($style)'
+format = '[$hostname$ssh_symbol]($style)'
 style = "bold red"
 
 [username]
