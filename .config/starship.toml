@@ -181,7 +181,7 @@ style = "bold red"
 [username]
 style_user = 'pink bold'
 style_root = 'red bold'
-format = '[$user]($style)'
+format = '[$user]($style) '
 disabled = false
 show_always = false
 detect_env_vars = ['SSH_TTY', 'SSH_CLIENT']
