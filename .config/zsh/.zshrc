@@ -65,8 +65,10 @@ source "$XDG_CONFIG_HOME/path.sh"
 source "$XDG_CONFIG_HOME/alias.sh"
 source "$XDG_CONFIG_HOME/rust.alias.sh"
 
+if command -v op 1>/dev/null; then
+  eval "$(op completion zsh)"; compdef _op op
+fi
 
-eval "$(op completion zsh)"; compdef _op op
 if command -v flux 1>/dev/null; then
   . <(flux completion zsh)
 fi
@@ -85,3 +87,4 @@ precmd_functions+=(_fix_cursor)
 eval "$(zoxide init --cmd cd zsh)"
 
 eval "$(starship init zsh)"
+

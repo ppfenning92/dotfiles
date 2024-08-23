@@ -39,10 +39,15 @@ export AZURE_CONFIG_DIR="$XDG_DATA_HOME"/azure
 export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
 
-export ZSH_TMUX_AUTOSTART=true
-export ZSH_TMUX_AUTOCONNECT=false
-export ZSH_TMUX_AUTOQUIT=false
-
+if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+  export ZSH_TMUX_AUTOSTART=false
+  export ZSH_TMUX_AUTOCONNECT=false
+  export ZSH_TMUX_AUTOQUIT=false
+else
+  export ZSH_TMUX_AUTOSTART=true
+  export ZSH_TMUX_AUTOCONNECT=false
+  export ZSH_TMUX_AUTOQUIT=false
+fi
 export WORKON_HOME="$XDG_DATA_HOME/virtualenvs"
 export KERAS_HOME="$XDG_STATE_HOME/keras"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
