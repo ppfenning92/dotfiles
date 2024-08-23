@@ -173,15 +173,15 @@ format = "[$time]($style)"
 
 [hostname]
 ssh_only = true
-ssh_symbol = "  "
+ssh_symbol = " "
 trim_at = ''
-format = '[$hostname$ssh_symbol]($style)'
+format = '[$ssh_symbol$hostname]($style)'
 style = "bold red"
 
 [username]
 style_user = 'pink bold'
 style_root = 'red bold'
-format = '[$user]($style)@'
+format = '[$user]($style)'
 disabled = false
 show_always = false
 detect_env_vars = ['SSH_TTY', 'SSH_CLIENT']
