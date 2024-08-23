@@ -2,6 +2,7 @@
 
 palette = "catppuccin_mocha"
 format = """
+(${hostname} [|](dimmed) )\
 $directory\
 ${custom.sep}\
 $kubernetes\
@@ -170,4 +171,9 @@ disabled = false
 disabled = false
 format = "[$time]($style)"
 
-
+[hostname]
+ssh_only = true
+ssh_symbol = " "
+trim_at = ''
+format = '[$ssh_symbol$hostname]($style) '
+style = "bold red"
