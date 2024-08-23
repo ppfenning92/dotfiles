@@ -2,7 +2,7 @@
 
 palette = "catppuccin_mocha"
 format = """
-(${hostname} [|](dimmed) )\
+(${username}${hostname} [|](dimmed) )\
 $directory\
 ${custom.sep}\
 $kubernetes\
@@ -173,7 +173,15 @@ format = "[$time]($style)"
 
 [hostname]
 ssh_only = true
-ssh_symbol = " "
+ssh_symbol = "  "
 trim_at = ''
-format = '[$ssh_symbol$hostname]($style) '
+format = '[$ssh_symbol$hostname]($style)'
 style = "bold red"
+
+[username]
+style_user = 'pink bold'
+style_root = 'red bold'
+format = '[$user]($style)@'
+disabled = false
+show_always = false
+detect_env_vars = ['SSH_TTY', 'SSH_CLIENT']
