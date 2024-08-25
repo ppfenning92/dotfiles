@@ -29,7 +29,8 @@ alias update="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade &&
 
 git-new-init ()
 {
-  b="$(git branch --no-color | cut -c3-)";
+  if [ -z ${1+x} ]; then echo "No branch provided"; return; fi
+  b=$1;
   h="$(git rev-parse $b)";
   echo "Current branch: $b $h";
   c="$(git rev-parse $b~0)";
