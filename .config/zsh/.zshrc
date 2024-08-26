@@ -43,11 +43,13 @@ zstyle ':omz:plugins:nvm' autoload yes
 
 plugins=(
     git
-    gh
     zsh-autosuggestions
     zsh-syntax-highlighting
     zsh-completions
-    zsh-history-substring-search
+)
+
+dev_plugins=(
+    gh
     tmux
     helm
     kubectl
@@ -57,7 +59,12 @@ plugins=(
     gcloud
 )
 
+if [[ -n ${SYSTEM_TYPE} ]]; then
+  plugins+=dev_plugins
+fi
+
 source $ZSH/oh-my-zsh.sh
+
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
