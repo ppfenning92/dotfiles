@@ -41,3 +41,16 @@ git-new-init ()
   git branch -d new-start; 
   git gc;
 }
+
+office-lights() {
+  if [[ $1 == 'up' ]]; then
+    curl "https://ha.local.j-p.cloud/api/webhook/p_workstation-up";
+    return;
+  elif [[ $1 == 'down' ]]; then
+     curl "https://ha.local.j-p.cloud/api/webhook/p_workstation-down";
+     return;
+  else
+    echo "unknown command '${1-none}'"
+  fi
+
+}
