@@ -37,10 +37,6 @@ HIST_STAMPS="yyyy-mm-dd"
 
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-zstyle ':omz:plugins:nvm' lazy yes
-zstyle ':omz:plugins:nvm' autoload yes
-
-
 plugins=(
     git
     zsh-autosuggestions
@@ -61,6 +57,8 @@ if [[ -z ${SYSTEM_TYPE} ]]; then
       nvm
       gcloud
   )
+  zstyle ':omz:plugins:nvm' lazy yes
+  zstyle ':omz:plugins:nvm' autoload yes
 fi
 
 source $ZSH/oh-my-zsh.sh
@@ -77,7 +75,12 @@ if command -v op 1>/dev/null; then
 fi
 
 if command -v flux 1>/dev/null; then
+  flux() {
+
+  unfunction "$0"
   . <(flux completion zsh)
+  $0 "$@"
+  }
 fi
 
 # bun completions
