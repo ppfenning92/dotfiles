@@ -48,19 +48,19 @@ plugins=(
     zsh-completions
 )
 
-dev_plugins=(
-    gh
-    tmux
-    helm
-    kubectl
-    ansible
-    docker
-    nvm
-    gcloud
-)
 
-if [[ -n ${SYSTEM_TYPE} ]]; then
-  plugins+=dev_plugins
+if [[ -z ${SYSTEM_TYPE} ]]; then
+  # dev plugins
+  plugins+=(
+      gh
+      tmux
+      helm
+      kubectl
+      ansible
+      docker
+      nvm
+      gcloud
+  )
 fi
 
 source $ZSH/oh-my-zsh.sh
