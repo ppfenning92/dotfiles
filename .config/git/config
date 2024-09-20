@@ -2,6 +2,7 @@
 [user]
     email = patrick.pfenning.92@gmail.com
     name = Patrick Pfenning 
+    signingkey = ~/.ssh/id_rsa
 
 [includeIf "gitdir:~/code/work/"]
     path = ~/.config/git/config.work
@@ -23,3 +24,13 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+
+[gpg]
+  format = ssh
+
+[commit]
+  gpgsign = true
+
+[tag]
+  gpgsign = true 
+

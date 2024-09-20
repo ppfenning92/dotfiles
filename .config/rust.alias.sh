@@ -15,6 +15,7 @@ fi
 
 alias show="cat"
 if [ -x "$(command -v bat)" ]; then
+  # todo case batcat
     alias cat="bat --paging=never"
     alias less="bat --paging=always"
     export GIT_PAGER="bat --plain"
