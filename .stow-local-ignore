@@ -6,3 +6,4 @@ docs
 dotfiles-gitconfig
 .githooks
 .github
+.local/state
