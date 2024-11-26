@@ -27,6 +27,10 @@ if [ -f "$HOME/.local/share/npm/bin" ] ; then
   export PATH="$PATH:$HOME/.local/share/npm/lib/bin"
 fi
 
+if [ -d "$KREW_ROOT" ]; then
+  export PATH="${KREW_ROOT}/bin:$PATH"
+fi
+
 if [ -s "$BUN_INSTALL" ] ; then
   export PATH="$BUN_INSTALL/bin:$PATH"
 fi

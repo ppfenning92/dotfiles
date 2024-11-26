@@ -33,7 +33,7 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
 export KUBECONFIG="$HOME/.kube/config/rke2.yaml"
-
+export KREW_ROOT="$XDG_DATA_HOME/krew"
 export AZURE_CONFIG_DIR="$XDG_DATA_HOME"/azure
 
 export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
@@ -53,4 +53,9 @@ export KERAS_HOME="$XDG_STATE_HOME/keras"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
 
+export TS_NODE_HISTORY="$XDG_STATE_HOME"/ts_node_repl_history
 export BUN_INSTALL="$XDG_DATA_HOME"/bun
+export DOTNET_CLI_HOME="$XDG_DATA_HOME"/dotnet
+export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
+export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java

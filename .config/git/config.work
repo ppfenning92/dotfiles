@@ -2,7 +2,7 @@
 
 [user]
   email = patrick.pfenning@memberspot.de
-  name = Patrick Pfenning
+  name = patrickpfenning
   signingkey = ~/.ssh/id_rsa.memberspot
 [gpg]
   format = ssh

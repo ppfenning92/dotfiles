@@ -1,4 +1,4 @@
-alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 
 if [ -x "$(command -v nvim)" ]; then 
     alias vim="nvim"
@@ -44,10 +44,10 @@ git-new-init ()
 
 office-lights() {
   if [[ $1 == 'up' ]]; then
-    curl "https://ha.local.j-p.cloud/api/webhook/p_workstation-up";
+    curl "https://hass.local.j-p.cloud/api/webhook/p_workstation-up";
     return;
   elif [[ $1 == 'down' ]]; then
-     curl "https://ha.local.j-p.cloud/api/webhook/p_workstation-down";
+     curl "https://hass.local.j-p.cloud/api/webhook/p_workstation-down";
      return;
   else
     echo "unknown command '${1-none}'"
