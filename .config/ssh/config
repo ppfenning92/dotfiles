@@ -1,0 +1,8 @@
+Host git.on.ag
+  User git
+  IdentityFile ~/.ssh/on_ed25519
+
+Host gitlab.on.ag
+  User git
+  IdentityFile ~/.ssh/on_ed25519
+

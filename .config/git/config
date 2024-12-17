@@ -1,29 +1,30 @@
-# vim: set ft=toml syntax=toml:  
+# vim: set ft=toml syntax=toml:
 [user]
-    email = patrick.pfenning.92@gmail.com
-    name = Patrick Pfenning 
-    signingkey = ~/.ssh/id_rsa
+  email = patrick.pfenning.92@gmail.com
+  name = Patrick Pfenning
+  signingkey = ~/.ssh/id_rsa
 
 [includeIf "gitdir:~/code/work/"]
-    path = ~/.config/git/config.work
-
+  path = ~/.config/git/config.work
 
 [core]
-    excludesfile = ~/.config/git/gitignore
-    autocrlf = false
+  excludesfile = ~/.config/git/gitignore
+  autocrlf = false
 
 [init]
-    defaultBranch = main
+  defaultBranch = main
 
 [advice]
-    forceDeleteBranch = false
+  forceDeleteBranch = false
+
 [rerere]
 	enabled = true
-[filter "lfs"]
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
+
+# [filter "lfs"]
+# 	required = true
+# 	clean = git-lfs clean -- %f
+# 	smudge = git-lfs smudge -- %f
+# 	process = git-lfs filter-process
 
 [gpg]
   format = ssh

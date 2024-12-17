@@ -1,7 +1,6 @@
 source $HOME/.config/global.env
 
 source $XDG_CONFIG_HOME/private.env
-source $XDG_CONFIG_HOME/work.env
 
 
 export HISTFILE="$XDG_STATE_HOME/zsh/history"
@@ -36,8 +35,8 @@ export KUBECONFIG="$HOME/.kube/config/rke2.yaml"
 export KREW_ROOT="$XDG_DATA_HOME/krew"
 export AZURE_CONFIG_DIR="$XDG_DATA_HOME"/azure
 
-export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
-export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
+# export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
+# export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
 
 if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
   export ZSH_TMUX_AUTOSTART=false

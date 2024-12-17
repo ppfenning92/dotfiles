@@ -45,6 +45,8 @@ plugins=(
 )
 
 
+source "$XDG_CONFIG_HOME/path.sh"
+
 if [[ -z ${SYSTEM_TYPE} ]]; then
   # dev plugins
   plugins+=(
@@ -55,7 +57,9 @@ if [[ -z ${SYSTEM_TYPE} ]]; then
       ansible
       docker
       nvm
-      gcloud
+      # gcloud
+      terraform
+      aws
   )
   zstyle ':omz:plugins:nvm' lazy yes
   zstyle ':omz:plugins:nvm' autoload yes
@@ -66,10 +70,10 @@ source $ZSH/oh-my-zsh.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
-source "$XDG_CONFIG_HOME/path.sh"
 source "$XDG_CONFIG_HOME/alias.sh"
 source "$XDG_CONFIG_HOME/rust.alias.sh"
 
+source $XDG_CONFIG_HOME/work.env
 if command -v op 1>/dev/null; then
   eval "$(op completion zsh)"; compdef _op op
 fi

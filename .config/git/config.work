@@ -1,11 +1,14 @@
 # vim: set ft=toml syntax=toml: 
 
 [user]
-  email = patrick.pfenning@memberspot.de
-  name = patrickpfenning
-  signingkey = ~/.ssh/id_rsa.memberspot
+  email = patrick.pfenning@ottonova.de
+  name = patrick.pfenning
+  signingkey = ~/.ssh/on_ed25519
 [gpg]
   format = ssh
+
+[init]
+  templateDir = ~/.config/git/git-template
 
 [commit]
   gpgsign = true

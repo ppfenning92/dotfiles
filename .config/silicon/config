@@ -1,0 +1,10 @@
+# enable shadoil
+--background '#1f1e2e'
+--shadow-blur-radius 18
+--no-round-corner
+--pad-horiz 48
+--pad-vert 32
+--tab-width 2
+--shadow-offset-y 3
+--shadow-offset-x 2
+--shadow-color '#1f1e2e'

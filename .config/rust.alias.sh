@@ -41,3 +41,8 @@ fi
 if [ -x "$(command -v bandwhich)" ]; then
     alias bandwidth="sudo ~/.cargo/bin/bandwhich"
 fi
+
+if [ -x "$(command -v silicon)" ]; then
+    alias silicon="silicon --theme Coldark-Dark -f 'Geist Mono=32'"
+fi
+

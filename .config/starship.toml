@@ -8,9 +8,10 @@ ${custom.sep}\
 $kubernetes\
 ${custom.sep}\
 $gcloud\
+$aws\
 ${custom.sep}\
 (${custom.firebase} [|](dimmed) )\
-([ ](subtext0)$bun$golang$helm$nodejs$python$rust$gleam[|](dimmed) )\
+([ ](subtext0)$docker_context$bun$golang$helm$nodejs$python$rust$gleam[|](dimmed) )\
 ${custom.git_provider}\
 $git_branch\
 $git_status\
@@ -27,6 +28,10 @@ short = """
 $character $status($status [|](dimmed) )($cmd_duration [|](dimmed) )$time
 """
 
+[docker_context]
+disabled = false
+format = "[$symbol]($style)"
+
 [custom.sep]
 format = '[ | ]($style)'
 when = true
@@ -38,10 +43,11 @@ symbol = "󰊢 "
 style = "peach" 
 
 [custom.git_provider]
+shell = "sh"
 command = """
 if git remote -v | grep -q github; then
   echo " "
-elif git remote -v | grep -q gitlab; then
+elif git remote -v | grep -qE "(gitlab|on.ag); then
   echo " "
 else
   echo "󰊢 "
@@ -52,6 +58,7 @@ when = true
 style = "peach"
 require_repo = true
 disabled = false
+ignore_timeout = true
 
 [git_status]
 format = '([$all_status$ahead_behind]($style)) '
@@ -140,6 +147,24 @@ style = "lavender"
 disabled = false
 home_symbol = "󰜥"
 
+
+[aws]
+format = "[$symbol($profile) [$region](flamingo underline bold italic)]($style)"
+style = "rosewater"
+disabled = false
+# force_display = true
+symbol = "󰸏 "
+
+[aws.region_aliases]
+eu-central-1 = "DE"
+eu-west-1 = "IR"
+eu-west-2 = "UK"
+eu-west-3 = "FR"
+eu-south-1 = "IT"
+eu-south-2 = "ES"
+eu-north-1 = "DK"
+eu-central-2 = "CH"
+
 [gcloud]
 format = "[$symbol($domain) [$project](flamingo underline bold italic)]($style)"
 style = "rosewater"
@@ -147,9 +172,6 @@ disabled = false
 symbol = "󱇶 "
 
 [gcloud.project_aliases]
-memberhub-staging = 'QA'
-coursehub-e5d21 = 'DEV'
-memberhub-34cbd = ' PROD'
 
 [custom.firebase]
 format = "[$symbol([$output](bold underline red italic))]($style)"
@@ -164,6 +186,11 @@ format = "[$symbol$context]($style)"
 disabled = false
 symbol = "󱃾 "
 style = "teal"
+
+[[kubernetes.contexts]]
+context_pattern = "arn:aws:eks:(?P<region>.*?):cluster/(?P<cluster>.*)"
+context_alias = "$cluster"
+
 [sudo]
 disabled = false
 

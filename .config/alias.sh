@@ -3,6 +3,7 @@ alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 if [ -x "$(command -v nvim)" ]; then 
     alias vim="nvim"
     alias v="nvim"
+    alias n="nvim"
     export GIT_EDITOR="nvim"
 fi
 
