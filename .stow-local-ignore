@@ -7,3 +7,4 @@ dotfiles-gitconfig
 .githooks
 .github
 .local/state
+.DS_Store

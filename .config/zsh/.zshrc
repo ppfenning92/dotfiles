@@ -1,41 +1,16 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME=""
+# ZSH_CUSTOM=/path/to/new-custom-folder
 
-
-# CASE_SENSITIVE="true" # case-sensitive completion.
-# HYPHEN_INSENSITIVE="true" # Case-sensitive completion must be off. _ and - will be interchangeable.
-
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
 zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
+# autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit -C
 
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
 
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
 COMPLETION_WAITING_DOTS="true"
 
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
- 
 # see 'man strftime' for details.
 HIST_STAMPS="yyyy-mm-dd"
-
-# ZSH_CUSTOM=/path/to/new-custom-folder
 
 plugins=(
     git
@@ -67,15 +42,17 @@ fi
 
 source $ZSH/oh-my-zsh.sh
 
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
 source "$XDG_CONFIG_HOME/alias.sh"
 source "$XDG_CONFIG_HOME/rust.alias.sh"
 
 source $XDG_CONFIG_HOME/work.env
+
 if command -v op 1>/dev/null; then
   eval "$(op completion zsh)"; compdef _op op
+fi
+
+if command -v glab 1>/dev/null; then 
+  source <(/opt/homebrew/bin/glab completion -s zsh); compdef _glab glab
 fi
 
 if command -v flux 1>/dev/null; then
@@ -97,6 +74,13 @@ _fix_cursor() {
 }
 
 precmd_functions+=(_fix_cursor)
+
+
+setopt complete_aliases
+setopt append_history
+setopt inc_append_history
+setopt hist_ignore_space
+setopt hist_reduce_blanks 
 
 eval "$(zoxide init --cmd cd zsh)"
 

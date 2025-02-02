@@ -14,6 +14,7 @@ ${custom.sep}\
 ([ ](subtext0)$docker_context$bun$golang$helm$nodejs$python$rust$gleam[|](dimmed) )\
 ${custom.git_provider}\
 $git_branch\
+$git_commit\
 $git_status\
 $git_metrics\
 $fill \
@@ -41,6 +42,11 @@ style = "dimmed"
 format = "[$branch(:$remote_branch)]($style) "
 symbol = "󰊢 "
 style = "peach" 
+
+[git_commit]
+only_detached = false
+tag_disabled = false
+commit_hash_length = 8
 
 [custom.git_provider]
 shell = "sh"
