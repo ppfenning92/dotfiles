@@ -1,7 +1,15 @@
+# IDEs
 .op
 .idea
 .vscode
-.env
+
+# dirsh directory config
+.envrc
+
+# project env files
+.env 
 *.env
+
+# docker swarm stack / portainer
 !stack.env
 

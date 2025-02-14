@@ -1,3 +1,5 @@
+# vim: ts=2 sts=2 sw=2 et ft=bash
+
 ZSH_THEME=""
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
@@ -17,6 +19,8 @@ plugins=(
     zsh-autosuggestions
     zsh-syntax-highlighting
     zsh-completions
+    zsh-vi-mode
+    zsh-defer
 )
 
 
@@ -45,7 +49,18 @@ source $ZSH/oh-my-zsh.sh
 source "$XDG_CONFIG_HOME/alias.sh"
 source "$XDG_CONFIG_HOME/rust.alias.sh"
 
-source $XDG_CONFIG_HOME/work.env
+zsh-defer source $(brew --prefix nvm)/nvm.sh
+
+if [[ -f $(brew --prefix autoenv)/activate.sh ]]; then
+  echo "cd? $AUTOENV_PRESERVE_CD"
+  source $(brew --prefix autoenv)/activate.sh
+  # autoload -U add-zsh-hook
+  # setup_autoenv () {
+  #   echo "###### $PWD"
+  #  autoenv_init "$PWD" 
+  # }
+  # add-zsh-hook chpwd setup_autoenv
+fi
 
 if command -v op 1>/dev/null; then
   eval "$(op completion zsh)"; compdef _op op
@@ -72,15 +87,23 @@ fi
 _fix_cursor() {
    echo -ne '\e[5 q'
 }
+_autoload_profile() {
+  if ifconfig -L utun4 >/dev/null 2>&1; then
+    . $XDG_CONFIG_HOME/work.env
+  else
+    . $XDG_CONFIG_HOME/private.env
+  fi
+}
 
-precmd_functions+=(_fix_cursor)
+precmd_functions+=(_fix_cursor _autoload_profile)
 
-
-setopt complete_aliases
+# setopt complete_aliases
 setopt append_history
 setopt inc_append_history
 setopt hist_ignore_space
 setopt hist_reduce_blanks 
+
+source "$ZDOTDIR/dirsh.sh"
 
 eval "$(zoxide init --cmd cd zsh)"
 

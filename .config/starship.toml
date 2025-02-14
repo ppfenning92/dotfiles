@@ -11,14 +11,14 @@ $gcloud\
 $aws\
 ${custom.sep}\
 (${custom.firebase} [|](dimmed) )\
-([ ](subtext0)$docker_context$bun$golang$helm$nodejs$python$rust$gleam[|](dimmed) )\
+([  ](subtext0)$docker_context$bun$golang$helm$nodejs$python$rust$gleam$terraform[|](dimmed) )\
 ${custom.git_provider}\
 $git_branch\
 $git_commit\
 $git_status\
 $git_metrics\
 $fill \
-($status [|](dimmed) )($cmd_duration [|](dimmed) )$time
+($status [|](dimmed) )($cmd_duration [|](dimmed) )$battery${custom.vpn}$time
 $nix_shell$character
 """
 # right_format = "$status $cmd_duration $time"
@@ -89,6 +89,9 @@ symbol = "󰎙 "
 [python]
 format = '[$symbol]($style)'
 
+[terraform]
+symbol = " "
+format = '[$symbol]($style)'
 [rust]
 format = '[$symbol]($style)'
 
@@ -128,7 +131,7 @@ mantle = "#181825"
 crust = "#11111b"
 
 [nix_shell]
-disabled = false
+disabled = true
 symbol = ""
 impure_msg = '[ ](bold sapphire)'
 pure_msg = '[ ](bold maroon)'
@@ -140,6 +143,10 @@ heuristic = true
 [character]
 success_symbol = "[➜](bold green) "
 error_symbol = "[✗](bold red) "
+vimcmd_symbol = "[](bold teal) "
+vimcmd_replace_one_symbol = "[❮](bold purple) "
+vimcmd_replace_symbol = "[❮](bold flamingo) "
+vimcmd_visual_symbol = "[❮](bold maroon) "
 
 [cmd_duration]
 min_time = 225
@@ -218,3 +225,28 @@ format = '[$user]($style) '
 disabled = false
 show_always = false
 detect_env_vars = ['SSH_TTY', 'SSH_CLIENT']
+
+[[battery.display]]
+threshold = 100
+style = 'green'
+
+[[battery.display]]
+threshold = 80
+style = 'teal'
+
+[[battery.display]]
+threshold = 60
+style = 'maroon'
+
+[[battery.display]]
+threshold = 40
+style = 'pink'
+
+[[battery.display]]
+threshold = 20
+style = 'red'
+
+[custom.vpn]
+command = "true"
+when = "ifconfig | grep -q tun4"
+format = "[󱠾 ](rosewater)"

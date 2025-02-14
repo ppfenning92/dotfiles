@@ -2,10 +2,27 @@ alias update="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade &&
 alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 
 if [ -x "$(command -v nvim)" ]; then 
-    alias vim="nvim"
     alias v="nvim"
-    alias n="nvim"
     export GIT_EDITOR="nvim"
+    export EDITOR="nvim"
+    export ZSH_VI_EDITOR="nvim"
+    vim() {
+      APPS=()
+      for NVIM_DIR in $XDG_CONFIG_HOME/nvim*; do 
+        APP=$(basename "$NVIM_DIR"); 
+        APPS+=( ${APP/nvim-/} ); 
+        echo "$NVIM_DIR - $APP [ $APPS ]"
+      done
+      select config in $APPS 
+      do
+        echo $config
+        if [[ $config != nvim ]]; then 
+          NVIM_APPNAME=nvim-$config nvim $@; break; 
+        else
+          nvim $@; break;
+        fi
+      done
+    }
 fi
 
 alias s=". ~/.config/zsh/.zshrc && . ~/.config/zsh/.zshenv"

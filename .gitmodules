@@ -1,5 +1,5 @@
 [submodule ".config/nvim"]
-	path = .config/nvim
+	path = .config/nvim-nvchad
 	url = https://github.com/ppfenning92/NvChad
 [submodule ".config/tmux/plugins/tpm"]
 	path = .config/tmux/plugins/tpm

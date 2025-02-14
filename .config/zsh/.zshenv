@@ -1,7 +1,6 @@
+# vim: ts=2 sts=2 sw=2 et ft=bash
+
 source $HOME/.config/global.env
-
-source $XDG_CONFIG_HOME/private.env
-
 
 export HISTFILE="$XDG_STATE_HOME/zsh/history"
 if [ ! -f "$HISTFILE" ]; then
@@ -58,3 +57,14 @@ export DOTNET_CLI_HOME="$XDG_DATA_HOME"/dotnet
 export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
 export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
+
+export _ZO_ECHO=""
+## AUTOENV
+AUTOENV_AUTH_FILE="$XDG_STATE_HOME/autoenv/authorized_list"
+AUTOENV_NOTAUTH_FILE="$XDG_STATE_HOME/autoenv/not_authorized_list"
+AUTOENV_ENV_FILENAME=".auto.env"
+AUTOENV_ENV_LEAVE_FILENAME=".leave.env"
+AUTOENV_ENABLE_LEAVE=""
+AUTOENV_ASSUME_YES=""
+AUTOENV_PRESERVE_CD="1"
+AUTOENV_VIEWER=bat
