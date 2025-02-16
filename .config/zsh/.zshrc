@@ -37,6 +37,7 @@ if [[ -z ${SYSTEM_TYPE} ]]; then
     # gcloud
     terraform
     aws
+    turv
   )
   zstyle ':omz:plugins:nvm' lazy yes
   zstyle ':omz:plugins:nvm' autoload yes
@@ -103,7 +104,7 @@ setopt inc_append_history
 setopt hist_ignore_space
 setopt hist_reduce_blanks
 
-source "$ZDOTDIR/dirsh.sh"
+# source "$ZDOTDIR/dirsh.sh"
 
 eval "$(zoxide init --cmd cd zsh)"
 
