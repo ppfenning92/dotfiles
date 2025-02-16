@@ -34,7 +34,7 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 vim.opt.list = true
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+vim.opt.listchars = { tab = "» ", space = "·", trail = "·", nbsp = "␣", extends = "▸" }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
