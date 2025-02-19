@@ -59,12 +59,8 @@ export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 
 export _ZO_ECHO=""
-## AUTOENV
-AUTOENV_AUTH_FILE="$XDG_STATE_HOME/autoenv/authorized_list"
-AUTOENV_NOTAUTH_FILE="$XDG_STATE_HOME/autoenv/not_authorized_list"
-AUTOENV_ENV_FILENAME=".auto.env"
-AUTOENV_ENV_LEAVE_FILENAME=".leave.env"
-AUTOENV_ENABLE_LEAVE=""
-AUTOENV_ASSUME_YES=""
-AUTOENV_PRESERVE_CD="1"
-AUTOENV_VIEWER=bat
+
+# TURV CONFIG
+export TURV_VIEWER="bat -lbash --style=snip,numbers,header"
+export TURV_DEBUG=""
+export TURV_CONFIG_FORMAT="yaml"

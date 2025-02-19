@@ -50,17 +50,6 @@ source "$XDG_CONFIG_HOME/rust.alias.sh"
 
 zsh-defer source $(brew --prefix nvm)/nvm.sh
 
-if [[ -f $(brew --prefix autoenv)/activate.sh ]]; then
-  echo "cd? $AUTOENV_PRESERVE_CD"
-  source $(brew --prefix autoenv)/activate.sh
-  # autoload -U add-zsh-hook
-  # setup_autoenv () {
-  #   echo "###### $PWD"
-  #  autoenv_init "$PWD"
-  # }
-  # add-zsh-hook chpwd setup_autoenv
-fi
-
 if command -v op 1>/dev/null; then
   eval "$(op completion zsh)"
   compdef _op op
