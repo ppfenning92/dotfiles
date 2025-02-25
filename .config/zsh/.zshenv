@@ -30,12 +30,14 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
+export MINIKUBE_HOME="$XDG_DATA_HOME"/minikube
+
 export KUBECONFIG="$HOME/.kube/config/rke2.yaml"
 export KREW_ROOT="$XDG_DATA_HOME/krew"
 export AZURE_CONFIG_DIR="$XDG_DATA_HOME"/azure
 
-# export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
-# export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
+export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
+export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
 
 if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
   export ZSH_TMUX_AUTOSTART=false
@@ -56,6 +58,8 @@ export BUN_INSTALL="$XDG_DATA_HOME"/bun
 export DOTNET_CLI_HOME="$XDG_DATA_HOME"/dotnet
 export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
 export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
+
+export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 
 export _ZO_ECHO=""

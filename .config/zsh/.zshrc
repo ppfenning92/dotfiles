@@ -8,6 +8,11 @@ zstyle ':omz:update' mode reminder # just remind me to update when it's time
 # autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit -C
 
+setopt append_history
+setopt inc_append_history
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+
 COMPLETION_WAITING_DOTS="true"
 
 # see 'man strftime' for details.
@@ -55,11 +60,6 @@ if command -v op 1>/dev/null; then
   compdef _op op
 fi
 
-if command -v glab 1>/dev/null; then
-  source <(/opt/homebrew/bin/glab completion -s zsh)
-  compdef _glab glab
-fi
-
 if command -v flux 1>/dev/null; then
   flux() {
 
@@ -86,12 +86,6 @@ _autoload_profile() {
 }
 
 precmd_functions+=(_fix_cursor _autoload_profile)
-
-# setopt complete_aliases
-setopt append_history
-setopt inc_append_history
-setopt hist_ignore_space
-setopt hist_reduce_blanks
 
 # source "$ZDOTDIR/dirsh.sh"
 

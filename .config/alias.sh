@@ -26,12 +26,24 @@ if [ -x "$(command -v nvim)" ]; then
   }
 fi
 
-alias s=". ~/.config/zsh/.zshrc && . ~/.config/zsh/.zshenv"
+alias s=". ~/.config/zsh/.zshenv && . ~/.config/zsh/.zshrc"
 
 alias json="jq | cat -l json"
 alias c="curl -L --silent"
 alias t="tmux"
-alias gl="glab"
+
+if command -v glab 1>/dev/null; then
+  source <(/opt/homebrew/bin/glab completion -s zsh)
+  compdef _glab glab
+fi
+
+function _gl() {
+  op plugin run -- glab "$@"
+}
+complete -C /opt/homebrew/bin/glab glab
+alias gl="_gl"
+alias glmr="gl mr create --squash-before-merge --remove-source-branch --target-branch=\"\$(git_main_branch)\" --assignee=\"patrick.pfenning\" --description=''"
+compdef _glab _gl
 
 alias shell-keys="curl -s 'https://gist.githubusercontent.com/2KAbhishek/9c6d607e160b0439a186d4fbd1bd81df/raw/244284c0b3e40b2b67697665d2d61e537e0890fc/Shell_Keybindings.md'  | PAGER='bat --plain'; glow"
 alias ip-info="ip -json a | jq -r '.[] | \"\(.ifname) \(select(.addr_info != null) | .addr_info[] | select(.family == \"inet\") | \"\(.local)/\(.prefixlen)\" )\"' | column -t -s' '"
