@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -692,10 +693,10 @@ require("lazy").setup({
 			formatters_by_ft = {
 				lua = { "stylua" },
 				-- Conform can also run multiple formatters sequentially
-				-- python = { "isort", "black" },
+				python = { "isort", "black" },
 				--
 				-- You can use 'stop_after_first' to run the first available formatter from the list
-				-- javascript = { "prettierd", "prettier", stop_after_first = true },
+				javascript = { "prettierd", "prettier", stop_after_first = true },
 				tf = { "tfmt" },
 				terraform = { "tfmt" },
 				hcl = { "tfmt" },
@@ -891,12 +892,12 @@ require("lazy").setup({
 				},
 			})
 
-			vim.keymap.set("n", "<Leader>mc", map.close)
-			vim.keymap.set("n", "<Leader>mf", map.toggle_focus)
-			vim.keymap.set("n", "<Leader>mo", map.open)
-			vim.keymap.set("n", "<Leader>mr", map.refresh)
-			vim.keymap.set("n", "<Leader>ms", map.toggle_side)
-			vim.keymap.set("n", "<Leader>mt", map.toggle)
+			vim.keymap.set("n", "<Leader>mt", map.toggle, { desc = "Toggle minimap" })
+			vim.keymap.set("n", "<Leader>mc", map.close, { desc = "Close minimap" })
+			vim.keymap.set("n", "<Leader>mf", map.toggle_focus, { desc = "Focus minimap" })
+			vim.keymap.set("n", "<Leader>mo", map.open, { desc = "Open minimap" })
+			vim.keymap.set("n", "<Leader>mr", map.refresh, { desc = "Refresh minimap" })
+			vim.keymap.set("n", "<Leader>ms", map.toggle_side, { desc = "Toggle minimap side" })
 			require("mini.move").setup({
 				{
 					-- Module mappings. Use `''` (empty string) to disable one.
@@ -969,6 +970,7 @@ require("lazy").setup({
 			--  Check out: https://github.com/echasnovski/mini.nvim
 		end,
 	},
+	{ "ellisonleao/glow.nvim", config = true, cmd = "Glow" },
 	{
 		"michaelrommel/nvim-silicon",
 		lazy = true,

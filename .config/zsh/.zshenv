@@ -68,3 +68,9 @@ export _ZO_ECHO=""
 export TURV_VIEWER="bat -lbash --style=snip,numbers,header"
 export TURV_DEBUG=""
 export TURV_CONFIG_FORMAT="yaml"
+
+# nb https://github.com/xwmx/nb
+export NB_DIR="$XDG_STATE_HOME/nb"
+export NBRC_PATH="$XDG_CONFIG_HOME/nb/nbrc"
+export NB_ENCRYPTION_TOOL=gpg
+export NB_BROWSE_MARKDOWN_READER=glow

@@ -1,9 +1,10 @@
-# vim: set ft=toml syntax=toml: 
+# vim: set ft=toml syntax=toml ts=2 sts=2 et
 
 [user]
   email = patrick.pfenning@ottonova.de
   name = patrick.pfenning
   signingkey = ~/.ssh/on_ed25519
+  
 [gpg]
   format = ssh
 

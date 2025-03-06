@@ -1,16 +1,16 @@
 if [ -x "$(command -v eza)" ]; then
-  alias ls="eza"
-  alias la="ls -laFhHumG"
-  alias ll="ls -laF"
-  alias tree="ls -laHT -I '.git'"
-  alias tree1="ls -laHTL 1 -I '.git'"
-  alias tree2="ls -laHTL 2 -I '.git'"
-  alias tree3="ls -laHTL 3 -I '.git'"
-  alias tree4="ls -laHTL 4 -I '.git'"
+    alias ls="eza"
+    alias la="ls -laFhHumG"
+    alias ll="ls -laF"
+    alias tree="ls -laHT -I '.git'"
+    alias tree1="ls -laHTL 1 -I '.git'"
+    alias tree2="ls -laHTL 2 -I '.git'"
+    alias tree3="ls -laHTL 3 -I '.git'"
+    alias tree4="ls -laHTL 4 -I '.git'"
 
 else
-  echo "eza is not installed"
-  alias ll="ls -lAF"
+    echo "eza is not installed"
+    alias ll="ls -lAF"
 fi
 
 alias show="cat"
@@ -45,4 +45,3 @@ fi
 if [ -x "$(command -v silicon)" ]; then
     alias silicon="silicon --theme Coldark-Dark -f 'Geist Mono=32'"
 fi
-

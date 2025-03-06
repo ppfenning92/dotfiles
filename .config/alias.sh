@@ -49,10 +49,14 @@ alias shell-keys="curl -s 'https://gist.githubusercontent.com/2KAbhishek/9c6d607
 alias ip-info="ip -json a | jq -r '.[] | \"\(.ifname) \(select(.addr_info != null) | .addr_info[] | select(.family == \"inet\") | \"\(.local)/\(.prefixlen)\" )\"' | column -t -s' '"
 
 objectid() {
-  local date=$(date +%s)
+  local date
+  date="$(date +%s)"
 
-  local dateHex="$(printf '%x' $date)"
-  local random16Hex="$(head -c 1000 /dev/urandom | tr -dc 'a-f0-9' | head -c16)"
+  local dateHex
+  dateHex="$(printf '%x' "$date")"
+
+  local random16Hex
+  random16Hex="$(head -c 1000 /dev/urandom | tr -dc 'a-f0-9' | head -c16)"
   echo "$dateHex$random16Hex"
 }
 
@@ -62,13 +66,13 @@ git-new-init() {
     return
   fi
   b=$1
-  h="$(git rev-parse $b)"
+  h="$(git rev-parse "$b")"
   echo "Current branch: $b $h"
-  c="$(git rev-parse $b~0)"
+  c="$(git rev-parse "$b"~0)"
   echo "Recreating $b branch with initial commit $c ..."
-  git checkout --orphan new-start $c
-  git commit -C $c
-  git rebase --onto new-start $c $b
+  git checkout --orphan new-start "$c"
+  git commit -C "$c"
+  git rebase --onto new-start "$c" "$b"
   git branch -d new-start
   git gc
 }
@@ -83,5 +87,15 @@ office-lights() {
   else
     echo "unknown command '${1-none}'"
   fi
+}
 
+alias columns="nu -c 'cat | detect columns'"
+
+git_current_branch_clean() {
+  local current_branch
+  current_branch="$(git_current_branch)"
+  local current_branch_clean
+  current_branch_clean="$(echo -n "$current_branch" | tr -c '[:alnum:]' '_')"
+
+  echo "$current_branch_clean"
 }

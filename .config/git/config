@@ -1,4 +1,4 @@
-# vim: set ft=toml syntax=toml:
+# vim: set ft=toml syntax=toml ts=2 sts=2 et
 [user]
   email = patrick.pfenning.92@gmail.com
   name = Patrick Pfenning
