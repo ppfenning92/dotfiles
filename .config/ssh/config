@@ -1,14 +1,7 @@
 # vim: set ft=sshconfig ts=2 sts=2 et
 
-Host git.on.ag
-  User git
-  IdentityFile ~/.ssh/on_ed25519
-
-Host gitlab.on.ag
-  User git
-  IdentityFile ~/.ssh/on_ed25519
-
-
-Host 172.31.*.*
-  IdentityFile ~/.ssh/on_ed25519
+Host *
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+  LogLevel Error
 
