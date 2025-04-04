@@ -38,6 +38,9 @@ export AZURE_CONFIG_DIR="$XDG_DATA_HOME"/azure
 
 export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
+export AWS_DEFAULT_OUTPUT="yaml"
+export AWS_DEFAULT_REGION="eu-central-1"
+export AWS_PAGER="bat -lyaml --style plain"
 
 if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
   export ZSH_TMUX_AUTOSTART=false

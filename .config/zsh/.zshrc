@@ -50,11 +50,11 @@ fi
 
 source $ZSH/oh-my-zsh.sh
 
-source "$XDG_CONFIG_HOME/alias.sh"
-source "$XDG_CONFIG_HOME/rust.alias.sh"
 if uname -a | grep -q 'Darwin'; then
   source "$XDG_CONFIG_HOME/macos.alias.sh"
 fi
+source "$XDG_CONFIG_HOME/alias.sh"
+source "$XDG_CONFIG_HOME/rust.alias.sh"
 
 zsh-defer source $(brew --prefix nvm)/nvm.sh
 

@@ -828,6 +828,7 @@ require("lazy").setup({
 		end,
 	},
 
+	{ "editorconfig/editorconfig-vim" },
 	-- Highlight todo, notes, etc in comments
 	{
 		"folke/todo-comments.nvim",
@@ -946,6 +947,7 @@ require("lazy").setup({
 			require("mini.surround").setup()
 			require("mini.jump").setup()
 			require("mini.bracketed").setup()
+			-- require("mini.folds").setup()
 			require("mini.pairs").setup()
 			require("mini.comment").setup()
 			require("mini.operators").setup()
@@ -968,6 +970,60 @@ require("lazy").setup({
 
 			-- ... and there is more!
 			--  Check out: https://github.com/echasnovski/mini.nvim
+		end,
+	},
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("noice").setup({
+
+				messages = {
+					enabled = false,
+				},
+				notify = {
+					enabled = false,
+				},
+				cmdline = {
+					format = {
+						filter = {
+							lang = "zsh",
+						},
+					},
+				},
+				-- add any options here
+				-- routes = {
+				--   {
+				--     view = "notify",
+				--     filter = { event = "msg_showmode" },
+				--   },
+				-- },
+			})
+		end,
+		dependencies = {
+			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+			-- "MunifTanjim/nui.nvim",
+			-- OPTIONAL:
+			--   `nvim-notify` is only needed, if you want to use the notification view.
+			--   If not available, we use `mini` as the fallback
+			-- "rcarriga/nvim-notify",
+		},
+	},
+	"xiyaowong/nvim-transparent",
+	{
+		"numToStr/FTerm.nvim",
+		config = function()
+			local map = vim.api.nvim_set_keymap
+			local opts = { noremap = true, silent = true }
+			require("FTerm").setup({
+				blend = 5,
+				dimensions = {
+					height = 0.90,
+					width = 0.90,
+					x = 0.5,
+					y = 0.5,
+				},
+			})
 		end,
 	},
 	{ "ellisonleao/glow.nvim", config = true, cmd = "Glow" },

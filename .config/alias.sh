@@ -99,3 +99,21 @@ git_current_branch_clean() {
 
   echo "$current_branch_clean"
 }
+
+sha-cmp() {
+  FILE_1=$1
+  FILE_2=$2
+
+  if [[ ! -r "$FILE_1" ]]; then
+    echo "$FILE_1 does not exist." >&2
+    return 1
+  fi
+
+  if [[ ! -r "$FILE_2" ]]; then
+    echo "$FILE_2 does not exist." >&2
+    return 1
+  fi
+
+  HASH=$(sha256sum "$FILE_1" | sed 's/ .*//')
+  echo "$HASH $FILE_2" | sha256sum --check
+}
