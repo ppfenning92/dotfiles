@@ -10,6 +10,8 @@ ${custom.sep}\
 $gcloud\
 $aws\
 ${custom.sep}\
+${custom.terrafrom_env}\
+${custom.sep}\
 (${custom.firebase} [|](dimmed) )\
 ([  ](subtext0)$docker_context$bun$golang$helm$nodejs$python$rust$gleam$terraform[|](dimmed) )\
 ${custom.git_provider}\
@@ -41,7 +43,7 @@ style = "dimmed"
 [git_branch]
 format = "[$branch(:$remote_branch)]($style) "
 symbol = "󰊢 "
-style = "peach" 
+style = "peach"
 
 [git_commit]
 only_detached = false
@@ -162,7 +164,8 @@ home_symbol = "󰜥"
 
 
 [aws]
-format = "[$symbol($profile) [$region](flamingo underline bold italic)]($style)"
+format = "[$symbol($profile)(flamingo underline bold italic)]($style)"
+# format = "[$symbol($profile) [$region](flamingo underline bold italic)]($style)"
 style = "rosewater"
 disabled = false
 # force_display = true
@@ -250,3 +253,9 @@ style = 'red'
 command = "true"
 when = "ifconfig | grep -q tun4"
 format = "[󱠾 ](rosewater)"
+
+[custom.terrafrom_env]
+detect_extensions = ['tf', 'tfplan', 'tfstate']
+format = " $output"
+command = "echo \"$TF_VAR_environment\""
+
