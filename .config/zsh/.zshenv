@@ -67,6 +67,12 @@ export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 
 export _ZO_ECHO=""
 
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
+export W3M_DIR="$XDG_DATA_HOME"/w3m
+# Terragrunt
+export TG_LOG_CUSTOM_FORMAT="%prefix(path=short-relative,color=gradient,suffix=' ')%msg(path=relative)"
+
 # TURV CONFIG
 export TURV_VIEWER="bat -lbash --style=snip,numbers,header"
 export TURV_DEBUG=""

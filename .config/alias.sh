@@ -38,7 +38,8 @@ if command -v glab 1>/dev/null; then
 fi
 
 function _gl() {
-  op plugin run -- glab "$@"
+  op run -- glab "$@"
+  # op plugin run -- glab "$@"
 }
 complete -C /opt/homebrew/bin/glab glab
 alias gl="_gl"
@@ -46,7 +47,24 @@ alias glmr="gl mr create --squash-before-merge --remove-source-branch --target-b
 compdef _glab _gl
 
 alias shell-keys="curl -s 'https://gist.githubusercontent.com/2KAbhishek/9c6d607e160b0439a186d4fbd1bd81df/raw/244284c0b3e40b2b67697665d2d61e537e0890fc/Shell_Keybindings.md'  | PAGER='bat --plain'; glow"
-alias ip-info="ip -json a | jq -r '.[] | \"\(.ifname) \(select(.addr_info != null) | .addr_info[] | select(.family == \"inet\") | \"\(.local)/\(.prefixlen)\" )\"' | column -t -s' '"
+# alias ip-info="ip -json a | jq -r '.[] | \"\(.ifname) \(select(.addr_info != null) | .addr_info[] | select(.family == \"inet\") | \"\(.local)/\(.prefixlen)\" )\"' | column -t -s' '"
+
+wmip() {
+  https "http://api.ipapi.com/api?access_key=$(op read "op://Private/IPAPI/API/access_key")"
+}
+
+ipinfo() {
+  local interfaces
+  interfaces=$(ip -json a | jq -r '.[] | "\(.ifname) \(select(.addr_info != null) | .addr_info[] | select(.family == "inet") | "\(.local)/\(.prefixlen)" )"')
+
+  local extip
+  extip="$(curl -m1 --silent 'https://api.ipify.org?format=text')"
+
+  cat <<EOF | column -t -s' '
+$interfaces
+wan $extip
+EOF
+}
 
 objectid() {
   local date
@@ -89,7 +107,9 @@ office-lights() {
   fi
 }
 
-alias columns="nu -c 'cat | detect columns'"
+columns() {
+  nu -c "cat | detect columns $@"
+}
 
 git_current_branch_clean() {
   local current_branch
