@@ -598,7 +598,7 @@ require("lazy").setup({
                 ignoredMessages = {},
               },
               yamlls = {
-                enabled = true,
+                enabled = false,
                 enabledForFilesGlob = "*.{yaml,yml}",
                 diagnosticsLimit = 50,
                 showDiagnosticsDirectly = false,
