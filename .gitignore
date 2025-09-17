@@ -1,9 +1,10 @@
-
 .idea
 .config/zsh/ohmyzsh/
 .config/zsh/.zshrc.pre-oh-my-zsh
 .config/zsh/.zcompdump*
 .config/tmux/plugins
+.config/go
+.config/fzf
 .local/bin/*
 !.config/tmux/plugins/tpm
 **/.zsh_history
