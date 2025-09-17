@@ -137,3 +137,7 @@ sha-cmp() {
   HASH=$(sha256sum "$FILE_1" | sed 's/ .*//')
   echo "$HASH $FILE_2" | sha256sum --check
 }
+
+alias kuse="kubectl config use-context "
+alias kns="kubectl config set-context --current --namespace "
+alias kns-='kubectl config unset contexts.$(kubectl config current-context).namespace'
