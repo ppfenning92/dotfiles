@@ -19,7 +19,7 @@ $git_branch\
 $git_commit\
 $git_status\
 $git_metrics\
-$fill \
+$fill\b\b\b\
 ($status [|](dimmed) )($cmd_duration [|](dimmed) )$battery${custom.vpn}$time
 $nix_shell$character
 """
@@ -223,7 +223,7 @@ style = "italic bold red bg:black"
 
 [username]
 style_user = 'pink bold bg:black'
-style_root = 'red bold blink italic'
+style_root = 'red bold blink italic bg:black'
 format = '[$user@]($style)'
 disabled = false
 show_always = false
@@ -259,3 +259,6 @@ detect_extensions = ['tf', 'tfplan', 'tfstate']
 format = " $output"
 command = "echo \"$TF_VAR_environment\""
 
+[fill]
+symbol = '.'
+style = 'dimmed black'
