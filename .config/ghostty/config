@@ -1,4 +1,4 @@
-theme = catppuccin-mocha
+theme = Catppuccin Mocha
 keybind = global:ctrl+alt+t=new_window
 keybind = cmd+n=unbind
 keybind = cmd+a=unbind
@@ -15,3 +15,7 @@ keybind = alt+left=unbind
 
 # window-padding-balance = true
 # window-padding-x = 4
+# background-image = /Users/patrick.pfenning/Pictures/nier_automata/wp1987849-nier-automata-wallpapers.jpg
+# background-image-opacity = 0.1
+background-opacity = 0.90
+background-blur = 10

@@ -20,7 +20,7 @@ $git_commit\
 $git_status\
 $git_metrics\
 $fill\b\b\b\
-($status [|](dimmed) )($cmd_duration [|](dimmed) )$battery${custom.vpn}$time
+($status [|](dimmed) )($cmd_duration [|](dimmed) )$battery${custom.vpn} $sudo $time
 $nix_shell$character
 """
 # right_format = "$status $cmd_duration $time"
@@ -198,7 +198,7 @@ detect_files = ['firebase.json']
 ignore_timeout = true
 
 [kubernetes]
-format = "[$symbol$context]($style)"
+format = '[$symbol$context (\($namespace\))]($style)'
 disabled = false
 symbol = "󱃾 "
 style = "teal"
