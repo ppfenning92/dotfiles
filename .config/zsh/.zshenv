@@ -18,6 +18,7 @@ export VAGRANT_HOME="$XDG_DATA_HOME"/vagrant
 
 export PYLINTHOME="$XDG_CACHE_HOME"/pylint
 export PYENV_ROOT="$XDG_DATA_HOME"/pyenv
+export MPLCONFIGDIR="$XDG_CONFIG_HOME/matplotlib"
 
 export NVM_DIR="$XDG_DATA_HOME"/nvm
 export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
@@ -32,8 +33,7 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
 export MINIKUBE_HOME="$XDG_DATA_HOME"/minikube
-
-export KUBECONFIG="$HOME/.kube/config/rke2.yaml"
+export KUBECONFIG="$HOME/.kube/config/k8s.yaml"
 export KREW_ROOT="$XDG_DATA_HOME/krew"
 export AZURE_CONFIG_DIR="$XDG_DATA_HOME"/azure
 
