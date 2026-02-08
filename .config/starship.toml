@@ -19,13 +19,8 @@ $git_branch\
 $git_commit\
 $git_status\
 $git_metrics\
-<<<<<<< HEAD
 $fill \
 ($status [|](dimmed) )($cmd_duration [|](dimmed) )$battery${custom.vpn} ${custom.rss}$sudo $time
-=======
-$fill\b\b\b\
-($status [|](dimmed) )($cmd_duration [|](dimmed) )$battery${custom.vpn} $sudo $time
->>>>>>> 3550f169265fe6159432c19ce94891fec142395d
 $nix_shell$character
 """
 # right_format = "$status $cmd_duration $time"
