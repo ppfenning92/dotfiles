@@ -2,6 +2,7 @@
 
 source $HOME/.config/global.env
 
+export HISTIGNORE="$HISTIGNORE:jrnl *"
 export HISTFILE="$XDG_STATE_HOME/zsh/history"
 if [ ! -f "$HISTFILE" ]; then
   mkdir -p $XDG_STATE_HOME/zsh/
@@ -54,13 +55,14 @@ fi
 export WORKON_HOME="$XDG_DATA_HOME/virtualenvs"
 export KERAS_HOME="$XDG_STATE_HOME/keras"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
+
+export ANSIBLE_CONFIG="$XDG_CONFIG_HOME/ansible/ansible.cfg"
 export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
 
 export TS_NODE_HISTORY="$XDG_STATE_HOME"/ts_node_repl_history
 export BUN_INSTALL="$XDG_DATA_HOME"/bun
 export DOTNET_CLI_HOME="$XDG_DATA_HOME"/dotnet
 export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
-export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
 
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
@@ -86,3 +88,12 @@ export NB_DIR="$XDG_STATE_HOME/nb"
 export NBRC_PATH="$XDG_CONFIG_HOME/nb/nbrc"
 export NB_ENCRYPTION_TOOL=gpg
 export NB_BROWSE_MARKDOWN_READER=glow
+
+# nom https://github.com/guyfedwards/nom (rss-reader)
+alias nom='nom --config-path $XDG_CONFIG_HOME/nom/'
+
+# jrnl https://jrnl.sh/en/stable/installation/
+alias jrnl=' jrnl'
+alias j=' jrnl'
+alias jon=' jrnl on'
+alias jlab=' jrnl lab'

@@ -5,8 +5,8 @@ ZSH_THEME=""
 
 zstyle ':omz:update' mode reminder # just remind me to update when it's time
 
-# autoload bashcompinit && bashcompinit
-autoload -Uz compinit && compinit -C
+# autoload -U +X bashcompinit && bashcompinit
+# autoload -Uz compinit && compinit -C
 
 setopt append_history
 setopt inc_append_history
@@ -38,7 +38,7 @@ if [[ -z ${SYSTEM_TYPE} ]]; then
     kubectl
     ansible
     docker
-    nvm
+    # nvm
     # gcloud
     terraform
     aws
@@ -82,6 +82,8 @@ _fix_cursor() {
 }
 _autoload_profile() {
   if ifconfig -L utun4 >/dev/null 2>&1; then
+    . $XDG_CONFIG_HOME/work.env
+  elif ifconfig -L utun100 >/dev/null 2>&1; then
     . $XDG_CONFIG_HOME/work.env
   else
     . $XDG_CONFIG_HOME/private.env

@@ -3,8 +3,14 @@ keybind = global:ctrl+alt+t=new_window
 keybind = cmd+n=unbind
 keybind = cmd+a=unbind
 keybind = cmd+k=unbind
+keybind = alt+space=unbind
 
+copy-on-select = false
+
+macos-shortcuts = allow
+macos-non-native-fullscreen=visible-menu
 macos-option-as-alt = left
+
 alpha-blending = native
 cursor-opacity = 0.6
 cursor-color = #9399b2
@@ -13,9 +19,11 @@ adjust-cursor-thickness = 3
 keybind = alt+right=unbind
 keybind = alt+left=unbind
 
+window-decoration=auto
+
 # window-padding-balance = true
 # window-padding-x = 4
 # background-image = /Users/patrick.pfenning/Pictures/nier_automata/wp1987849-nier-automata-wallpapers.jpg
 # background-image-opacity = 0.1
-background-opacity = 0.90
-background-blur = 10
+background-opacity = 0.85
+background-blur = 20

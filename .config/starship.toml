@@ -20,7 +20,7 @@ $git_commit\
 $git_status\
 $git_metrics\
 $fill \
-($status [|](dimmed) )($cmd_duration [|](dimmed) )$battery${custom.vpn} $sudo $time
+($status [|](dimmed) )($cmd_duration [|](dimmed) )$battery${custom.vpn} ${custom.rss}$sudo $time
 $nix_shell$character
 """
 # right_format = "$status $cmd_duration $time"
@@ -251,7 +251,7 @@ style = 'red'
 
 [custom.vpn]
 command = "true"
-when = "ifconfig | grep -q tun4"
+when = "ifconfig | grep -q utun100"
 format = "[󱠾 ](rosewater)"
 
 [custom.terrafrom_env]
@@ -259,3 +259,10 @@ detect_extensions = ['tf', 'tfplan', 'tfstate']
 format = " $output"
 command = "echo \"$TF_VAR_environment\""
 
+
+[custom.rss]
+command = "nom --config-path $XDG_CONFIG_HOME/nom/ unread"
+when = "command -v nom >/dev/null 2>&1"
+symbol = " "
+format = "[$symbol$output]($style)"
+style = "bold peach"

@@ -1,0 +1,25 @@
+configpath: /Users/patrick.pfenning/.config/nom/config.yml
+version: ""
+feeds:
+    - url: https://www.flatcar.org/releases-feed/releases-stable.xml
+      name: flatcar
+    - url: https://about.gitlab.com/atom.xml
+      name: gitlab
+    - url: https://gitlab.com/gitlab-org/gitaly/-/tags?format=atom
+      name: gitaly
+    - url: https://github.com/louislam/uptime-kuma/releases.atom
+      name: uptime-kuma
+database: nom.db
+ordering: desc
+filtering:
+    defaultIncludeFeedName: false
+autoread: true
+theme:
+    glamour: dark
+    titleColor: "62"
+    titleColorFg: "231"
+    filterColor: "62"
+    selectedItemColor: "170"
+    readIcon: ✓
+http:
+    mintls: TLS 1.2
