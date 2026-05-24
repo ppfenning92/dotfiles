@@ -139,9 +139,19 @@ require("lazy").setup({
       },
     },
   },
+  -- {
+  --   "f-person/git-blame.nvim",
+  --   event = "VeryLazy",
+  -- },
   {
-    "f-person/git-blame.nvim",
-    event = "VeryLazy",
+    "FabijanZulj/blame.nvim",
+    lazy = false,
+    config = function()
+      require("blame").setup({})
+    end,
+    opts = {
+      blame_options = { "-w" },
+    },
   },
   { -- Useful plugin to show you pending keybinds.
     "folke/which-key.nvim",
@@ -370,9 +380,11 @@ require("lazy").setup({
     },
   },
   { "qvalentin/helm-ls.nvim", ft = "helm" },
+  { "grafana/vim-alloy", ft = "alloy" },
   {
     -- Main LSP Configuration
     "neovim/nvim-lspconfig",
+    opts = { diagnostics = { virtual_text = false } },
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
@@ -509,14 +521,18 @@ require("lazy").setup({
       })
 
       -- Change diagnostic symbols in the sign column (gutter)
-      -- if vim.g.have_nerd_font then
-      --   local signs = { ERROR = '', WARN = '', INFO = '', HINT = '' }
-      --   local diagnostic_signs = {}
-      --   for type, icon in pairs(signs) do
-      --     diagnostic_signs[vim.diagnostic.severity[type]] = icon
-      --   end
-      --   vim.diagnostic.config { signs = { text = diagnostic_signs } }
-      -- end
+      if vim.g.have_nerd_font then
+        local signs = { ERROR = "", WARN = "", INFO = "", HINT = "" }
+        local diagnostic_signs = {}
+        for type, icon in pairs(signs) do
+          diagnostic_signs[vim.diagnostic.severity[type]] = icon
+        end
+        vim.diagnostic.config({
+          signs = { text = diagnostic_signs, severity = { min = vim.diagnostic.severity.WARN } },
+          virtual_text = false,
+          float = false,
+        })
+      end
 
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
@@ -554,6 +570,7 @@ require("lazy").setup({
           -- capabilities = {},
           settings = {
             Lua = {
+              hint = { enabled = true },
               completion = {
                 callSnippet = "Replace",
               },
@@ -576,7 +593,7 @@ require("lazy").setup({
                 ["http://json.schemastore.org/ansible-playbook"] = "*play*.{yml,yaml}",
                 ["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
                 ["https://json.schemastore.org/dependabot-v2"] = ".github/dependabot.{yml,yaml}",
-                ["https://json.schemastore.org/gitlab-ci"] = "*gitlab-ci*.{yml,yaml}",
+                ["https://gitlab.com/gitlab-org/gitlab-foss/-/raw/master/app/assets/javascripts/editor/schema/ci.json"] = "*gitlab-ci*.{yml,yaml}",
                 ["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] = "*api*.{yml,yaml}",
                 ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "*docker-compose*.{yml,yaml}",
                 ["https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json"] = "*flow*.{yml,yaml}",
@@ -1034,6 +1051,15 @@ require("lazy").setup({
     end,
   },
   { "ellisonleao/glow.nvim", config = true, cmd = "Glow" },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    config = function()
+      require("tiny-inline-diagnostic").setup()
+      vim.diagnostic.config({ virtual_text = false }) -- Disable Neovim's default virtual text diagnostics
+    end,
+  },
   {
     "michaelrommel/nvim-silicon",
     lazy = true,

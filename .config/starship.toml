@@ -256,6 +256,7 @@ format = "[󱠾 ](rosewater)"
 
 [custom.terrafrom_env]
 detect_extensions = ['tf', 'tfplan', 'tfstate']
+detect_files = ['root.hcl']
 format = " $output"
 command = "echo \"$TF_VAR_environment\""
 

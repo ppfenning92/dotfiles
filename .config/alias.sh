@@ -35,16 +35,6 @@ alias t="tmux"
 if type -p glab 1>/dev/null; then
   source <(/opt/homebrew/bin/glab completion -s zsh)
   compdef _glab glab
-<<<<<<< HEAD
-  complete -C /opt/homebrew/bin/glab glab
-  alias gl="_gl"
-  compdef _glab _gl
-fi
-
-function _gl() {
-  op run -- glab "$@"
-}
-=======
 
   function _gl() {
     op run -- glab "$@"
@@ -55,7 +45,6 @@ function _gl() {
   alias glmr="gl mr create --squash-before-merge --remove-source-branch --target-branch=\"\$(git_main_branch)\" --assignee=\"patrick.pfenning\" --description=''"
   compdef _glab _gl
 fi
->>>>>>> 3550f169265fe6159432c19ce94891fec142395d
 
 alias glmr="gl mr create --squash-before-merge --remove-source-branch --target-branch=\"\$(git_main_branch)\" --assignee=\"patrick.pfenning\" --description=''"
 alias shell-keys="curl -s 'https://gist.githubusercontent.com/2KAbhishek/9c6d607e160b0439a186d4fbd1bd81df/raw/244284c0b3e40b2b67697665d2d61e537e0890fc/Shell_Keybindings.md'  | PAGER='bat --plain'; glow"

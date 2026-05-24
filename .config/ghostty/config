@@ -3,6 +3,7 @@ keybind = global:ctrl+alt+t=new_window
 keybind = cmd+n=unbind
 keybind = cmd+a=unbind
 keybind = cmd+k=unbind
+keybind = cmd+t=unbind
 keybind = alt+space=unbind
 
 copy-on-select = false
