@@ -1,6 +1,7 @@
 # vim: ts=2 sts=2 sw=2 et ft=bash
 
 [[ -r "$HOME/.config/global.env" ]] && source "$HOME/.config/global.env"
+[[ -r "$XDG_CONFIG_HOME/zsh/secrets.zsh" ]] && source "$XDG_CONFIG_HOME/zsh/secrets.zsh"
 
 export HISTIGNORE="$HISTIGNORE:jrnl *"
 export HISTFILE="$XDG_STATE_HOME/zsh/history"

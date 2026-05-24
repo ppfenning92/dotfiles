@@ -15,11 +15,20 @@ _op_service_account_env() {
 _op_env_file() {
   local env_file="${OP_ENV_FILE:-.env.op}"
 
-  if [[ -f "$env_file" ]] && command -v op >/dev/null 2>&1; then
-    _op_service_account_env op run --env-file "$env_file" -- env -u OP_SERVICE_ACCOUNT_TOKEN "$@"
-  else
+  if [[ ! -f "$env_file" ]] || ! command -v op >/dev/null 2>&1; then
     command "$@"
+    return
   fi
+
+  local token_file="${OP_SERVICE_ACCOUNT_TOKEN_FILE:-$XDG_CONFIG_HOME/op/service-account-token}"
+
+  if [[ -z "${OP_SERVICE_ACCOUNT_TOKEN:-}" ]] && [[ ! -r "$token_file" ]] && ! op account get >/dev/null 2>&1; then
+    echo "op: not authenticated, running $1 without secret injection" >&2
+    command "$@"
+    return
+  fi
+
+  _op_service_account_env op run --env-file "$env_file" -- env -u OP_SERVICE_ACCOUNT_TOKEN "$@"
 }
 
 tofu() {
