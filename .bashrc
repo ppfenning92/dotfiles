@@ -1,19 +1,28 @@
-source "$XDG_CONFIG_HOME/zsh/.zshenv"
+[[ -r "$XDG_CONFIG_HOME/zsh/.zshenv" ]] && source "$XDG_CONFIG_HOME/zsh/.zshenv"
 
-source "$XDG_CONFIG_HOME/path.sh"
-source "$XDG_CONFIG_HOME/alias.sh"
-source "$XDG_CONFIG_HOME/rust.alias.sh"
-if uname -a | grep 'Darwin'; then
+[[ -r "$XDG_CONFIG_HOME/path.sh" ]] && source "$XDG_CONFIG_HOME/path.sh"
+[[ -r "$XDG_CONFIG_HOME/alias.sh" ]] && source "$XDG_CONFIG_HOME/alias.sh"
+[[ -r "$XDG_CONFIG_HOME/rust.alias.sh" ]] && source "$XDG_CONFIG_HOME/rust.alias.sh"
+
+[[ -r "$XDG_CONFIG_HOME/bash/mise.bash" ]] && source "$XDG_CONFIG_HOME/bash/mise.bash"
+[[ -r "$XDG_CONFIG_HOME/bash/direnv.bash" ]] && source "$XDG_CONFIG_HOME/bash/direnv.bash"
+if [[ "$(uname -s)" == "Darwin" ]]; then
 	echo 'Mac OS detected '
 fi
 
-source <(op completion bash)
+if command -v op >/dev/null 2>&1; then
+  source <(op completion bash)
+fi
 [ -f "$XDG_CONFIG_HOME"/fzf/fzf.bash ] && source "$XDG_CONFIG_HOME"/fzf/fzf.bash
-eval "$(zoxide init bash)"
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init bash)"
+fi
 
-eval "$(starship init bash)"
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init bash)"
+fi
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
-. "$HOME/.local/share/../bin/env"
+[[ -r "$HOME/.local/share/../bin/env" ]] && . "$HOME/.local/share/../bin/env"

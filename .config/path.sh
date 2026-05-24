@@ -14,8 +14,8 @@ if [ -d "$XDG_DATA_HOME/go/bin" ]; then
   export PATH=$PATH:$XDG_DATA_HOME/go/bin
 fi
 
-if [ -f "/opt/homebrew/bin/brew" ]; then
-  eval $(/opt/homebrew/bin/brew shellenv)
+if [ -x "/opt/homebrew/bin/brew" ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 if [ -f "$CARGO_HOME/env" ]; then
