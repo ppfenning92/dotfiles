@@ -39,7 +39,7 @@ if [ -x "$(command -v eva)" ]; then
     alias calc="eva"
 fi
 if [ -x "$(command -v bandwhich)" ]; then
-    alias bandwidth="sudo ~/.cargo/bin/bandwhich"
+    alias bandwidth="sudo ${CARGO_HOME:-$HOME/.cargo}/bin/bandwhich"
 fi
 
 if [ -x "$(command -v silicon)" ]; then

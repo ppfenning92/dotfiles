@@ -6,9 +6,6 @@
 
 [[ -r "$XDG_CONFIG_HOME/bash/mise.bash" ]] && source "$XDG_CONFIG_HOME/bash/mise.bash"
 [[ -r "$XDG_CONFIG_HOME/bash/direnv.bash" ]] && source "$XDG_CONFIG_HOME/bash/direnv.bash"
-if [[ "$(uname -s)" == "Darwin" ]]; then
-	echo 'Mac OS detected '
-fi
 
 if command -v op >/dev/null 2>&1; then
   source <(op completion bash)

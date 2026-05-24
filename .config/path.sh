@@ -34,6 +34,16 @@ if [ -s "$BUN_INSTALL" ]; then
   export PATH="$BUN_INSTALL/bin:$PATH"
 fi
 
-if [ -d "/Users/patrick.pfenning/Library/Application Support/JetBrains/Toolbox/scripts" ]; then
-  export PATH="$PATH:/Users/patrick.pfenning/Library/Application Support/JetBrains/Toolbox/scripts"
+if [ -d "$HOME/Library/Application Support/JetBrains/Toolbox/scripts" ]; then
+  export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+fi
+
+# macOS: prepend GNU tools so scripts get GNU compat (rust aliases take priority via rust.alias.sh).
+# brew install coreutils findutils gnu-sed gawk grep gnu-tar
+if [ -x "/opt/homebrew/bin/brew" ]; then
+  for _gnu_pkg in coreutils findutils gnu-sed gawk grep gnu-tar; do
+    _gnu_bin="$(/opt/homebrew/bin/brew --prefix "$_gnu_pkg" 2>/dev/null)/libexec/gnubin"
+    [ -d "$_gnu_bin" ] && export PATH="$_gnu_bin:$PATH"
+  done
+  unset _gnu_pkg _gnu_bin
 fi

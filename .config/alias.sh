@@ -1,4 +1,14 @@
-alias update="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade && sudo apt autoremove -y && sudo apt autoclean"
+update() {
+  if command -v brew >/dev/null 2>&1; then
+    brew update && brew upgrade && brew cleanup
+  elif command -v apt-get >/dev/null 2>&1; then
+    sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade && sudo apt autoremove -y && sudo apt autoclean
+  elif command -v pacman >/dev/null 2>&1; then
+    sudo pacman -Syu
+  else
+    echo "no known package manager found"
+  fi
+}
 alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 
 if [ -x "$(command -v nvim)" ]; then
@@ -26,7 +36,7 @@ if [ -x "$(command -v nvim)" ]; then
   }
 fi
 
-alias s=". ~/.config/zsh/.zshenv && . ~/.config/zsh/.zshrc"
+alias s="exec zsh"
 
 alias json="jq | cat -l json"
 alias c="curl -L --silent"
@@ -186,7 +196,7 @@ move() {
     }
   fi
 
-  rsync -ah --info=progress2 ---backup --suffix='.bak' --remove-source-files "$src" "$dst"
+  rsync -ah --info=progress2 --backup --suffix='.bak' --remove-source-files "$src" "$dst"
 
   # Only cleanup directories if src is a directory
   if [[ -d "$src" ]]; then
