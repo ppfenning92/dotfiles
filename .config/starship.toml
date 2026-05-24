@@ -208,6 +208,7 @@ context_pattern = "arn:aws:eks:(?P<region>.*?):cluster/(?P<cluster>.*)"
 context_alias = "$cluster"
 
 [sudo]
+format = '[$symbol]($style)'
 disabled = false
 
 [time]

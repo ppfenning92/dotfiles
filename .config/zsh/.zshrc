@@ -97,3 +97,6 @@ precmd_functions+=(_fix_cursor _autoload_profile)
 eval "$(zoxide init --cmd cd zsh)"
 
 eval "$(starship init zsh)"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+. "$HOME/.local/share/../bin/env"
