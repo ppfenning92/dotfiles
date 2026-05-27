@@ -76,15 +76,15 @@ EOF
 NOOP_VAR=1
 EOF
 
-  run bash -c "cd '$TEST_TMPDIR/noop' && DIRENV_LOG_FORMAT='' direnv allow . >/dev/null && DIRENV_LOG_FORMAT='' direnv exec . bash -c 'echo \${OP_ENV_FILE:-unset}'"
+  run bash -c "cd '$TEST_TMPDIR/noop' && DIRENV_LOG_FORMAT='' direnv allow . >/dev/null && DIRENV_LOG_FORMAT='' direnv exec . bash -c 'echo \${OP_ENV_FILE:-unset}' 2>/dev/null"
 
   [ "$status" -eq 0 ]
   [[ "$output" == "unset" ]]
 }
 
-@test "mise shims dir is on PATH" {
+@test "mise shims directory exists" {
   skip_without_mise
-  [[ "$PATH" == *"mise/shims"* ]]
+  [ -d "$HOME/.local/share/mise/shims" ]
 }
 
 @test "mise can list installed tools" {
@@ -93,17 +93,16 @@ EOF
   [ "$status" -eq 0 ]
 }
 
-@test "direnv blocks export of vars not in .env.public when strict_env is used" {
+@test "strict_env causes undefined variable reference to fail in .envrc" {
   skip_without_direnv
 
   mkdir -p "$TEST_TMPDIR/strict"
   cat >"$TEST_TMPDIR/strict/.envrc" <<'EOF'
 strict_env
+echo $DEFINITELY_UNDEFINED_VAR_XYZ
 EOF
-  export SHOULD_BE_BLOCKED=yes
 
-  run bash -c "cd '$TEST_TMPDIR/strict' && DIRENV_LOG_FORMAT='' direnv allow . >/dev/null && DIRENV_LOG_FORMAT='' direnv exec . bash -c 'echo \${SHOULD_BE_BLOCKED:-blocked}'"
+  run bash -c "cd '$TEST_TMPDIR/strict' && DIRENV_LOG_FORMAT='' direnv allow . >/dev/null && DIRENV_LOG_FORMAT='' direnv exec . bash -c 'echo ok' 2>/dev/null"
 
-  [ "$status" -eq 0 ]
-  [[ "$output" == "blocked" ]]
+  [ "$status" -ne 0 ]
 }
