@@ -64,3 +64,46 @@ EOF
   [ "$status" -eq 0 ]
   [[ "$output" == *"ok"* ]]
 }
+
+@test "direnv use_project_env without .env.op does not set OP_ENV_FILE" {
+  skip_without_direnv
+
+  mkdir -p "$TEST_TMPDIR/noop"
+  cat >"$TEST_TMPDIR/noop/.envrc" <<'EOF'
+use_project_env
+EOF
+  cat >"$TEST_TMPDIR/noop/.env.public" <<'EOF'
+NOOP_VAR=1
+EOF
+
+  run bash -c "cd '$TEST_TMPDIR/noop' && DIRENV_LOG_FORMAT='' direnv allow . >/dev/null && DIRENV_LOG_FORMAT='' direnv exec . bash -c 'echo \${OP_ENV_FILE:-unset}'"
+
+  [ "$status" -eq 0 ]
+  [[ "$output" == "unset" ]]
+}
+
+@test "mise shims dir is on PATH" {
+  skip_without_mise
+  [[ "$PATH" == *"mise/shims"* ]]
+}
+
+@test "mise can list installed tools" {
+  skip_without_mise
+  run mise list
+  [ "$status" -eq 0 ]
+}
+
+@test "direnv blocks export of vars not in .env.public when strict_env is used" {
+  skip_without_direnv
+
+  mkdir -p "$TEST_TMPDIR/strict"
+  cat >"$TEST_TMPDIR/strict/.envrc" <<'EOF'
+strict_env
+EOF
+  export SHOULD_BE_BLOCKED=yes
+
+  run bash -c "cd '$TEST_TMPDIR/strict' && DIRENV_LOG_FORMAT='' direnv allow . >/dev/null && DIRENV_LOG_FORMAT='' direnv exec . bash -c 'echo \${SHOULD_BE_BLOCKED:-blocked}'"
+
+  [ "$status" -eq 0 ]
+  [[ "$output" == "blocked" ]]
+}
