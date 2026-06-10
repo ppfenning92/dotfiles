@@ -5,3 +5,6 @@ Host *
   UserKnownHostsFile=/dev/null
   LogLevel Error
 
+Host devbox
+  HostName 10.10.1.110
+  User p

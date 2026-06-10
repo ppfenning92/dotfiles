@@ -20,7 +20,7 @@ $git_commit\
 $git_status\
 $git_metrics\
 $fill \
-($status [|](dimmed) )($cmd_duration [|](dimmed) )$battery${custom.vpn} ${custom.rss}$sudo $time
+($status [|](dimmed) )($cmd_duration [|](dimmed) )$jobs$battery${custom.vpn} ${custom.rss}$sudo $time
 $nix_shell$character
 """
 # right_format = "$status $cmd_duration $time"
@@ -248,6 +248,9 @@ style = 'pink'
 [[battery.display]]
 threshold = 20
 style = 'red'
+
+[jobs]
+symbol = " "
 
 [custom.vpn]
 command = "true"
