@@ -1,4 +1,14 @@
-alias update="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade && sudo apt autoremove -y && sudo apt autoclean"
+update() {
+  if command -v brew >/dev/null 2>&1; then
+    brew update && brew upgrade && brew cleanup
+  elif command -v apt-get >/dev/null 2>&1; then
+    sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade && sudo apt autoremove -y && sudo apt autoclean
+  elif command -v pacman >/dev/null 2>&1; then
+    sudo pacman -Syu
+  else
+    echo "no known package manager found"
+  fi
+}
 alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 
 if [ -x "$(command -v nvim)" ]; then
@@ -26,50 +36,40 @@ if [ -x "$(command -v nvim)" ]; then
   }
 fi
 
-alias s=". ~/.config/zsh/.zshenv && . ~/.config/zsh/.zshrc"
+alias s="exec zsh"
 
 alias json="jq | cat -l json"
 alias c="curl -L --silent"
 alias t="tmux"
 
-if type -p glab 1>/dev/null; then
-  source <(/opt/homebrew/bin/glab completion -s zsh)
-  compdef _glab glab
+if glab_bin="$(command -v glab 2>/dev/null)"; then
+  if [[ -n "${ZSH_VERSION:-}" ]]; then
+    source <("$glab_bin" completion -s zsh)
+    command -v compdef >/dev/null 2>&1 && compdef _glab glab
+  elif [[ -n "${BASH_VERSION:-}" ]]; then
+    source <("$glab_bin" completion -s bash)
+  fi
 
-  function _gl() {
-    op run -- glab "$@"
-    # op plugin run -- glab "$@"
-  }
-  complete -C /opt/homebrew/bin/glab glab
-  alias gl="_gl"
+  command -v complete >/dev/null 2>&1 && complete -C "$glab_bin" glab
   alias glmr="gl mr create --squash-before-merge --remove-source-branch --target-branch=\"\$(git_main_branch)\" --assignee=\"patrick.pfenning\" --description=''"
-  compdef _glab _gl
+  unset glab_bin
 fi
 
 alias glmr="gl mr create --squash-before-merge --remove-source-branch --target-branch=\"\$(git_main_branch)\" --assignee=\"patrick.pfenning\" --description=''"
 alias shell-keys="curl -s 'https://gist.githubusercontent.com/2KAbhishek/9c6d607e160b0439a186d4fbd1bd81df/raw/244284c0b3e40b2b67697665d2d61e537e0890fc/Shell_Keybindings.md'  | PAGER='bat --plain'; glow"
 # alias ip-info="ip -json a | jq -r '.[] | \"\(.ifname) \(select(.addr_info != null) | .addr_info[] | select(.family == \"inet\") | \"\(.local)/\(.prefixlen)\" )\"' | column -t -s' '"
 #
-if command -v terraform 1>/dev/null; then
-  complete -C /opt/homebrew/bin/terraform terraform
-  alias tf="_tf"
-  compdef _terraform _tf
+if terraform_bin="$(command -v terraform 2>/dev/null)"; then
+  command -v complete >/dev/null 2>&1 && complete -C "$terraform_bin" terraform
+  unset terraform_bin
 fi
 
-if command -v terragrunt 1>/dev/null; then
-  complete -C /opt/homebrew/bin/terragrunt terragrunt
-  alias tg="_tg"
-  compdef terragrunt _tg
+if terragrunt_bin="$(command -v terragrunt 2>/dev/null)"; then
+  command -v complete >/dev/null 2>&1 && complete -C "$terragrunt_bin" terragrunt
   # terragrunt --install-autocomplete
+  unset terragrunt_bin
 fi
 
-function _tg() {
-  op run -- terragrunt "$@"
-}
-
-function _tf() {
-  op run -- terraform "$@"
-}
 
 wmip() {
   https "http://api.ipapi.com/api?access_key=$(op read "op://Private/IPAPI/API/access_key")"
@@ -196,7 +196,7 @@ move() {
     }
   fi
 
-  rsync -ah --info=progress2 ---backup --suffix='.bak' --remove-source-files "$src" "$dst"
+  rsync -ah --info=progress2 --backup --suffix='.bak' --remove-source-files "$src" "$dst"
 
   # Only cleanup directories if src is a directory
   if [[ -d "$src" ]]; then

@@ -55,7 +55,7 @@ shell = "sh"
 command = """
 if git remote -v | grep -q github; then
   echo " "
-elif git remote -v | grep -qE "(gitlab|on.ag); then
+elif git remote -v | grep -qE "(gitlab|on.ag)"; then
   echo " "
 else
   echo "󰊢 "
@@ -208,6 +208,7 @@ context_pattern = "arn:aws:eks:(?P<region>.*?):cluster/(?P<cluster>.*)"
 context_alias = "$cluster"
 
 [sudo]
+format = '[$symbol]($style)'
 disabled = false
 
 [time]
@@ -254,7 +255,8 @@ symbol = " "
 
 [custom.vpn]
 command = "true"
-when = "ifconfig | grep -q utun100"
+# utun100 = netbird on macOS; wt0 = netbird on Linux
+when = "ifconfig 2>/dev/null | grep -q utun100 || ip link 2>/dev/null | grep -q wt0"
 format = "[󱠾 ](rosewater)"
 
 [custom.terrafrom_env]

@@ -1,0 +1,6 @@
+[env]
+PROJECT_PUBLIC_VAR = "dummy-public-value"
+
+[tools]
+# node = "22"
+# python = "3.13"

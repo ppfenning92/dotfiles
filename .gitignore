@@ -6,7 +6,17 @@
 .config/go
 .config/fzf
 .config/nom/nom.db
+.config/cni/
 .local/bin/*
+.config/docker/
+.config/fish/
+.config/glab-cli/
+.config/helm/
+.config/htop/
+.config/mimeapps.list
+.config/op/
+.config/uv/
+.config/wslu/
 !.config/tmux/plugins/tpm
 **/.zsh_history
 **/.zsh_sessions/*

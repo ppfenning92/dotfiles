@@ -1,0 +1,13 @@
+[env]
+TF_PLUGIN_CACHE_DIR = "{{env.XDG_CACHE_HOME}}/terraform.d"
+TFLINT_PLUGIN_DIR = "{{env.XDG_CACHE_HOME}}/tflint.d"
+KUBECONFIG = "{{env.HOME}}/.kube/config/k8s.yaml"
+
+[settings]
+experimental = true
+
+[tools]
+bats = "latest"
+direnv = "latest"
+"ubi:gitlab-org/cli" = { version = "latest", exe = "glab", provider = "gitlab" }
+
