@@ -22,3 +22,5 @@
 **/.zsh_sessions/*
 **/.iterm2/*
 .DS_Store
+.claude/
+mise.local.toml

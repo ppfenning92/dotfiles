@@ -1,75 +1,32 @@
 # vim: ts=2 sts=2 sw=2 et ft=zsh
 
-_op_service_account_env() {
+# Bootstrap OP_SERVICE_ACCOUNT_TOKEN from file in headless environments (VMs).
+# On desktops the 1Password app handles auth — this is a no-op there.
+() {
   local token_file="${OP_SERVICE_ACCOUNT_TOKEN_FILE:-$XDG_CONFIG_HOME/op/service-account-token}"
-
-  if [[ -n "${OP_SERVICE_ACCOUNT_TOKEN:-}" ]]; then
-    OP_SERVICE_ACCOUNT_TOKEN="$OP_SERVICE_ACCOUNT_TOKEN" "$@"
-  elif [[ -r "$token_file" ]]; then
-    OP_SERVICE_ACCOUNT_TOKEN="$(<"$token_file")" "$@"
-  else
-    "$@"
+  if [[ -z "${OP_SERVICE_ACCOUNT_TOKEN:-}" && -r "$token_file" ]]; then
+    export OP_SERVICE_ACCOUNT_TOKEN="$(<"$token_file")"
   fi
 }
 
-_op_env_file() {
-  local env_file="${OP_ENV_FILE:-.env.op}"
-
-  if [[ ! -f "$env_file" ]] || ! command -v op >/dev/null 2>&1; then
-    command "$@"
-    return
-  fi
-
-  local token_file="${OP_SERVICE_ACCOUNT_TOKEN_FILE:-$XDG_CONFIG_HOME/op/service-account-token}"
-
-  if [[ -z "${OP_SERVICE_ACCOUNT_TOKEN:-}" ]] && [[ ! -r "$token_file" ]] && ! op account get >/dev/null 2>&1; then
-    echo "op: not authenticated, running $1 without secret injection" >&2
-    command "$@"
-    return
-  fi
-
-  _op_service_account_env op run --env-file "$env_file" -- env -u OP_SERVICE_ACCOUNT_TOKEN "$@"
-}
-
-tofu() {
-  _op_env_file tofu "$@"
-}
-
-terraform() {
-  _op_env_file terraform "$@"
-}
-
-terragrunt() {
-  _op_env_file terragrunt "$@"
-}
-
-gh() {
-  _op_env_file gh "$@"
-}
-
-glab() {
-  _op_env_file glab "$@"
-}
+# Wrap tools that consume op:// env vars — op run resolves references at invocation time.
+tofu()       { op run -- tofu "$@" }
+terraform()  { op run -- terraform "$@" }
+terragrunt() { op run -- terragrunt "$@" }
+gh()         { op run -- gh "$@" }
+glab()       { op run -- glab "$@" }
 
 npm() {
   case "${1:-}" in
-    publish|token|access|profile)
-      _op_env_file npm "$@"
-      ;;
-    *)
-      command npm "$@"
-      ;;
+    publish|token|access|profile) op run -- npm "$@" ;;
+    *)                            command npm "$@" ;;
   esac
 }
 
 pnpm() {
   case "${1:-}" in
-    publish)
-      _op_env_file pnpm "$@"
-      ;;
-    *)
-      command pnpm "$@"
-      ;;
+    publish) op run -- pnpm "$@" ;;
+    *)       command pnpm "$@" ;;
   esac
 }
 
@@ -85,4 +42,6 @@ if (( $+functions[compdef] )); then
   (( $+functions[_glab] )) && compdef _glab glab gl
   (( $+functions[_npm] )) && compdef _npm npm
   (( $+functions[_pnpm] )) && compdef _pnpm pnpm
+  (( $+functions[_mise] )) && compdef _mise mise
+  (( $+functions[_op] )) && compdef _op op
 fi

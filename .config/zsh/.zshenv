@@ -24,6 +24,9 @@ export MPLCONFIGDIR="$XDG_CONFIG_HOME/matplotlib"
 export NVM_DIR="$XDG_DATA_HOME"/nvm
 export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
+export NPM_CONFIG_CACHE="$XDG_CACHE_HOME"/npm
+export NPM_CONFIG_TMP="$XDG_RUNTIME_DIR"/npm
+export NPM_CONFIG_INIT_MODULE="$XDG_CONFIG_HOME"/npm/config/npm-init.js
 
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 
@@ -44,7 +47,29 @@ export AWS_DEFAULT_OUTPUT="yaml"
 export AWS_DEFAULT_REGION="eu-central-1"
 export AWS_PAGER="bat -lyaml --style plain"
 
-if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  export DOTFILES_ENV="mac"
+elif [[ -n "$WSL_DISTRO_NAME" ]]; then
+  export DOTFILES_ENV="wsl"
+elif [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+  if grep -qi "^ID=arch" /etc/os-release 2>/dev/null; then
+    export DOTFILES_ENV="ssh-arch"
+  else
+    export DOTFILES_ENV="ssh-ubuntu"
+  fi
+else
+  export DOTFILES_ENV="local-linux"
+fi
+
+case "$DOTFILES_ENV" in
+  mac)        export BAT_THEME="Rose-Pine-Moon" ;;
+  wsl)        export BAT_THEME="Catppuccin-frappe" ;;
+  ssh-ubuntu) export BAT_THEME="kanagawa" ;;
+  ssh-arch)   export BAT_THEME="tokyonight_night" ;;
+  *)          export BAT_THEME="Nord" ;;
+esac
+
+if [[ "$DOTFILES_ENV" == ssh-* ]]; then
   export ZSH_TMUX_AUTOSTART=false
   export ZSH_TMUX_AUTOCONNECT=false
   export ZSH_TMUX_AUTOQUIT=false
@@ -53,6 +78,34 @@ else
   export ZSH_TMUX_AUTOCONNECT=false
   export ZSH_TMUX_AUTOQUIT=false
 fi
+
+_dotfiles_starship_config() {
+  local base="${XDG_CONFIG_HOME:-$HOME/.config}/starship.toml"
+  [[ -f "$base" ]] || return
+  local theme
+  case "$DOTFILES_ENV" in
+    ssh-ubuntu) theme="kanagawa" ;;
+    ssh-arch)   theme="tokyo_night" ;;
+    wsl)        theme="catppuccin_frappe" ;;
+    mac)        return ;;
+    *)          theme="nord" ;;
+  esac
+  local cache="${XDG_CACHE_HOME:-$HOME/.cache}/starship.${DOTFILES_ENV}.toml"
+  if [[ ! -f "$cache" || "$base" -nt "$cache" ]]; then
+    mkdir -p "${cache%/*}"
+    local palette_sed="s/^palette = .*/palette = \"$theme\"/"
+    if [[ "$DOTFILES_ENV" == ssh-* ]]; then
+      sed "$palette_sed" "$base" \
+        | sed "/^\[fill\]/{n; s/symbol = .*/symbol = '═'/;}" \
+        > "$cache"
+    else
+      sed "$palette_sed" "$base" > "$cache"
+    fi
+  fi
+  export STARSHIP_CONFIG="$cache"
+}
+_dotfiles_starship_config
+unset -f _dotfiles_starship_config
 export WORKON_HOME="$XDG_DATA_HOME/virtualenvs"
 export KERAS_HOME="$XDG_STATE_HOME/keras"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv

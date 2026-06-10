@@ -55,9 +55,8 @@ if [[ "$(uname -s)" == "Darwin" && -r "$XDG_CONFIG_HOME/macos.alias.sh" ]]; then
 fi
 [[ -r "$XDG_CONFIG_HOME/alias.sh" ]] && source "$XDG_CONFIG_HOME/alias.sh"
 [[ -r "$XDG_CONFIG_HOME/rust.alias.sh" ]] && source "$XDG_CONFIG_HOME/rust.alias.sh"
-[[ -r "$XDG_CONFIG_HOME/zsh/secrets.zsh" ]] && source "$XDG_CONFIG_HOME/zsh/secrets.zsh"
 [[ -r "$XDG_CONFIG_HOME/zsh/mise.zsh" ]] && source "$XDG_CONFIG_HOME/zsh/mise.zsh"
-[[ -r "$XDG_CONFIG_HOME/zsh/direnv.zsh" ]] && source "$XDG_CONFIG_HOME/zsh/direnv.zsh"
+[[ -r "$XDG_CONFIG_HOME/zsh/secrets.zsh" ]] && source "$XDG_CONFIG_HOME/zsh/secrets.zsh"
 
 if [[ -s "$NVM_DIR/nvm.sh" ]]; then
   source "$NVM_DIR/nvm.sh"

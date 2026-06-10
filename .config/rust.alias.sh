@@ -1,16 +1,15 @@
 if [ -x "$(command -v eza)" ]; then
     alias ls="eza"
-    alias la="ls -laFhHumG"
-    alias ll="ls -laF"
-    alias tree="ls -laHT -I '.git'"
-    alias tree1="ls -laHTL 1 -I '.git'"
-    alias tree2="ls -laHTL 2 -I '.git'"
-    alias tree3="ls -laHTL 3 -I '.git'"
-    alias tree4="ls -laHTL 4 -I '.git'"
-
+    alias la="eza -la --git --group-directories-first"
+    alias ll="eza -la --git"
+    alias tree="eza -la -T -I '.git'"
+    alias tree1="eza -la -TL 1 -I '.git'"
+    alias tree2="eza -la -TL 2 -I '.git'"
+    alias tree3="eza -la -TL 3 -I '.git'"
+    alias tree4="eza -la -TL 4 -I '.git'"
 else
-    echo "eza is not installed"
-    alias ll="ls -lAF"
+    alias ll="ls -lAh"
+    alias la="ls -lAh"
 fi
 
 alias show="cat"

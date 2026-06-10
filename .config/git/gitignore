@@ -20,3 +20,5 @@
 # tfplans
 *.tfplan
 msg_iam_import_request.xml
+
+**/.claude/settings.local.json

@@ -9,6 +9,55 @@ update() {
     echo "no known package manager found"
   fi
 }
+
+_run_step() {
+  local label="$1"; shift
+  if command -v gum >/dev/null 2>&1; then
+    gum spin --title "$label" -- "$@"
+  else
+    echo "-- $label"
+    "$@"
+  fi
+}
+
+_run_fn_step() {
+  # For shell functions that can't run inside gum spin's subprocess
+  local label="$1"; shift
+  if command -v gum >/dev/null 2>&1; then
+    gum style --foreground 212 -- "$label"
+  else
+    echo "-- $label"
+  fi
+  "$@"
+}
+
+update_caches() {
+  command -v bat  >/dev/null 2>&1 && _run_step "Rebuilding bat theme cache"  bat cache --build
+  command -v tldr >/dev/null 2>&1 && _run_step "Updating tealdeer cache"     tldr --update
+  command -v mise >/dev/null 2>&1 && _run_step "Updating mise"               mise self-update --yes
+  command -v mise >/dev/null 2>&1 && _run_step "Upgrading mise tools"        mise upgrade
+
+  if (( ${+functions[nvm]} )); then
+    _run_fn_step "Updating node (nvm)"
+    nvm install --lts --reinstall-packages-from=current
+    nvm alias default 'lts/*'
+  fi
+
+  # starship: brew on macOS is handled by update(); on Linux update via cargo
+  if [[ "$(uname -s)" != "Darwin" ]] && command -v starship >/dev/null 2>&1; then
+    _run_step "Updating starship" "$CARGO_HOME/bin/cargo" install starship
+  fi
+
+  if (( ${+functions[omz]} )); then
+    _run_fn_step "Updating oh-my-zsh"
+    omz update
+  fi
+}
+
+full_update() {
+  update
+  update_caches
+}
 alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 
 if [ -x "$(command -v nvim)" ]; then

@@ -1,4 +1,6 @@
 [[ -r "$XDG_CONFIG_HOME/zsh/.zshenv" ]] && source "$XDG_CONFIG_HOME/zsh/.zshenv"
+export HISTFILE="${XDG_STATE_HOME}/bash/history"
+[[ -d "${XDG_STATE_HOME}/bash" ]] || mkdir -p "${XDG_STATE_HOME}/bash"
 
 [[ -r "$XDG_CONFIG_HOME/path.sh" ]] && source "$XDG_CONFIG_HOME/path.sh"
 [[ -r "$XDG_CONFIG_HOME/alias.sh" ]] && source "$XDG_CONFIG_HOME/alias.sh"

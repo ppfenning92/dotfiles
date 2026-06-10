@@ -1,0 +1,14 @@
+title = "infrastructure"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "project-level allowlist"
+paths = [
+  ".gitleaks.toml",
+]
+regexes = [
+  # op:// URIs are references, not secrets
+  '''op://[a-zA-Z0-9_-]+/[a-zA-Z0-9_/-]+''',
+]

@@ -4,9 +4,6 @@
 [submodule ".config/tmux/plugins/tpm"]
 	path = .config/tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
-[submodule ".config/bat/themes"]
-	path = .config/bat/themes
-	url = https://github.com/catppuccin/bat
 [submodule ".config/btop"]
 	path = .config/btop
 	url = https://github.com/catppuccin/btop

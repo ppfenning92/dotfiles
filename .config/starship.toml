@@ -104,6 +104,121 @@ format = '[$symbol]($style)'
 disabled = false
 format = '[$status]($style)'
 
+[palettes.catppuccin_frappe]
+rosewater = "#f2d5cf"
+flamingo = "#eebebe"
+pink = "#f4b8e4"
+mauve = "#ca9ee6"
+red = "#e78284"
+maroon = "#ea999c"
+peach = "#ef9f76"
+yellow = "#e5c890"
+green = "#a6d189"
+teal = "#81c8be"
+sky = "#99d1db"
+sapphire = "#85c1dc"
+blue = "#8caaee"
+lavender = "#babbf1"
+text = "#c6d0f5"
+subtext1 = "#b5bfe2"
+subtext0 = "#a5adce"
+overlay2 = "#949cbb"
+overlay1 = "#838ba7"
+overlay0 = "#737994"
+surface2 = "#626880"
+surface1 = "#51576d"
+surface0 = "#414559"
+base = "#303446"
+mantle = "#292c3c"
+crust = "#232634"
+
+# kanagawa wave colors mapped to catppuccin slot names so format strings need no changes
+[palettes.kanagawa]
+rosewater = "#D27E99"
+flamingo = "#E46876"
+pink = "#D27E99"
+mauve = "#957FB8"
+red = "#C34043"
+maroon = "#E46876"
+peach = "#FFA066"
+yellow = "#E6C384"
+green = "#98BB6C"
+teal = "#6A9589"
+sky = "#7FB4CA"
+sapphire = "#7E9CD8"
+blue = "#7E9CD8"
+lavender = "#9CABCA"
+text = "#DCD7BA"
+subtext1 = "#C8C093"
+subtext0 = "#A09191"
+overlay2 = "#727169"
+overlay1 = "#727169"
+overlay0 = "#54546D"
+surface2 = "#363646"
+surface1 = "#2A2A37"
+surface0 = "#1F1F28"
+base = "#1F1F28"
+mantle = "#16161D"
+crust = "#0D0C0C"
+
+# tokyo night colors mapped to catppuccin slot names so format strings need no changes
+[palettes.tokyo_night]
+rosewater = "#f7768e"
+flamingo = "#f7768e"
+pink = "#bb9af7"
+mauve = "#9d7cd8"
+red = "#f7768e"
+maroon = "#db4b4b"
+peach = "#ff9e64"
+yellow = "#e0af68"
+green = "#9ece6a"
+teal = "#73daca"
+sky = "#7dcfff"
+sapphire = "#2ac3de"
+blue = "#7aa2f7"
+lavender = "#c0caf5"
+text = "#c0caf5"
+subtext1 = "#a9b1d6"
+subtext0 = "#9aa5ce"
+overlay2 = "#565f89"
+overlay1 = "#414868"
+overlay0 = "#3b4261"
+surface2 = "#292e42"
+surface1 = "#1f2335"
+surface0 = "#1a1b26"
+base = "#1a1b26"
+mantle = "#16161e"
+crust = "#13131a"
+
+# nord colors mapped to catppuccin slot names so format strings need no changes
+[palettes.nord]
+rosewater = "#B48EAD"
+flamingo = "#BF616A"
+pink = "#B48EAD"
+mauve = "#B48EAD"
+red = "#BF616A"
+maroon = "#BF616A"
+peach = "#D08770"
+yellow = "#EBCB8B"
+green = "#A3BE8C"
+teal = "#8FBCBB"
+sky = "#88C0D0"
+sapphire = "#81A1C1"
+blue = "#81A1C1"
+lavender = "#88C0D0"
+text = "#D8DEE9"
+subtext1 = "#C9D0DA"
+subtext0 = "#AEBACF"
+overlay2 = "#616E88"
+overlay1 = "#4C566A"
+overlay0 = "#434C5E"
+surface2 = "#3B4252"
+surface1 = "#353B49"
+surface0 = "#2E3440"
+base = "#2E3440"
+mantle = "#282C38"
+crust = "#242832"
+
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
 flamingo = "#f2cdcd"
@@ -209,7 +324,7 @@ context_alias = "$cluster"
 
 [sudo]
 format = '[$symbol]($style)'
-disabled = false
+disabled = true
 
 [time]
 disabled = false
@@ -270,5 +385,5 @@ format = "[$symbol$output]($style)"
 style = "bold peach"
 
 [fill]
-symbol = '.'
+symbol = '─'
 style = 'dimmed black'
