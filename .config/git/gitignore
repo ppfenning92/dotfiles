@@ -14,6 +14,13 @@
 .env
 *.env
 
+# keys and certs
+*.key
+*.pem
+*.ca
+*.cert
+
+
 # docker swarm stack / portainer
 !stack.env
 
