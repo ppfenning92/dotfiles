@@ -10,6 +10,8 @@ ${custom.sep}\
 $gcloud\
 $aws\
 ${custom.sep}\
+${custom.terrafrom_env}\
+${custom.sep}\
 (${custom.firebase} [|](dimmed) )\
 ([  ](subtext0)$docker_context$bun$golang$helm$nodejs$python$rust$gleam$terraform[|](dimmed) )\
 ${custom.git_provider}\
@@ -18,7 +20,7 @@ $git_commit\
 $git_status\
 $git_metrics\
 $fill \
-($status [|](dimmed) )($cmd_duration [|](dimmed) )$battery${custom.vpn}$time
+($status [|](dimmed) )($cmd_duration [|](dimmed) )$jobs$battery${custom.vpn} ${custom.rss}$sudo $time
 $nix_shell$character
 """
 # right_format = "$status $cmd_duration $time"
@@ -41,7 +43,7 @@ style = "dimmed"
 [git_branch]
 format = "[$branch(:$remote_branch)]($style) "
 symbol = "󰊢 "
-style = "peach" 
+style = "peach"
 
 [git_commit]
 only_detached = false
@@ -53,7 +55,7 @@ shell = "sh"
 command = """
 if git remote -v | grep -q github; then
   echo " "
-elif git remote -v | grep -qE "(gitlab|on.ag); then
+elif git remote -v | grep -qE "(gitlab|on.ag)"; then
   echo " "
 else
   echo "󰊢 "
@@ -162,7 +164,8 @@ home_symbol = "󰜥"
 
 
 [aws]
-format = "[$symbol($profile) [$region](flamingo underline bold italic)]($style)"
+format = "[$symbol($profile)(flamingo underline bold italic)]($style)"
+# format = "[$symbol($profile) [$region](flamingo underline bold italic)]($style)"
 style = "rosewater"
 disabled = false
 # force_display = true
@@ -195,7 +198,7 @@ detect_files = ['firebase.json']
 ignore_timeout = true
 
 [kubernetes]
-format = "[$symbol$context]($style)"
+format = '[$symbol$context (\($namespace\))]($style)'
 disabled = false
 symbol = "󱃾 "
 style = "teal"
@@ -205,6 +208,7 @@ context_pattern = "arn:aws:eks:(?P<region>.*?):cluster/(?P<cluster>.*)"
 context_alias = "$cluster"
 
 [sudo]
+format = '[$symbol]($style)'
 disabled = false
 
 [time]
@@ -215,13 +219,13 @@ format = "[$time]($style)"
 ssh_only = true
 ssh_symbol = " "
 trim_at = ''
-format = '[$ssh_symbol$hostname]($style)'
-style = "bold red"
+format = '[$hostname $ssh_symbol]($style)'
+style = "italic bold red bg:black"
 
 [username]
-style_user = 'pink bold'
-style_root = 'red bold'
-format = '[$user]($style) '
+style_user = 'pink bold bg:black'
+style_root = 'red bold blink italic bg:black'
+format = '[$user@]($style)'
 disabled = false
 show_always = false
 detect_env_vars = ['SSH_TTY', 'SSH_CLIENT']
@@ -246,7 +250,28 @@ style = 'pink'
 threshold = 20
 style = 'red'
 
+[jobs]
+symbol = " "
+
 [custom.vpn]
 command = "true"
-when = "ifconfig | grep -q tun4"
+# utun100 = netbird on macOS; wt0 = netbird on Linux
+when = "ifconfig 2>/dev/null | grep -q utun100 || ip link 2>/dev/null | grep -q wt0"
 format = "[󱠾 ](rosewater)"
+
+[custom.terrafrom_env]
+detect_extensions = ['tf', 'tfplan', 'tfstate']
+detect_files = ['root.hcl']
+format = " $output"
+command = "echo \"$TF_VAR_environment\""
+
+[custom.rss]
+command = "nom --config-path $XDG_CONFIG_HOME/nom/ unread"
+when = "command -v nom >/dev/null 2>&1"
+symbol = " "
+format = "[$symbol$output]($style)"
+style = "bold peach"
+
+[fill]
+symbol = '.'
+style = 'dimmed black'
