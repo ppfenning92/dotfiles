@@ -3,6 +3,7 @@
 .config/zsh/.zshrc.pre-oh-my-zsh
 .config/zsh/.zcompdump*
 .config/tmux/plugins
+.config/gh/hosts.yml
 .config/go
 .config/fzf
 .config/nom/nom.db
