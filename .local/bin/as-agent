@@ -7,8 +7,12 @@
 #
 # Flags:
 #   -s, --service-account  service account name (e.g. claude.ptrck-sh) [required]
-#   -v, --vault            1Password vault (default: $OP_VAULT)
+#   -v, --vault            1Password vault for SA credentials (default: agents)
+#   -d, --debug            trace execution (set -x); also via AS_AGENT_DEBUG=1
 #   -h, --help
+#
+# NOTE: --debug prints every command, including fetched tokens. Use only when
+# diagnosing locally.
 set -euo pipefail
 
 err() { printf '\033[31merror:\033[0m %s\n' "$*" >&2; }
@@ -19,7 +23,10 @@ usage() {
 }
 
 SA=""
-VAULT="${OP_VAULT:-}"
+# Agent credentials (gitlab.sa.* token + ssh items) live in the agents vault.
+# Override with -v/--vault if they live elsewhere.
+VAULT="agents"
+DEBUG="${AS_AGENT_DEBUG:-}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -31,6 +38,7 @@ while [[ $# -gt 0 ]]; do
     VAULT="$2"
     shift 2
     ;;
+  -d | --debug) DEBUG=1; shift ;;
   -h | --help) usage ;;
   --)
     shift
@@ -39,6 +47,8 @@ while [[ $# -gt 0 ]]; do
   *) break ;;
   esac
 done
+
+[[ -n "$DEBUG" ]] && set -x
 
 CMD=("${@:-${SHELL}}")
 
@@ -58,10 +68,16 @@ fi
 tmpdir=$(mktemp -d /tmp/as-agent-XXXXXX)
 trap 'rm -rf "$tmpdir"' EXIT
 
-gum spin --spinner dot --title "Fetching token from 1Password…"  \
-  -- sh -c "op item get 'gitlab/sa/${SA}' --vault '${VAULT}' --format json > '${tmpdir}/item.json'"
-gum spin --spinner dot --title "Fetching SSH key from 1Password…" \
-  -- sh -c "op item get 'gitlab/sa/${SA}/ssh' --vault '${VAULT}' --format json > '${tmpdir}/ssh.json'"
+gum spin --show-error --spinner dot --title "Fetching token from 1Password…"  \
+  -- sh -c "op item get 'gitlab.sa.${SA}' --vault '${VAULT}' --format json > '${tmpdir}/item.json'"
+gum spin --show-error --spinner dot --title "Fetching SSH key from 1Password…" \
+  -- sh -c "op item get 'gitlab.sa.${SA}.ssh' --vault '${VAULT}' --format json > '${tmpdir}/ssh.json'"
+# Agent-scoped 1Password identity: the bootstrap item lives in 'dev', fetched
+# with the inherited identity (file SA token on headless, desktop app
+# elsewhere). Exported below so the session can only read the agents vault.
+# Override the item title with OP_AGENTS_TOKEN_ITEM if needed.
+gum spin --show-error --spinner dot --title "Fetching agents-vault token from 1Password…" \
+  -- sh -c "op item get '${OP_AGENTS_TOKEN_ITEM:-op.sa.agents}' --vault dev --fields password --reveal > '${tmpdir}/op_agents_token'"
 
 token=$(     jq -r '.fields[] | select(.purpose == "PASSWORD") | .value'                          <"${tmpdir}/item.json")
 git_name=$(  jq -r '.fields[] | select(.section.label == "git" and .label == "name")  | .value'   <"${tmpdir}/item.json")
@@ -75,6 +91,74 @@ chmod 600 "${tmpdir}/key"
 export GITLAB_TOKEN="${token}"
 export GLAB_TOKEN="${token}"
 export TF_VAR_gitlab_token="${token}"
+
+# Scope 1Password to the agents vault: replace the inherited (privileged)
+# service-account token and drop the tofu provider token entirely.
+op_agents_token=$(cat "${tmpdir}/op_agents_token")
+[[ -z "$op_agents_token" ]] && { err "agents-vault token is empty — create item 'op.sa.agents' in vault 'dev' (or set OP_AGENTS_TOKEN_ITEM)"; exit 1; }
+export OP_SERVICE_ACCOUNT_TOKEN="${op_agents_token}"
+export OP_VAULT="agents"
+unset TF_VAR_op_vault
+unset TF_VAR_op_service_account_token
+
+# Scrub any remaining op:// references from the env — they point to vaults the
+# agents token can't reach, and op run would fail trying to resolve them.
+while IFS='=' read -r _k _v; do
+  [[ "$_v" == op://* ]] && unset "$_k"
+done < <(env)
+unset _k _v
+
+# Override TF_VAR_* with per-agent credentials from the agents vault.
+# Each entry is "item:field:VAR_NAME". Silently skips items not yet populated.
+_op_cred() { op item get "$1" --vault agents --fields "$2" --reveal 2>/dev/null || true; }
+while IFS=: read -r _item _field _var; do
+  _val=$(_op_cred "$_item" "$_field")
+  [[ -n "$_val" ]] && export "${_var}=${_val}"
+done <<'CREDS'
+cloudflare:password:TF_VAR_cloudflare_token
+adguard:username:TF_VAR_adguard_user
+adguard:password:TF_VAR_adguard_password
+nextdns:password:TF_VAR_nextdns_api_key
+discord/bot/0x6a6c70:password:TF_VAR_discord_token
+discord/bot/0x6a6c70:servier_id:TF_VAR_discord_server_id
+CREDS
+unset _item _field _var _val
+unset -f _op_cred
+
+# Agent kubeconfigs from the agents vault, merged into ONE flattened file.
+# as-agent cannot win the KUBECONFIG env var — the shell's .zshenv re-exports
+# it on every subshell, after our exec — so kubectl is wrapped via a PATH shim
+# (like ssh below) instead. tofu reads the file via TF_VAR_kube_config_path,
+# which the shell leaves alone. Clusters whose item isn't populated are skipped.
+kube_bin=$(command -v kubectl 2>/dev/null || true)
+_kube_files=""
+for _c in rke2 berry-stack; do
+  _f="${tmpdir}/kc-${_c}"
+  # op read (not `item get --fields`) — the latter CSV-quotes multiline values.
+  if op read "op://agents/k8s.claude.${_c}/kubeconfig" >"$_f" 2>/dev/null && [[ -s "$_f" ]]; then
+    _kube_files="${_kube_files:+${_kube_files}:}${_f}"
+  else
+    rm -f "$_f"
+  fi
+done
+if [[ -n "$_kube_files" && -n "$kube_bin" ]]; then
+  kubeconfig="${tmpdir}/kubeconfig"
+  KUBECONFIG="$_kube_files" "$kube_bin" config view --flatten >"$kubeconfig" 2>/dev/null
+  KUBECONFIG="$kubeconfig" "$kube_bin" config use-context rke2 >/dev/null 2>&1 || true
+  chmod 600 "$kubeconfig"
+  rm -f "${tmpdir}"/kc-*
+  export TF_VAR_kube_config_path="$kubeconfig"
+
+  # PATH shim: kubectl always targets the agent kubeconfig regardless of the
+  # KUBECONFIG the shell sets. ${tmpdir} is prepended to PATH with the ssh
+  # wrapper below. exec the resolved real binary by absolute path (no recursion).
+  cat >"${tmpdir}/kubectl" <<SHIM
+#!/bin/sh
+exec "${kube_bin}" --kubeconfig "${kubeconfig}" "\$@"
+SHIM
+  chmod +x "${tmpdir}/kubectl"
+fi
+unset _c _f _kube_files kube_bin kubeconfig
 
 export GIT_AUTHOR_NAME="${git_name}"
 export GIT_AUTHOR_EMAIL="${git_email}"
@@ -93,9 +177,9 @@ chmod +x "${tmpdir}/ssh"
 export PATH="${tmpdir}:${PATH}"
 export GIT_SSH_COMMAND="${ssh_bin} -i ${tmpdir}/key -o IdentitiesOnly=yes"
 
-gum spin --spinner dot --title "Verifying GitLab token…" \
+gum spin --show-error --spinner dot --title "Verifying GitLab token…" \
   -- sh -c "glab api /user 2>/dev/null | jq -r '.username' > '${tmpdir}/gl_user.txt'"
-gum spin --spinner dot --title "Verifying SSH key…" \
+gum spin --show-error --spinner dot --title "Verifying SSH key…" \
   -- sh -c "ssh -T -i '${tmpdir}/key' -o IdentitiesOnly=yes git@gitlab.com > '${tmpdir}/ssh_greeting.txt' 2>&1 || true"
 
 gl_username=$(cat "${tmpdir}/gl_user.txt")
@@ -111,7 +195,8 @@ gum style \
   "$(gum style --foreground 241 "GitLab ") @${gl_username}" \
   "$(gum style --foreground 241 "Name   ") ${git_name}" \
   "$(gum style --foreground 241 "Email  ") ${git_email}" \
-  "$(gum style --foreground 241 "SSH    ") ${ssh_greeting}"
+  "$(gum style --foreground 241 "SSH    ") ${ssh_greeting}" \
+  "$(gum style --foreground 241 "1P     ") ${OP_VAULT}"
 
 gum confirm "Confirm agent identity?" || { echo "Aborted."; exit 1; }
 

@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-rg -v 'Refreshing state|Reading\.\.\.|Read complete after|Acquiring state lock|Releasing state lock|will be read during apply'
+rg -v 'Refreshing state|Reading\.\.\.|Read complete after|Acquiring state lock|Releasing state lock|will be read during apply|compared your real|found no differences'

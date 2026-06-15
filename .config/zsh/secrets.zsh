@@ -34,6 +34,35 @@ alias tf='terraform'
 alias tg='terragrunt'
 alias gl='glab'
 
+# --- terragrunt shortcuts (git-alias style) ---
+# Single unit (current dir) via `run --`. `o` = use the branch plan file.
+alias tgi='terragrunt run -- init'
+alias tgir='terragrunt run -- init -reconfigure -upgrade'
+alias tgp='terragrunt run -- plan'
+alias tgpo='terragrunt run -- plan -out="$(git_current_branch_clean).tfplan"'
+alias tgy='terragrunt run -- apply'
+alias tgyo='terragrunt run -- apply "$(git_current_branch_clean).tfplan"'
+alias tgd='terragrunt run -- destroy'
+alias tgv='terragrunt run -- validate'
+alias tgo='terragrunt run -- output'
+alias tgsl='terragrunt run -- state list'
+alias tgss='terragrunt run -- state show'
+alias tgfu='terragrunt run -- force-unlock'
+
+# Whole stack via `run --all`; `a` = all. plan/apply piped through tgfilter.
+# Functions so extra flags land before the pipe.
+tga()    { terragrunt run --all -- "$@" }                                              # generic all runner
+tgai()   { terragrunt run --all -- init -reconfigure -upgrade "$@" }
+tgap()   { terragrunt run --all -- plan "$@" | tgfilter }
+tgapo()  { terragrunt run --all -- plan -out="$(git_current_branch_clean).tfplan" "$@" | tgfilter }
+tgaa()   { terragrunt run --all -- apply "$@" | tgfilter }
+
+# Whole stack, affected units only (`run --all --filter-affected`).
+tgaf()   { terragrunt run --all --filter-affected -- "$@" }                            # generic affected runner
+tgafp()  { terragrunt run --all --filter-affected -- plan "$@" | tgfilter }
+tgafpo() { terragrunt run --all --filter-affected -- plan -out="$(git_current_branch_clean).tfplan" "$@" | tgfilter }
+tgafa()  { terragrunt run --all --filter-affected -- apply "$@" | tgfilter }
+
 if (( $+functions[compdef] )); then
   (( $+functions[_terraform] )) && compdef _terraform terraform tf
   (( $+functions[_terragrunt] )) && compdef _terragrunt terragrunt tg
