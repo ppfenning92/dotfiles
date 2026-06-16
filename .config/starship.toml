@@ -4,17 +4,11 @@ palette = "catppuccin_mocha"
 format = """
 (${username}${hostname} [|](dimmed) )\
 $directory\
-${custom.sep}\
-$kubernetes\
-${custom.sep}\
-$gcloud\
-$aws\
-${custom.sep}\
-${custom.terrafrom_env}\
-${custom.sep}\
-(${custom.firebase} [|](dimmed) )\
-([  ](subtext0)$docker_context$bun$golang$helm$nodejs$python$rust$gleam$terraform[|](dimmed) )\
-${custom.git_provider}\
+([ | ](dimmed)$kubernetes)\
+([ | ](dimmed)$aws)\
+([ | ](dimmed)${custom.terrafrom_env})\
+([  ](subtext0)$docker_context$bun$golang$helm$nodejs$python$rust$gleam$terraform )\
+([ | ](dimmed)${custom.git_provider})\
 $git_branch\
 $git_commit\
 $git_status\
@@ -36,11 +30,6 @@ $character $status($status [|](dimmed) )($cmd_duration [|](dimmed) )$time
 [docker_context]
 disabled = false
 format = "[$symbol]($style)"
-
-[custom.sep]
-format = '[ | ]($style)'
-when = true
-style = "dimmed"
 
 [git_branch]
 format = "[$branch(:$remote_branch)]($style) "
@@ -298,22 +287,6 @@ eu-south-2 = "ES"
 eu-north-1 = "DK"
 eu-central-2 = "CH"
 
-[gcloud]
-format = "[$symbol($domain) [$project](flamingo underline bold italic)]($style)"
-style = "rosewater"
-disabled = false
-symbol = "󱇶 "
-
-[gcloud.project_aliases]
-
-[custom.firebase]
-format = "[$symbol([$output](bold underline red italic))]($style)"
-command = 'echo -n $(jq -r ".activeProjects[\"$(pwd)\"]" ~/.config/configstore/firebase-tools.json)'
-symbol = "󰥧 "
-style = "maroon"
-detect_files = ['firebase.json']
-ignore_timeout = true
-
 [kubernetes]
 format = '[$symbol$context (\($namespace\))]($style)'
 disabled = false
@@ -379,8 +352,8 @@ format = "[󱠾 ](rosewater)"
 [custom.terrafrom_env]
 detect_extensions = ['tf', 'tfplan', 'tfstate']
 detect_files = ['root.hcl']
-format = " $output"
-command = "echo \"$TF_VAR_environment\""
+format = "( $output)"
+command = '[ "$__PROFILE" = ottonova ] && echo "$TF_VAR_environment" || true'
 
 [custom.rss]
 command = "nom --config-path $XDG_CONFIG_HOME/nom/ unread"
