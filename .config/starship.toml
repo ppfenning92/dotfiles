@@ -20,6 +20,8 @@ $git_commit\
 $git_status\
 $git_metrics\
 $fill \
+${custom.profile} \
+$fill \
 ($status [|](dimmed) )($cmd_duration [|](dimmed) )$jobs$battery${custom.vpn} ${custom.rss}$sudo $time
 $nix_shell$character
 """
@@ -390,3 +392,8 @@ style = "bold peach"
 [fill]
 symbol = '─'
 style = 'dimmed black'
+
+[custom.profile]
+when = true
+format = "$output"
+command = "echo \"$__PROFILE\""

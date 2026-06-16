@@ -8,3 +8,16 @@ Host *
 Host devbox
   HostName 10.10.1.110
   User p
+
+Host gitlabrunner
+  HostName 10.10.3.230
+  User p
+
+Host nas
+  HostName 10.10.1.11
+  User p
+
+# TODO: add cluster nodes rke2
+# TODO: add cluster nodes k3s
+# TODO: add homeassistant
+# TODO: add adguard-bkp, tc-s1, opnsense
