@@ -288,7 +288,7 @@ eu-north-1 = "DK"
 eu-central-2 = "CH"
 
 [kubernetes]
-format = '[$symbol$context (\($namespace\))]($style)'
+format = '[$symbol$context( \($namespace\))]($style)'
 disabled = false
 symbol = "󱃾 "
 style = "teal"
