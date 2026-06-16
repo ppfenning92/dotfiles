@@ -270,7 +270,7 @@ home_symbol = "󰜥"
 
 
 [aws]
-format = "[$symbol($profile)(flamingo underline bold italic)]($style)"
+format = "([󰸏 $profile]($style))"
 # format = "[$symbol($profile) [$region](flamingo underline bold italic)]($style)"
 style = "rosewater"
 disabled = false
