@@ -1,0 +1,6 @@
+# Start Claude usage windows four times per day. Times use the cron daemon's
+# local timezone (Europe/Berlin on this host).
+15 5 * * * "$HOME/.dotfiles/.config/cron/claude-session-start"
+20 10 * * * "$HOME/.dotfiles/.config/cron/claude-session-start"
+25 15 * * * "$HOME/.dotfiles/.config/cron/claude-session-start"
+30 20 * * * "$HOME/.dotfiles/.config/cron/claude-session-start"

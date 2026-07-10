@@ -161,8 +161,6 @@ disabled = false
 pipestatus = true
 map_symbol = true
 
-
-
 [custom.myip]
 command = "dig @ns1.google.com TXT o-o.myaddr.l.google.com +short | tr -d '\"'"
 when = "true"
@@ -170,16 +168,12 @@ symbol = " "
 description = "print external wan ip"
 format = "[$symbol($output)]($style)"
 style = "white"
-
-
 [custom.dotfiles_branch]
 command = "git --git-dir=$HOME/.dotfiles/ branch --show-current"
 when = """ [[ "$HOME" == "$PWD" ]] """
 symbol = "🔧"
 format = "[$symbol($output)]($style)"
 style = "bold white"
-
-
 
 [custom.dotfiles_status]
 command = "git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME status --porcelain | wc -l"

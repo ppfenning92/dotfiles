@@ -1,0 +1,8 @@
+repos:
+  - repo: https://github.com/amperser/proselint
+    rev: 0.14.0
+    hooks:
+      - id: proselint
+# stagning
+        # asd
+        # asdasd

@@ -7,17 +7,21 @@ repos:
       - id: mixed-line-ending
         args: [--fix=auto]
       - id: pretty-format-json
-        args: [--autofix, --no-sort-keys]
+        exclude: lazy-lock\.json$
       - id: check-toml
       - id: check-xml
       - id: check-json
       - id: no-commit-to-branch
         args: [--branch, main]
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.37.1
+    rev: v1.38.0
     hooks:
       - id: yamllint
-  - repo: https://github.com/amperser/proselint
-    rev: v0.16.0
+  - repo: https://github.com/AleksaC/hadolint-py
+    rev: v2.14.0
     hooks:
-      - id: proselint
+      - id: hadolint
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks

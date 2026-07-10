@@ -1,0 +1,221 @@
+#!/usr/bin/env bash
+# Start a shell (or run a command) with a GitLab service account identity.
+# Usage:
+#   bin/as-agent -s <sa>                  — opens $SHELL with agent identity
+#   bin/as-agent -s <sa> -- claude        — starts Claude Code as agent
+#   bin/as-agent -s <sa> -- git push ...  — single command
+#
+# Flags:
+#   -s, --service-account  service account name (e.g. claude.ptrck-sh) [required]
+#   -v, --vault            1Password vault for SA credentials (default: agents)
+#   -d, --debug            trace execution (set -x); also via AS_AGENT_DEBUG=1
+#   -h, --help
+#
+# NOTE: --debug prints every command, including fetched tokens. Use only when
+# diagnosing locally.
+set -euo pipefail
+
+err() { printf '\033[31merror:\033[0m %s\n' "$*" >&2; }
+
+usage() {
+  grep '^#' "$0" | grep -v '^#!/' | sed 's/^# \?//'
+  exit 1
+}
+
+SA=""
+# Agent credentials (gitlab.sa.* token + ssh items) live in the agents vault.
+# Override with -v/--vault if they live elsewhere.
+VAULT="agents"
+DEBUG="${AS_AGENT_DEBUG:-}"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+  -s | --service-account)
+    SA="$2"
+    shift 2
+    ;;
+  -v | --vault)
+    VAULT="$2"
+    shift 2
+    ;;
+  -d | --debug) DEBUG=1; shift ;;
+  -h | --help) usage ;;
+  --)
+    shift
+    break
+    ;;
+  *) break ;;
+  esac
+done
+
+[[ -n "$DEBUG" ]] && set -x
+
+CMD=("${@:-${SHELL}}")
+
+if [[ -z "$SA" ]]; then
+  remote=$(git remote get-url origin 2>/dev/null) || true
+  if [[ "$remote" =~ ^git@[^:]+:([^/]+)/ ]]; then
+    group="${BASH_REMATCH[1]}"
+  elif [[ "$remote" =~ ^https?://[^/]+/([^/]+)/ ]]; then
+    group="${BASH_REMATCH[1]}"
+  fi
+  [[ -n "${group:-}" ]] && SA="claude.${group}"
+fi
+
+[[ -z "$SA" ]]    && { err "could not derive SA from git remote; use -s/--service-account"; usage; }
+[[ -z "$VAULT" ]] && { err "-v/--vault is required (or set OP_VAULT)"; usage; }
+
+tmpdir=$(mktemp -d /tmp/as-agent-XXXXXX)
+trap 'rm -rf "$tmpdir"' EXIT
+
+gum spin --show-error --spinner dot --title "Fetching token from 1Password…"  \
+  -- sh -c "op item get 'gitlab.sa.${SA}' --vault '${VAULT}' --format json > '${tmpdir}/item.json'"
+gum spin --show-error --spinner dot --title "Fetching SSH key from 1Password…" \
+  -- sh -c "op item get 'gitlab.sa.${SA}.ssh' --vault '${VAULT}' --format json > '${tmpdir}/ssh.json'"
+# Agent-scoped 1Password identity, fetched with the inherited (privileged)
+# identity before we drop privileges below. Prefer the agents-scoped Connect
+# token (off the SA rate-limit budget); fall back to the agents-vault SA token
+# when Connect is unreachable. Override the refs via OP_CONNECT_TOKEN_REF /
+# OP_AGENTS_TOKEN_ITEM if they live elsewhere.
+gum spin --show-error --spinner dot --title "Fetching agent Connect token from 1Password…" \
+  -- sh -c "op read '${OP_CONNECT_TOKEN_REF:-op://agents/op.connect.tofu.sa.agent/password}' > '${tmpdir}/op_connect_token' 2>/dev/null" || true
+gum spin --show-error --spinner dot --title "Fetching agents-vault SA token from 1Password…" \
+  -- sh -c "op item get '${OP_AGENTS_TOKEN_ITEM:-op.sa.agents}' --vault dev --fields password --reveal > '${tmpdir}/op_agents_token' 2>/dev/null" || true
+
+token=$(     jq -r '.fields[] | select(.purpose == "PASSWORD") | .value'                          <"${tmpdir}/item.json")
+git_name=$(  jq -r '.fields[] | select(.section.label == "git" and .label == "name")  | .value'   <"${tmpdir}/item.json")
+git_email=$( jq -r '.fields[] | select(.section.label == "git" and .label == "email") | .value'   <"${tmpdir}/item.json")
+ssh_privkey=$(jq -r '.fields[] | select(.label == "private key") | .ssh_formats.openssh.value'    <"${tmpdir}/ssh.json")
+[[ -z "$ssh_privkey" || "$ssh_privkey" == "null" ]] && { err "could not extract SSH private key from 1P item gitlab/sa/${SA}/ssh"; exit 1; }
+
+printf '%s\n' "$ssh_privkey" >"${tmpdir}/key"
+chmod 600 "${tmpdir}/key"
+
+export GITLAB_TOKEN="${token}"
+export GLAB_TOKEN="${token}"
+export TF_VAR_gitlab_token="${token}"
+
+# Scope 1Password to the agents vault and drop the inherited (privileged)
+# identity. Prefer Connect; the explicit re-export ensures the human's broad
+# Connect token (inherited from mise) never leaks into the agent session.
+op_connect_token=$(cat "${tmpdir}/op_connect_token" 2>/dev/null || true)
+op_agents_token=$(cat "${tmpdir}/op_agents_token" 2>/dev/null || true)
+if [[ -n "$op_connect_token" ]]; then
+  export OP_CONNECT_HOST="${OP_CONNECT_HOST:-http://op.local.j-p.cloud:33333}"
+  export OP_CONNECT_TOKEN="${op_connect_token}"
+  export TF_VAR_op_connect_host="${OP_CONNECT_HOST}"
+  export TF_VAR_op_connect_token="${op_connect_token}"
+  unset OP_SERVICE_ACCOUNT_TOKEN
+  op_identity="connect · agents"
+elif [[ -n "$op_agents_token" ]]; then
+  export OP_SERVICE_ACCOUNT_TOKEN="${op_agents_token}"
+  unset OP_CONNECT_HOST OP_CONNECT_TOKEN TF_VAR_op_connect_host TF_VAR_op_connect_token
+  op_identity="sa token · agents"
+else
+  err "no agent 1Password credentials: missing Connect token (op://agents/op.connect.tofu.sa.agent) and SA token (op.sa.agents in dev)"
+  exit 1
+fi
+export OP_VAULT="agents"
+unset TF_VAR_op_vault
+unset TF_VAR_op_service_account_token
+
+# Scrub any remaining op:// references from the env — they point to vaults the
+# agents token can't reach, and op run would fail trying to resolve them.
+while IFS='=' read -r _k _v; do
+  [[ "$_v" == op://* ]] && unset "$_k"
+done < <(env)
+unset _k _v
+
+# Override TF_VAR_* with per-agent credentials from the agents vault.
+# Each entry is "item:field:VAR_NAME". Silently skips items not yet populated.
+_op_cred() { op item get "$1" --vault agents --fields "$2" --reveal 2>/dev/null || true; }
+while IFS=: read -r _item _field _var; do
+  _val=$(_op_cred "$_item" "$_field")
+  [[ -n "$_val" ]] && export "${_var}=${_val}"
+done <<'CREDS'
+cloudflare:password:TF_VAR_cloudflare_token
+adguard:username:TF_VAR_adguard_user
+adguard:password:TF_VAR_adguard_password
+nextdns:password:TF_VAR_nextdns_api_key
+discord/bot/0x6a6c70:password:TF_VAR_discord_token
+discord/bot/0x6a6c70:servier_id:TF_VAR_discord_server_id
+CREDS
+unset _item _field _var _val
+unset -f _op_cred
+
+# Agent kubeconfigs from the agents vault, merged into ONE flattened file.
+# as-agent cannot win the KUBECONFIG env var — the shell's .zshenv re-exports
+# it on every subshell, after our exec — so kubectl is wrapped via a PATH shim
+# (like ssh below) instead. tofu reads the file via TF_VAR_kube_config_path,
+# which the shell leaves alone. Clusters whose item isn't populated are skipped.
+kube_bin=$(command -v kubectl 2>/dev/null || true)
+_kube_files=""
+for _c in rke2 berry-stack; do
+  _f="${tmpdir}/kc-${_c}"
+  # op read (not `item get --fields`) — the latter CSV-quotes multiline values.
+  if op read "op://agents/k8s.claude.${_c}/kubeconfig" >"$_f" 2>/dev/null && [[ -s "$_f" ]]; then
+    _kube_files="${_kube_files:+${_kube_files}:}${_f}"
+  else
+    rm -f "$_f"
+  fi
+done
+if [[ -n "$_kube_files" && -n "$kube_bin" ]]; then
+  kubeconfig="${tmpdir}/kubeconfig"
+  KUBECONFIG="$_kube_files" "$kube_bin" config view --flatten >"$kubeconfig" 2>/dev/null
+  KUBECONFIG="$kubeconfig" "$kube_bin" config use-context rke2 >/dev/null 2>&1 || true
+  chmod 600 "$kubeconfig"
+  rm -f "${tmpdir}"/kc-*
+  export TF_VAR_kube_config_path="$kubeconfig"
+
+  # PATH shim: kubectl always targets the agent kubeconfig regardless of the
+  # KUBECONFIG the shell sets. ${tmpdir} is prepended to PATH with the ssh
+  # wrapper below. exec the resolved real binary by absolute path (no recursion).
+  cat >"${tmpdir}/kubectl" <<SHIM
+#!/bin/sh
+exec "${kube_bin}" --kubeconfig "${kubeconfig}" "\$@"
+SHIM
+  chmod +x "${tmpdir}/kubectl"
+fi
+unset _c _f _kube_files kube_bin kubeconfig
+
+export GIT_AUTHOR_NAME="${git_name}"
+export GIT_AUTHOR_EMAIL="${git_email}"
+export GIT_COMMITTER_NAME="${git_name}"
+export GIT_COMMITTER_EMAIL="${git_email}"
+
+export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/1password/agent.sock"
+
+# Wrap ssh so every ssh call in the session uses the SA key, not just git.
+ssh_bin=$(command -v ssh)
+cat >"${tmpdir}/ssh" <<WRAPPER
+#!/bin/sh
+exec "${ssh_bin}" -i "${tmpdir}/key" -o IdentitiesOnly=yes "\$@"
+WRAPPER
+chmod +x "${tmpdir}/ssh"
+export PATH="${tmpdir}:${PATH}"
+export GIT_SSH_COMMAND="${ssh_bin} -i ${tmpdir}/key -o IdentitiesOnly=yes"
+
+gum spin --show-error --spinner dot --title "Verifying GitLab token…" \
+  -- sh -c "glab api /user 2>/dev/null | jq -r '.username' > '${tmpdir}/gl_user.txt'"
+gum spin --show-error --spinner dot --title "Verifying SSH key…" \
+  -- sh -c "ssh -T -i '${tmpdir}/key' -o IdentitiesOnly=yes git@gitlab.com > '${tmpdir}/ssh_greeting.txt' 2>&1 || true"
+
+gl_username=$(cat "${tmpdir}/gl_user.txt")
+ssh_greeting=$(cat "${tmpdir}/ssh_greeting.txt")
+
+gum style \
+  --border rounded \
+  --border-foreground 99 \
+  --padding "0 2" \
+  --margin "1 0" \
+  "$(gum style --bold --foreground 212 "Agent: ${SA}")" \
+  "" \
+  "$(gum style --foreground 241 "GitLab ") @${gl_username}" \
+  "$(gum style --foreground 241 "Name   ") ${git_name}" \
+  "$(gum style --foreground 241 "Email  ") ${git_email}" \
+  "$(gum style --foreground 241 "SSH    ") ${ssh_greeting}" \
+  "$(gum style --foreground 241 "1P     ") ${op_identity}"
+
+gum confirm "Confirm agent identity?" || { echo "Aborted."; exit 1; }
+
+exec "${CMD[@]}"

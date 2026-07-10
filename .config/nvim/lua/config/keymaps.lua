@@ -1,0 +1,28 @@
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+
+vim.keymap.set("n", "<M-o>", "<C-o>", { desc = "Jump backward" })
+vim.keymap.set("n", "<M-O>", "<C-i>", { desc = "Jump forward" })
+vim.keymap.set("n", "<leader>q", function() vim.diagnostic.setqflist() vim.cmd("copen") end, { desc = "Workspace diagnostics → quickfix" })
+vim.keymap.set("n", "<leader>Q", function() vim.diagnostic.setloclist() vim.cmd("lopen") end, { desc = "Buffer diagnostics → loclist" })
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+vim.keymap.set("n", "<left>", function()
+  vim.notify("Use h to move <left>", vim.log.levels.DEBUG)
+end)
+vim.keymap.set("n", "<right>", function()
+  vim.notify("Use l to move <right>", vim.log.levels.DEBUG)
+end)
+vim.keymap.set("n", "<up>", function()
+  vim.notify("Use k to move <up>", vim.log.levels.DEBUG)
+end)
+vim.keymap.set("n", "<down>", function()
+  vim.notify("Use j to move <down>", vim.log.levels.DEBUG)
+end)
+
+vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+
+vim.keymap.set({ "n", "i" }, "<C-s>", "<Esc><cmd>w<CR>", { desc = "Save buffer" })
+vim.keymap.set({ "n", "i" }, "<CM-s>", "<Esc><cmd>wa<CR>", { desc = "Save all buffers" })

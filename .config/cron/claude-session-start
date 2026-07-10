@@ -1,0 +1,77 @@
+#!/bin/sh
+
+set -eu
+
+prompt='Reply with exactly OK.'
+
+# Run from a directory Claude already trusts. Cron launches from $HOME, which
+# is not trusted, so Claude blocks on the first-run trust dialog and the prompt
+# is never submitted — no API call, no usage window. Override with CLAUDE_CWD.
+run_dir=${CLAUDE_CWD:-$HOME/.dotfiles}
+cd "$run_dir"
+
+umask 077
+state_dir=${XDG_STATE_HOME:-$HOME/.local/state}/claude-session-start
+log_file=$state_dir/session.log
+event_log=$state_dir/events.log
+mkdir -p "$state_dir"
+
+log_event() {
+  printf '%s pid=%s %s\n' "$(date --iso-8601=seconds)" "$$" "$*" >>"$event_log"
+}
+
+started_at=$(date +%s)
+printf '\n=== %s pid=%s ===\n' "$(date --iso-8601=seconds)" "$$" >>"$log_file"
+log_event "event=start cwd=$PWD transcript=$log_file"
+
+if [ -n "${CLAUDE_BIN:-}" ]; then
+  claude_bin=$CLAUDE_BIN
+elif [ -x "$HOME/.local/bin/claude" ]; then
+  claude_bin=$HOME/.local/bin/claude
+else
+  claude_bin=$(command -v claude || true)
+fi
+
+if [ -z "$claude_bin" ]; then
+  log_event 'event=error reason=claude_not_found status=127'
+  logger -t claude-session-start 'claude executable not found'
+  exit 127
+fi
+
+# Use a fresh session on every run. Reusing a session makes this tiny prompt
+# progressively more expensive because Claude sends the accumulated context
+# again, even when that context is cached. Override the model via CLAUDE_MODEL.
+model=${CLAUDE_MODEL:-haiku}
+session_id=$(cat /proc/sys/kernel/random/uuid)
+
+cleanup_session() {
+  find "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects" \
+    -type f -name "$session_id.jsonl" -delete 2>/dev/null || true
+}
+trap cleanup_session EXIT
+
+# Claude's print/SDK mode is metered separately. Allocate a pseudo-terminal,
+# pass the documented initial prompt, and keep input open for the response.
+status=0
+log_event "event=launch executable=$claude_bin model=$model session_id=$session_id timeout_seconds=125"
+sleep 118 | \
+  TERM=xterm-256color timeout --signal=TERM --kill-after=15s 125s \
+    script --quiet --append \
+      --return \
+      --command "'$claude_bin' --safe-mode --model '$model' --session-id '$session_id' '$prompt'" "$log_file" \
+    >/dev/null 2>&1 || status=$?
+
+duration_seconds=$(($(date +%s) - started_at))
+case $status in
+  0) result=completed ;;
+  124) result=timeout ;;
+  137) result=killed_after_timeout ;;
+  *) result=failed ;;
+esac
+log_event "event=finish result=$result status=$status duration_seconds=$duration_seconds"
+
+# timeout(1) returns 124 after TERM, or 137 if it must escalate to KILL.
+if [ "$status" -ne 0 ] && [ "$status" -ne 124 ] && [ "$status" -ne 137 ]; then
+  logger -t claude-session-start "claude invocation failed (status $status)"
+  exit "$status"
+fi

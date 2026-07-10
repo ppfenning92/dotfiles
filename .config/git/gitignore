@@ -1,3 +1,6 @@
+# Fucking MacOS
+.DS_Store
+
 # IDEs
 
 .op
@@ -11,8 +14,18 @@
 .env
 *.env
 
+# keys and certs
+*.key
+*.pem
+*.ca
+*.cert
+
+
 # docker swarm stack / portainer
 !stack.env
 
 # tfplans
 *.tfplan
+msg_iam_import_request.xml
+
+**/.claude/settings.local.json
