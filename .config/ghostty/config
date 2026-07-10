@@ -1,10 +1,10 @@
 theme = catppuccin-mocha
 keybind = global:ctrl+alt+t=new_window
 keybind = cmd+n=unbind
-keybind = cmd+a=unbind 
-keybind = cmd+k=unbind 
+keybind = cmd+a=unbind
+keybind = cmd+k=unbind
 
-macos-option-as-alt = left 
+macos-option-as-alt = left
 alpha-blending = native
 cursor-opacity = 0.6
 cursor-color = #9399b2

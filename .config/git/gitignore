@@ -8,7 +8,7 @@
 .envrc
 
 # project env files
-.env 
+.env
 *.env
 
 # docker swarm stack / portainer
