@@ -1,0 +1,21 @@
+# vim: ft=sh
+
+strict_env
+
+watch_project_env() {
+  watch_file mise.toml
+  watch_file .envrc
+  watch_file .env.public
+  watch_file .env.op
+}
+
+use_project_env() {
+  watch_project_env
+  dotenv_if_exists .env.public
+
+  if [[ -f .env.op ]]; then
+    export OP_ENV_FILE="$PWD/.env.op"
+  else
+    unset OP_ENV_FILE
+  fi
+}

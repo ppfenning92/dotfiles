@@ -1,3 +1,4 @@
 [env]
 # Machine/developer-specific variables. Copy to mise.local.toml (git-ignored).
-# Example: GITLAB_TOKEN = "op://vault/item/field"
+# OP_SERVICE_ACCOUNT_TOKEN = "..."
+# GITLAB_TOKEN = "..."

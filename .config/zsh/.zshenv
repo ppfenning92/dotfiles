@@ -1,7 +1,9 @@
 # vim: ts=2 sts=2 sw=2 et ft=bash
 
-source $HOME/.config/global.env
+[[ -r "$HOME/.config/global.env" ]] && source "$HOME/.config/global.env"
+[[ -r "$XDG_CONFIG_HOME/zsh/secrets.zsh" ]] && source "$XDG_CONFIG_HOME/zsh/secrets.zsh"
 
+export HISTIGNORE="$HISTIGNORE:jrnl *"
 export HISTFILE="$XDG_STATE_HOME/zsh/history"
 if [ ! -f "$HISTFILE" ]; then
   mkdir -p $XDG_STATE_HOME/zsh/
@@ -17,10 +19,14 @@ export VAGRANT_HOME="$XDG_DATA_HOME"/vagrant
 
 export PYLINTHOME="$XDG_CACHE_HOME"/pylint
 export PYENV_ROOT="$XDG_DATA_HOME"/pyenv
+export MPLCONFIGDIR="$XDG_CONFIG_HOME/matplotlib"
 
 export NVM_DIR="$XDG_DATA_HOME"/nvm
 export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
+export NPM_CONFIG_CACHE="$XDG_CACHE_HOME"/npm
+export NPM_CONFIG_TMP="$XDG_RUNTIME_DIR"/npm
+export NPM_CONFIG_INIT_MODULE="$XDG_CONFIG_HOME"/npm/config/npm-init.js
 
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 
@@ -31,8 +37,7 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
 export MINIKUBE_HOME="$XDG_DATA_HOME"/minikube
-
-export KUBECONFIG="$HOME/.kube/config/rke2.yaml"
+export KUBECONFIG="$HOME/.kube/config/k8s.yaml"
 export KREW_ROOT="$XDG_DATA_HOME/krew"
 export AZURE_CONFIG_DIR="$XDG_DATA_HOME"/azure
 
@@ -42,7 +47,29 @@ export AWS_DEFAULT_OUTPUT="yaml"
 export AWS_DEFAULT_REGION="eu-central-1"
 export AWS_PAGER="bat -lyaml --style plain"
 
-if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  export DOTFILES_ENV="mac"
+elif [[ -n "$WSL_DISTRO_NAME" ]]; then
+  export DOTFILES_ENV="wsl"
+elif [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+  if grep -qi "^ID=arch" /etc/os-release 2>/dev/null; then
+    export DOTFILES_ENV="ssh-arch"
+  else
+    export DOTFILES_ENV="ssh-ubuntu"
+  fi
+else
+  export DOTFILES_ENV="local-linux"
+fi
+
+case "$DOTFILES_ENV" in
+  mac)        export BAT_THEME="Rose-Pine-Moon" ;;
+  wsl)        export BAT_THEME="Catppuccin-frappe" ;;
+  ssh-ubuntu) export BAT_THEME="kanagawa" ;;
+  ssh-arch)   export BAT_THEME="tokyonight_night" ;;
+  *)          export BAT_THEME="Nord" ;;
+esac
+
+if [[ "$DOTFILES_ENV" == ssh-* ]]; then
   export ZSH_TMUX_AUTOSTART=false
   export ZSH_TMUX_AUTOCONNECT=false
   export ZSH_TMUX_AUTOQUIT=false
@@ -51,21 +78,59 @@ else
   export ZSH_TMUX_AUTOCONNECT=false
   export ZSH_TMUX_AUTOQUIT=false
 fi
+
+_dotfiles_starship_config() {
+  local base="${XDG_CONFIG_HOME:-$HOME/.config}/starship.toml"
+  [[ -f "$base" ]] || return
+  local theme
+  case "$DOTFILES_ENV" in
+    ssh-ubuntu) theme="kanagawa" ;;
+    ssh-arch)   theme="tokyo_night" ;;
+    wsl)        theme="catppuccin_frappe" ;;
+    mac)        return ;;
+    *)          theme="nord" ;;
+  esac
+  local cache="${XDG_CACHE_HOME:-$HOME/.cache}/starship.${DOTFILES_ENV}.toml"
+  if [[ ! -f "$cache" || "$base" -nt "$cache" ]]; then
+    mkdir -p "${cache%/*}"
+    local palette_sed="s/^palette = .*/palette = \"$theme\"/"
+    if [[ "$DOTFILES_ENV" == ssh-* ]]; then
+      sed "$palette_sed" "$base" \
+        | sed "/^\[fill\]/{n; s/symbol = .*/symbol = '═'/;}" \
+        > "$cache"
+    else
+      sed "$palette_sed" "$base" > "$cache"
+    fi
+  fi
+  export STARSHIP_CONFIG="$cache"
+}
+_dotfiles_starship_config
+unset -f _dotfiles_starship_config
 export WORKON_HOME="$XDG_DATA_HOME/virtualenvs"
 export KERAS_HOME="$XDG_STATE_HOME/keras"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
+
+export ANSIBLE_CONFIG="$XDG_CONFIG_HOME/ansible/ansible.cfg"
 export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
 
 export TS_NODE_HISTORY="$XDG_STATE_HOME"/ts_node_repl_history
 export BUN_INSTALL="$XDG_DATA_HOME"/bun
 export DOTNET_CLI_HOME="$XDG_DATA_HOME"/dotnet
 export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
-export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
 
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 
 export _ZO_ECHO=""
+
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
+export W3M_DIR="$XDG_DATA_HOME"/w3m
+# Terraform
+export TF_PLUGIN_CACHE_DIR="$XDG_CACHE_HOME/terraform.d"
+export TFLINT_PLUGIN_DIR="$XDG_CACHE_HOME/tflint.d"
+# Terragrunt
+export TG_LOG_CUSTOM_FORMAT="%prefix(path=short-relative,color=gradient,suffix=' ')%msg(path=relative)"
 
 # TURV CONFIG
 export TURV_VIEWER="bat -lbash --style=snip,numbers,header"
@@ -77,3 +142,12 @@ export NB_DIR="$XDG_STATE_HOME/nb"
 export NBRC_PATH="$XDG_CONFIG_HOME/nb/nbrc"
 export NB_ENCRYPTION_TOOL=gpg
 export NB_BROWSE_MARKDOWN_READER=glow
+
+# nom https://github.com/guyfedwards/nom (rss-reader)
+alias nom='nom --config-path $XDG_CONFIG_HOME/nom/'
+
+# jrnl https://jrnl.sh/en/stable/installation/
+alias jrnl=' jrnl'
+alias j=' jrnl'
+alias jon=' jrnl on'
+alias jlab=' jrnl lab'

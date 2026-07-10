@@ -1,0 +1,24 @@
+colors:
+  body: none
+  date: none
+  tags: none
+  title: none
+default_hour: 9
+default_minute: 0
+display_format: markdown
+editor: nvim
+encrypt: false
+highlight: true
+indent_character: "|"
+journals:
+  default:
+    journal: ~/.local/share/jrnl/ptrck.md
+  on:
+    journal: ~/.local/share/jrnl/on/
+  lab:
+    journal: ~/.local/share/jrnl/lab.md
+linewrap: 79
+tagsymbols: "#@"
+template: false
+timeformat: "%F %H:%M"
+version: v4.2.1

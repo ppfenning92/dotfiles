@@ -4,21 +4,19 @@ palette = "catppuccin_mocha"
 format = """
 (${username}${hostname} [|](dimmed) )\
 $directory\
-${custom.sep}\
-$kubernetes\
-${custom.sep}\
-$gcloud\
-$aws\
-${custom.sep}\
-(${custom.firebase} [|](dimmed) )\
-([  ](subtext0)$docker_context$bun$golang$helm$nodejs$python$rust$gleam$terraform[|](dimmed) )\
-${custom.git_provider}\
+([ | ](dimmed)$kubernetes)\
+([ | ](dimmed)$aws)\
+([ | ](dimmed)${custom.terrafrom_env})\
+([ | ](dimmed)[ ](fg_muted)$docker_context$bun$golang$helm$nodejs$python$rust$gleam$terraform )\
+([ | ](dimmed)${custom.git_provider})\
 $git_branch\
 $git_commit\
 $git_status\
 $git_metrics\
 $fill \
-($status [|](dimmed) )($cmd_duration [|](dimmed) )$battery${custom.vpn}$time
+${custom.profile} \
+$fill \
+($status [|](dimmed) )($cmd_duration [|](dimmed) )$jobs$battery${custom.vpn} ${custom.rss}$sudo $time
 $nix_shell$character
 """
 # right_format = "$status $cmd_duration $time"
@@ -33,15 +31,10 @@ $character $status($status [|](dimmed) )($cmd_duration [|](dimmed) )$time
 disabled = false
 format = "[$symbol]($style)"
 
-[custom.sep]
-format = '[ | ]($style)'
-when = true
-style = "dimmed"
-
 [git_branch]
 format = "[$branch(:$remote_branch)]($style) "
 symbol = "󰊢 "
-style = "peach"
+style = "orange"
 
 [git_commit]
 only_detached = false
@@ -53,7 +46,7 @@ shell = "sh"
 command = """
 if git remote -v | grep -q github; then
   echo " "
-elif git remote -v | grep -qE "(gitlab|on.ag); then
+elif git remote -v | grep -qE "(gitlab|on.ag)"; then
   echo " "
 else
   echo "󰊢 "
@@ -61,14 +54,14 @@ fi
 """
 format = '[$output]($style) '
 when = true
-style = "peach"
+style = "orange"
 require_repo = true
 disabled = false
 ignore_timeout = true
 
 [git_status]
 format = '([$all_status$ahead_behind]($style)) '
-style = "peach"
+style = "orange"
 
 [git_metrics]
 disabled = false
@@ -102,42 +95,157 @@ format = '[$symbol]($style)'
 disabled = false
 format = '[$status]($style)'
 
+[palettes.catppuccin_frappe]
+cream = "#f2d5cf"
+salmon = "#eebebe"
+pink = "#f4b8e4"
+purple = "#ca9ee6"
+red = "#e78284"
+rose = "#ea999c"
+orange = "#ef9f76"
+yellow = "#e5c890"
+green = "#a6d189"
+teal = "#81c8be"
+cyan = "#99d1db"
+azure = "#85c1dc"
+blue = "#8caaee"
+indigo = "#babbf1"
+fg = "#c6d0f5"
+fg_dim = "#b5bfe2"
+fg_muted = "#a5adce"
+gray2 = "#949cbb"
+gray1 = "#838ba7"
+gray0 = "#737994"
+surface2 = "#626880"
+surface1 = "#51576d"
+surface0 = "#414559"
+bg = "#303446"
+bg_dim = "#292c3c"
+bg_dark = "#232634"
+
+# kanagawa wave colors mapped to the shared hue/ramp slot names so format strings need no changes
+[palettes.kanagawa]
+cream = "#D27E99"
+salmon = "#E46876"
+pink = "#D27E99"
+purple = "#957FB8"
+red = "#C34043"
+rose = "#E46876"
+orange = "#FFA066"
+yellow = "#E6C384"
+green = "#98BB6C"
+teal = "#6A9589"
+cyan = "#7FB4CA"
+azure = "#7E9CD8"
+blue = "#7E9CD8"
+indigo = "#9CABCA"
+fg = "#DCD7BA"
+fg_dim = "#C8C093"
+fg_muted = "#A09191"
+gray2 = "#727169"
+gray1 = "#727169"
+gray0 = "#54546D"
+surface2 = "#363646"
+surface1 = "#2A2A37"
+surface0 = "#1F1F28"
+bg = "#1F1F28"
+bg_dim = "#16161D"
+bg_dark = "#0D0C0C"
+
+# tokyo night colors mapped to the shared hue/ramp slot names so format strings need no changes
+[palettes.tokyo_night]
+cream = "#f7768e"
+salmon = "#f7768e"
+pink = "#bb9af7"
+purple = "#9d7cd8"
+red = "#f7768e"
+rose = "#db4b4b"
+orange = "#ff9e64"
+yellow = "#e0af68"
+green = "#9ece6a"
+teal = "#73daca"
+cyan = "#7dcfff"
+azure = "#2ac3de"
+blue = "#7aa2f7"
+indigo = "#c0caf5"
+fg = "#c0caf5"
+fg_dim = "#a9b1d6"
+fg_muted = "#9aa5ce"
+gray2 = "#565f89"
+gray1 = "#414868"
+gray0 = "#3b4261"
+surface2 = "#292e42"
+surface1 = "#1f2335"
+surface0 = "#1a1b26"
+bg = "#1a1b26"
+bg_dim = "#16161e"
+bg_dark = "#13131a"
+
+# nord colors mapped to the shared hue/ramp slot names so format strings need no changes
+[palettes.nord]
+cream = "#B48EAD"
+salmon = "#BF616A"
+pink = "#B48EAD"
+purple = "#B48EAD"
+red = "#BF616A"
+rose = "#BF616A"
+orange = "#D08770"
+yellow = "#EBCB8B"
+green = "#A3BE8C"
+teal = "#8FBCBB"
+cyan = "#88C0D0"
+azure = "#81A1C1"
+blue = "#81A1C1"
+indigo = "#88C0D0"
+fg = "#D8DEE9"
+fg_dim = "#C9D0DA"
+fg_muted = "#AEBACF"
+gray2 = "#616E88"
+gray1 = "#4C566A"
+gray0 = "#434C5E"
+surface2 = "#3B4252"
+surface1 = "#353B49"
+surface0 = "#2E3440"
+bg = "#2E3440"
+bg_dim = "#282C38"
+bg_dark = "#242832"
+
 [palettes.catppuccin_mocha]
-rosewater = "#f5e0dc"
-flamingo = "#f2cdcd"
+cream = "#f5e0dc"
+salmon = "#f2cdcd"
 pink = "#f5c2e7"
-mauve = "#cba6f7"
+purple = "#cba6f7"
 red = "#f38ba8"
-maroon = "#eba0ac"
-peach = "#fab387"
+rose = "#eba0ac"
+orange = "#fab387"
 yellow = "#f9e2af"
 green = "#a6e3a1"
 teal = "#94e2d5"
-sky = "#89dceb"
-sapphire = "#74c7ec"
+cyan = "#89dceb"
+azure = "#74c7ec"
 blue = "#89b4fa"
-lavender = "#b4befe"
-text = "#cdd6f4"
-subtext1 = "#bac2de"
-subtext0 = "#a6adc8"
-overlay2 = "#9399b2"
-overlay1 = "#7f849c"
-overlay0 = "#6c7086"
+indigo = "#b4befe"
+fg = "#cdd6f4"
+fg_dim = "#bac2de"
+fg_muted = "#a6adc8"
+gray2 = "#9399b2"
+gray1 = "#7f849c"
+gray0 = "#6c7086"
 surface2 = "#585b70"
 surface1 = "#45475a"
 surface0 = "#313244"
-base = "#1e1e2e"
-mantle = "#181825"
-crust = "#11111b"
+bg = "#1e1e2e"
+bg_dim = "#181825"
+bg_dark = "#11111b"
 
 [nix_shell]
 disabled = true
 symbol = ""
-impure_msg = '[ ](bold sapphire)'
-pure_msg = '[ ](bold maroon)'
+impure_msg = '[ ](bold azure)'
+pure_msg = '[ ](bold rose)'
 unknown_msg = '[](bold yellow)'
 format = '[$state( \($name\))]($style) '
-style = "sky"
+style = "cyan"
 heuristic = true
 
 [character]
@@ -145,8 +253,8 @@ success_symbol = "[➜](bold green) "
 error_symbol = "[✗](bold red) "
 vimcmd_symbol = "[](bold teal) "
 vimcmd_replace_one_symbol = "[❮](bold purple) "
-vimcmd_replace_symbol = "[❮](bold flamingo) "
-vimcmd_visual_symbol = "[❮](bold maroon) "
+vimcmd_replace_symbol = "[❮](bold salmon) "
+vimcmd_visual_symbol = "[❮](bold rose) "
 
 [cmd_duration]
 min_time = 225
@@ -156,14 +264,15 @@ format = "$duration"
 truncation_length = 3
 truncate_to_repo = true
 format = "[󱏒 $path]($style)[$read_only]($read_only_style)"
-style = "lavender"
+style = "indigo"
 disabled = false
 home_symbol = "󰜥"
 
 
 [aws]
-format = "[$symbol($profile) [$region](flamingo underline bold italic)]($style)"
-style = "rosewater"
+format = "([󰸏 $profile]($style))"
+# format = "[$symbol($profile) [$region](salmon underline bold italic)]($style)"
+style = "cream"
 disabled = false
 # force_display = true
 symbol = "󰸏 "
@@ -178,24 +287,8 @@ eu-south-2 = "ES"
 eu-north-1 = "DK"
 eu-central-2 = "CH"
 
-[gcloud]
-format = "[$symbol($domain) [$project](flamingo underline bold italic)]($style)"
-style = "rosewater"
-disabled = false
-symbol = "󱇶 "
-
-[gcloud.project_aliases]
-
-[custom.firebase]
-format = "[$symbol([$output](bold underline red italic))]($style)"
-command = 'echo -n $(jq -r ".activeProjects[\"$(pwd)\"]" ~/.config/configstore/firebase-tools.json)'
-symbol = "󰥧 "
-style = "maroon"
-detect_files = ['firebase.json']
-ignore_timeout = true
-
 [kubernetes]
-format = "[$symbol$context]($style)"
+format = '[$symbol$context( \($namespace\))]($style)'
 disabled = false
 symbol = "󱃾 "
 style = "teal"
@@ -205,7 +298,8 @@ context_pattern = "arn:aws:eks:(?P<region>.*?):cluster/(?P<cluster>.*)"
 context_alias = "$cluster"
 
 [sudo]
-disabled = false
+format = '[$symbol]($style)'
+disabled = true
 
 [time]
 disabled = false
@@ -215,13 +309,13 @@ format = "[$time]($style)"
 ssh_only = true
 ssh_symbol = " "
 trim_at = ''
-format = '[$ssh_symbol$hostname]($style)'
-style = "bold red"
+format = '[$hostname $ssh_symbol]($style)'
+style = "italic bold red bg:black"
 
 [username]
-style_user = 'pink bold'
-style_root = 'red bold'
-format = '[$user]($style) '
+style_user = 'pink bold bg:black'
+style_root = 'red bold blink italic bg:black'
+format = '[$user@]($style)'
 disabled = false
 show_always = false
 detect_env_vars = ['SSH_TTY', 'SSH_CLIENT']
@@ -236,7 +330,7 @@ style = 'teal'
 
 [[battery.display]]
 threshold = 60
-style = 'maroon'
+style = 'rose'
 
 [[battery.display]]
 threshold = 40
@@ -246,7 +340,33 @@ style = 'pink'
 threshold = 20
 style = 'red'
 
+[jobs]
+symbol = " "
+
 [custom.vpn]
 command = "true"
-when = "ifconfig | grep -q tun4"
-format = "[󱠾 ](rosewater)"
+# utun100 = netbird on macOS; wt0 = netbird on Linux
+when = "ifconfig 2>/dev/null | grep -q utun100 || ip link 2>/dev/null | grep -q wt0"
+format = "[󱠾 ](cream)"
+
+[custom.terrafrom_env]
+detect_extensions = ['tf', 'tfplan', 'tfstate']
+detect_files = ['root.hcl']
+format = "( $output)"
+command = '[ "$__PROFILE" = ottonova ] && echo "$TF_VAR_environment" || true'
+
+[custom.rss]
+command = "nom --config-path $XDG_CONFIG_HOME/nom/ unread"
+when = "command -v nom >/dev/null 2>&1"
+symbol = " "
+format = "[$symbol$output]($style)"
+style = "bold orange"
+
+[fill]
+symbol = '─'
+style = 'dimmed black'
+
+[custom.profile]
+when = true
+format = "$output"
+command = "echo \"$__PROFILE\""
