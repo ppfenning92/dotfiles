@@ -33,5 +33,4 @@
   gpgsign = true
 
 [tag]
-  gpgsign = true 
-
+  gpgsign = true

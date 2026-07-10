@@ -1,0 +1,12 @@
+stages:
+  - lint
+  - test
+include:
+  - component: $CI_SERVER_FQDN/ptrck-sh/templates/ci-templates/base@0.22.1
+    inputs:
+      runner_tags:
+        - homelab
+  - component: $CI_SERVER_FQDN/ptrck-sh/templates/ci-templates/pre-commit@0.22.1
+  - component: $CI_SERVER_FQDN/ptrck-sh/templates/ci-templates/security@0.22.1
+  - component: $CI_SERVER_FQDN/ptrck-sh/templates/ci-templates/alint@0.22.1
+  - component: $CI_SERVER_FQDN/ptrck-sh/templates/ci-templates/alint-fix@0.22.1

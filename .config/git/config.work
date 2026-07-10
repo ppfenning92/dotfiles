@@ -4,7 +4,7 @@
   email = patrick.pfenning@ottonova.de
   name = patrick.pfenning
   signingkey = ~/.ssh/on_ed25519
-  
+
 [gpg]
   format = ssh
 
@@ -15,7 +15,7 @@
   gpgsign = true
 
 [tag]
-  gpgsign = true 
+  gpgsign = true
 
 [pull]
   ff = only

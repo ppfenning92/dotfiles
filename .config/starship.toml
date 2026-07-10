@@ -41,7 +41,7 @@ style = "dimmed"
 [git_branch]
 format = "[$branch(:$remote_branch)]($style) "
 symbol = "󰊢 "
-style = "peach" 
+style = "peach"
 
 [git_commit]
 only_detached = false
