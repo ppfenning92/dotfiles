@@ -4,7 +4,7 @@
 # On desktops the 1Password app handles auth — this is a no-op there.
 () {
   local token_file="${OP_SERVICE_ACCOUNT_TOKEN_FILE:-$XDG_CONFIG_HOME/op/service-account-token}"
-  if [[ -z "${OP_SERVICE_ACCOUNT_TOKEN:-}" && -r "$token_file" ]]; then
+  if [[ -z "${AS_AGENT:-}" && -z "${OP_SERVICE_ACCOUNT_TOKEN:-}" && -r "$token_file" ]]; then
     export OP_SERVICE_ACCOUNT_TOKEN="$(<"$token_file")"
   fi
 }
