@@ -126,23 +126,6 @@ while IFS='=' read -r _k _v; do
 done < <(env)
 unset _k _v
 
-# Override TF_VAR_* with per-agent credentials from the agents vault.
-# Each entry is "item:field:VAR_NAME". Silently skips items not yet populated.
-_op_cred() { op item get "$1" --vault agents --fields "$2" --reveal 2>/dev/null || true; }
-while IFS=: read -r _item _field _var; do
-  _val=$(_op_cred "$_item" "$_field")
-  [[ -n "$_val" ]] && export "${_var}=${_val}"
-done <<'CREDS'
-cloudflare:password:TF_VAR_cloudflare_token
-adguard:username:TF_VAR_adguard_user
-adguard:password:TF_VAR_adguard_password
-nextdns:password:TF_VAR_nextdns_api_key
-discord/bot/0x6a6c70:password:TF_VAR_discord_token
-discord/bot/0x6a6c70:servier_id:TF_VAR_discord_server_id
-CREDS
-unset _item _field _var _val
-unset -f _op_cred
-
 # Agent kubeconfigs from the agents vault, merged into ONE flattened file.
 # as-agent cannot win the KUBECONFIG env var — the shell's .zshenv re-exports
 # it on every subshell, after our exec — so kubectl is wrapped via a PATH shim
@@ -150,7 +133,9 @@ unset -f _op_cred
 # which the shell leaves alone. Clusters whose item isn't populated are skipped.
 kube_bin=$(command -v kubectl 2>/dev/null || true)
 _kube_files=""
-for _c in rke2 berry-stack; do
+# Cluster names track the astronomy rename (infra #45): rke2->nebula,
+# berry-stack->aurora. These are the OP item suffixes (k8s.claude.<cluster>).
+for _c in nebula aurora; do
   _f="${tmpdir}/kc-${_c}"
   # op read (not `item get --fields`) — the latter CSV-quotes multiline values.
   if op read "op://agents/k8s.claude.${_c}/kubeconfig" >"$_f" 2>/dev/null && [[ -s "$_f" ]]; then
@@ -162,7 +147,7 @@ done
 if [[ -n "$_kube_files" && -n "$kube_bin" ]]; then
   kubeconfig="${tmpdir}/kubeconfig"
   KUBECONFIG="$_kube_files" "$kube_bin" config view --flatten >"$kubeconfig" 2>/dev/null
-  KUBECONFIG="$kubeconfig" "$kube_bin" config use-context rke2 >/dev/null 2>&1 || true
+  KUBECONFIG="$kubeconfig" "$kube_bin" config use-context nebula >/dev/null 2>&1 || true
   chmod 600 "$kubeconfig"
   rm -f "${tmpdir}"/kc-*
   export TF_VAR_kube_config_path="$kubeconfig"
